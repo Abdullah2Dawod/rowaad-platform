@@ -1,0 +1,608 @@
+/* =========================================================
+   ROWAAD ADMIN PANEL — Brand overrides on top of Filament base.
+   Injected via renderHook (see AdminPanelProvider).
+   ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;500;600;700;800;900&family=Almarai:wght@300;400;700;800&display=swap');
+
+:root {
+    --rowaad-navy: #2D4B7E;
+    --rowaad-teal: #3DAFB9;
+    --rowaad-teal-soft: #6BC8D2;
+    --rowaad-ink-1: #0A1729;
+    --rowaad-ink-2: #122440;
+}
+
+/* ─────── Typography ─────── */
+.fi-body,
+.fi-sidebar,
+.fi-topbar,
+.fi-main {
+    font-family: 'Alexandria', 'Almarai', ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.005em;
+}
+
+/* Headings — geometric */
+.fi-header-heading,
+.fi-section-header-heading,
+.fi-page-header-heading,
+h1, h2, h3, h4 {
+    font-family: 'Alexandria', 'Almarai', sans-serif;
+    letter-spacing: -0.015em;
+}
+
+/* ─────── Brand gradient on primary buttons ─────── */
+.fi-btn.fi-color-primary {
+    background: linear-gradient(135deg, var(--rowaad-navy) 0%, var(--rowaad-teal) 100%);
+    border: none;
+    transition: transform 200ms cubic-bezier(0.34, 1.4, 0.5, 1), box-shadow 200ms ease;
+    box-shadow: 0 4px 14px -4px rgba(61, 175, 185, 0.35);
+}
+.fi-btn.fi-color-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px -6px rgba(61, 175, 185, 0.5);
+}
+
+/* ─────── Topbar polish ─────── */
+.fi-topbar {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(61, 175, 185, 0.12);
+}
+.fi-topbar > nav {
+    background: rgba(255, 255, 255, 0.85);
+}
+.dark .fi-topbar > nav {
+    background: rgba(18, 36, 64, 0.75);
+}
+
+/* ─────── Sidebar polish ─────── */
+.fi-sidebar {
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.98) 0%,
+        rgba(240, 249, 250, 0.9) 100%);
+    border-inline-end: 1px solid rgba(61, 175, 185, 0.15);
+}
+.dark .fi-sidebar {
+    background: linear-gradient(180deg,
+        rgba(10, 23, 41, 0.98) 0%,
+        rgba(18, 36, 64, 0.92) 100%);
+    border-inline-end: 1px solid rgba(61, 175, 185, 0.18);
+}
+
+/* Nav items */
+.fi-sidebar-item-button {
+    border-radius: 12px !important;
+    transition: all 200ms ease;
+}
+.fi-sidebar-item-button.fi-active {
+    background: linear-gradient(90deg, rgba(61, 175, 185, 0.12), rgba(45, 75, 126, 0.08)) !important;
+    color: var(--rowaad-navy) !important;
+    font-weight: 700;
+}
+.dark .fi-sidebar-item-button.fi-active {
+    color: var(--rowaad-teal-soft) !important;
+    background: linear-gradient(90deg, rgba(61, 175, 185, 0.18), rgba(45, 75, 126, 0.12)) !important;
+}
+
+.fi-sidebar-item-button.fi-active::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 3px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--rowaad-teal), var(--rowaad-navy));
+}
+
+/* Nav group labels */
+.fi-sidebar-group-label {
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.2em !important;
+    color: var(--rowaad-teal) !important;
+    text-transform: uppercase;
+}
+
+/* ─────── Cards / Sections ─────── */
+.fi-section,
+.fi-fo-section,
+.fi-ta-content {
+    border-radius: 1rem !important;
+    border-color: rgba(61, 175, 185, 0.12) !important;
+    box-shadow: 0 2px 8px -2px rgba(45, 75, 126, 0.06);
+}
+.dark .fi-section,
+.dark .fi-fo-section,
+.dark .fi-ta-content {
+    border-color: rgba(107, 200, 210, 0.15) !important;
+}
+
+/* ─────── Stat widgets ─────── */
+.fi-wi-stats-overview-stat {
+    border-radius: 1rem !important;
+    border: 1px solid rgba(61, 175, 185, 0.15) !important;
+    box-shadow: 0 4px 14px -4px rgba(45, 75, 126, 0.08);
+    transition: transform 250ms cubic-bezier(0.34, 1.4, 0.5, 1), box-shadow 250ms ease;
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(240, 249, 250, 0.6) 100%) !important;
+}
+.dark .fi-wi-stats-overview-stat {
+    background: linear-gradient(135deg,
+        rgba(18, 36, 64, 0.6) 0%,
+        rgba(10, 23, 41, 0.4) 100%) !important;
+    border-color: rgba(107, 200, 210, 0.15) !important;
+}
+.fi-wi-stats-overview-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -6px rgba(61, 175, 185, 0.25);
+}
+.fi-wi-stats-overview-stat-value {
+    background: linear-gradient(135deg, var(--rowaad-navy) 0%, var(--rowaad-teal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900 !important;
+}
+.dark .fi-wi-stats-overview-stat-value {
+    background: linear-gradient(135deg, var(--rowaad-teal-soft) 0%, var(--rowaad-teal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ─────── Notifications bell polish ─────── */
+.fi-topbar-database-notifications-btn {
+    position: relative;
+}
+.fi-topbar-database-notifications-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(61,175,185,0.15) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 200ms ease;
+    pointer-events: none;
+}
+.fi-topbar-database-notifications-btn:hover::after {
+    opacity: 1;
+}
+
+/* Unread notifications badge */
+.fi-topbar-database-notifications-btn .fi-badge {
+    background: linear-gradient(135deg, #EF4444, #DC2626) !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25);
+    animation: rowaadBellPulse 2s ease-in-out infinite;
+}
+@keyframes rowaadBellPulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.1); }
+}
+
+/* ─────── Badges ─────── */
+.fi-badge {
+    font-weight: 700 !important;
+    border-radius: 999px !important;
+}
+
+/* ─────── Tables ─────── */
+.fi-ta-header-cell {
+    font-weight: 800 !important;
+    letter-spacing: -0.005em;
+    background: linear-gradient(180deg,
+        rgba(240, 249, 250, 0.6) 0%,
+        rgba(240, 249, 250, 0.3) 100%) !important;
+}
+.dark .fi-ta-header-cell {
+    background: linear-gradient(180deg,
+        rgba(18, 36, 64, 0.4) 0%,
+        rgba(10, 23, 41, 0.3) 100%) !important;
+}
+.fi-ta-row:hover {
+    background: rgba(61, 175, 185, 0.04) !important;
+}
+.dark .fi-ta-row:hover {
+    background: rgba(61, 175, 185, 0.06) !important;
+}
+
+/* ─────── Dark mode canvas ─────── */
+.dark .fi-body,
+.dark .fi-main {
+    background: radial-gradient(ellipse at top right,
+        rgba(61, 175, 185, 0.04),
+        transparent 50%),
+        #0A1729 !important;
+}
+
+/* Light mode canvas */
+.fi-body,
+.fi-main {
+    background: radial-gradient(ellipse at top right,
+        rgba(61, 175, 185, 0.05),
+        transparent 60%),
+        #FAFCFD !important;
+}
+
+/* Scrollbar (webkit) */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--rowaad-teal), var(--rowaad-navy));
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--rowaad-teal-soft), var(--rowaad-teal));
+    background-clip: padding-box;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ROWAAD PREMIUM PANEL — Enhanced polish across every surface
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Page header (gradient underline + refined spacing) ─── */
+.fi-page-header {
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(61,175,185,0.10);
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+.fi-page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    inset-inline-start: 0;
+    width: 96px;
+    height: 3px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--rowaad-navy), var(--rowaad-teal), var(--rowaad-teal-soft));
+}
+.fi-page-header-heading {
+    font-weight: 900 !important;
+    color: var(--rowaad-ink-1) !important;
+    background: linear-gradient(135deg, var(--rowaad-navy) 0%, var(--rowaad-teal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.dark .fi-page-header-heading {
+    background: linear-gradient(135deg, var(--rowaad-teal-soft) 0%, #C2EBEF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.fi-page-header-subheading {
+    color: rgb(100 116 139) !important;
+    font-size: 13.5px !important;
+    margin-top: 4px;
+}
+
+/* ─── Sections: subtle premium finish ─── */
+.fi-section {
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(250,252,253,0.9) 100%) !important;
+    box-shadow: 0 1px 2px rgba(15,23,42,.03),
+                0 4px 16px -6px rgba(45,75,126,0.08) !important;
+    transition: box-shadow 250ms ease;
+}
+.dark .fi-section {
+    background: linear-gradient(180deg, rgba(18,36,64,0.85) 0%, rgba(10,23,41,0.75) 100%) !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,.15),
+                0 4px 16px -6px rgba(0,0,0,0.25) !important;
+}
+.fi-section:hover {
+    box-shadow: 0 2px 4px rgba(15,23,42,.04),
+                0 8px 24px -8px rgba(45,75,126,0.14) !important;
+}
+.fi-section-header-heading {
+    font-weight: 800 !important;
+    font-size: 15px !important;
+    color: var(--rowaad-ink-1) !important;
+}
+.dark .fi-section-header-heading { color: #C2EBEF !important; }
+.fi-section-header-description {
+    font-size: 12.5px !important;
+    color: rgb(100 116 139) !important;
+}
+
+/* ─── Enhanced input fields ─── */
+.fi-input, .fi-select-input, .fi-textarea {
+    transition: border-color 200ms ease, box-shadow 200ms ease, background-color 200ms ease !important;
+}
+.fi-input:focus, .fi-select-input:focus, .fi-textarea:focus {
+    border-color: var(--rowaad-teal) !important;
+    box-shadow: 0 0 0 3px rgba(61,175,185,0.15),
+                0 1px 2px rgba(45,75,126,0.05) !important;
+    outline: none !important;
+}
+.fi-input-wrp:focus-within {
+    border-color: var(--rowaad-teal) !important;
+    box-shadow: 0 0 0 3px rgba(61,175,185,0.15) !important;
+}
+
+/* ─── Buttons: brand shine on hover ─── */
+.fi-btn {
+    font-weight: 700 !important;
+    letter-spacing: -0.005em !important;
+    transition: transform 180ms cubic-bezier(0.34,1.4,0.5,1),
+                box-shadow 200ms ease,
+                background 200ms ease !important;
+}
+.fi-btn:not(:disabled):active { transform: translateY(0) scale(0.98); }
+.fi-btn.fi-btn-size-lg { padding: 0.7rem 1.4rem !important; }
+.fi-btn.fi-color-danger:hover  { box-shadow: 0 6px 18px -6px rgba(239,68,68,0.45); }
+.fi-btn.fi-color-warning:hover { box-shadow: 0 6px 18px -6px rgba(245,158,11,0.4); }
+.fi-btn.fi-color-success:hover { box-shadow: 0 6px 18px -6px rgba(16,185,129,0.4); }
+.fi-btn.fi-color-info:hover    { box-shadow: 0 6px 18px -6px rgba(14,165,233,0.4); }
+
+/* ─── Table refinement ─── */
+.fi-ta-content { overflow: hidden; }
+.fi-ta-row {
+    transition: background-color 150ms ease;
+    border-bottom: 1px solid rgba(15,23,42,0.04);
+}
+.dark .fi-ta-row { border-bottom-color: rgba(107,200,210,0.06); }
+.fi-ta-cell { padding-block: 12px !important; }
+
+/* Pagination */
+.fi-pagination-item .fi-btn.fi-btn-color-primary {
+    background: linear-gradient(135deg, var(--rowaad-navy), var(--rowaad-teal)) !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+/* ─── Filter chips (search + filter bar) ─── */
+.fi-ta-search-input-wrp {
+    border-radius: 12px !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(240,249,250,0.4)) !important;
+}
+.dark .fi-ta-search-input-wrp {
+    background: linear-gradient(180deg, rgba(18,36,64,0.5), rgba(10,23,41,0.3)) !important;
+}
+.fi-ta-filter-indicator {
+    background: linear-gradient(135deg, rgba(61,175,185,0.12), rgba(45,75,126,0.08)) !important;
+    color: var(--rowaad-navy) !important;
+    border: 1px solid rgba(61,175,185,0.25) !important;
+    font-weight: 700 !important;
+}
+.dark .fi-ta-filter-indicator {
+    color: var(--rowaad-teal-soft) !important;
+    background: linear-gradient(135deg, rgba(61,175,185,0.18), rgba(45,75,126,0.12)) !important;
+}
+
+/* ─── Modal polish ─── */
+.fi-modal-window {
+    border-radius: 1.25rem !important;
+    box-shadow: 0 24px 60px -16px rgba(15,23,42,0.25),
+                0 8px 24px -8px rgba(45,75,126,0.15) !important;
+    border: 1px solid rgba(61,175,185,0.15) !important;
+}
+.dark .fi-modal-window {
+    box-shadow: 0 24px 60px -16px rgba(0,0,0,0.5),
+                0 8px 24px -8px rgba(0,0,0,0.35) !important;
+    border-color: rgba(107,200,210,0.15) !important;
+}
+.fi-modal-header {
+    border-bottom: 1px solid rgba(61,175,185,0.10);
+    padding-bottom: 1rem !important;
+    position: relative;
+}
+.fi-modal-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    inset-inline-start: 1.5rem;
+    width: 48px; height: 3px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--rowaad-teal), var(--rowaad-navy));
+}
+.fi-modal-heading {
+    font-weight: 900 !important;
+    color: var(--rowaad-ink-1) !important;
+}
+.dark .fi-modal-heading { color: #C2EBEF !important; }
+
+/* ─── Empty states ─── */
+.fi-ta-empty-state, .fi-empty-state {
+    padding: 3rem 1rem !important;
+}
+.fi-ta-empty-state-icon-ctn, .fi-empty-state-icon-ctn {
+    background: linear-gradient(135deg, rgba(61,175,185,0.10), rgba(45,75,126,0.04)) !important;
+    color: var(--rowaad-teal) !important;
+}
+
+/* ─── User menu (top-right) enhanced ─── */
+.fi-dropdown-panel {
+    border-radius: 1rem !important;
+    box-shadow: 0 12px 32px -10px rgba(15,23,42,0.15),
+                0 4px 12px -4px rgba(45,75,126,0.10) !important;
+    border: 1px solid rgba(61,175,185,0.15) !important;
+    padding: 0.5rem !important;
+}
+.dark .fi-dropdown-panel {
+    box-shadow: 0 12px 32px -10px rgba(0,0,0,0.4) !important;
+    border-color: rgba(107,200,210,0.15) !important;
+}
+.fi-dropdown-list-item {
+    border-radius: 8px !important;
+    transition: background-color 150ms ease, color 150ms ease !important;
+}
+
+/* ─── Sidebar item hover (subtle) ─── */
+.fi-sidebar-item-button:not(.fi-active):hover {
+    background: rgba(61,175,185,0.05) !important;
+    color: var(--rowaad-navy) !important;
+}
+.dark .fi-sidebar-item-button:not(.fi-active):hover {
+    background: rgba(107,200,210,0.06) !important;
+    color: var(--rowaad-teal-soft) !important;
+}
+.fi-sidebar-item-icon { transition: transform 200ms ease; }
+.fi-sidebar-item-button:hover .fi-sidebar-item-icon { transform: translateX(2px); }
+[dir="rtl"] .fi-sidebar-item-button:hover .fi-sidebar-item-icon { transform: translateX(-2px); }
+
+/* ─── Sidebar badges (nav counters) ─── */
+.fi-sidebar-item-badge {
+    background: linear-gradient(135deg, #EF4444, #DC2626) !important;
+    color: #fff !important;
+    font-weight: 800 !important;
+    box-shadow: 0 2px 6px -1px rgba(239,68,68,0.35);
+    min-width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 999px !important;
+    text-align: center;
+    font-size: 10px !important;
+    padding: 0 6px !important;
+}
+.fi-sidebar-item-badge.fi-color-warning {
+    background: linear-gradient(135deg, #F59E0B, #D97706) !important;
+    box-shadow: 0 2px 6px -1px rgba(245,158,11,0.35);
+}
+.fi-sidebar-item-badge.fi-color-success {
+    background: linear-gradient(135deg, #10B981, #059669) !important;
+    box-shadow: 0 2px 6px -1px rgba(16,185,129,0.35);
+}
+.fi-sidebar-item-badge.fi-color-info {
+    background: linear-gradient(135deg, #0EA5E9, var(--rowaad-teal)) !important;
+    box-shadow: 0 2px 6px -1px rgba(14,165,233,0.35);
+}
+
+/* ─── Tabs (settings page etc.) ─── */
+.fi-tabs-tab {
+    font-weight: 700 !important;
+    transition: all 200ms ease !important;
+    border-radius: 999px !important;
+    padding: 0.5rem 1rem !important;
+}
+.fi-tabs-tab[aria-selected="true"] {
+    background: linear-gradient(135deg, var(--rowaad-navy), var(--rowaad-teal)) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px -4px rgba(61,175,185,0.4);
+}
+.fi-tabs-tab[aria-selected="true"] svg { color: #fff !important; }
+
+/* ─── Filament notifications toast ─── */
+.fi-fo-notification, .fi-no-notification {
+    border-radius: 12px !important;
+    border-left: 4px solid var(--rowaad-teal) !important;
+    box-shadow: 0 12px 32px -10px rgba(15,23,42,0.18),
+                0 4px 12px -4px rgba(45,75,126,0.10) !important;
+}
+[dir="rtl"] .fi-fo-notification, [dir="rtl"] .fi-no-notification {
+    border-left: none !important;
+    border-right: 4px solid var(--rowaad-teal) !important;
+}
+
+/* ─── Bell notifications drawer polish ─── */
+.fi-topbar-database-notifications-modal {
+    border-radius: 1rem !important;
+}
+
+/* ─── FileUpload / Filepond polish ─── */
+.filepond--root {
+    border-radius: 12px !important;
+    background: linear-gradient(180deg, rgba(61,175,185,0.03), rgba(45,75,126,0.02)) !important;
+}
+.filepond--drop-label {
+    color: var(--rowaad-teal) !important;
+    font-weight: 700 !important;
+}
+.filepond--label-action {
+    text-decoration-color: var(--rowaad-teal) !important;
+    color: var(--rowaad-navy) !important;
+    font-weight: 800;
+}
+.dark .filepond--label-action { color: var(--rowaad-teal-soft) !important; }
+
+/* ─── Print styles for invoices (from admin panel) ─── */
+@media print {
+    .fi-topbar, .fi-sidebar, .fi-page-header { display: none !important; }
+    .fi-main { padding: 0 !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — Filament panel on tablets and phones
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+    .fi-page-header-heading { font-size: 1.5rem !important; }
+    .fi-section { border-radius: 0.875rem !important; }
+    .fi-modal-window { border-radius: 1rem !important; }
+}
+@media (max-width: 640px) {
+    .fi-main { padding: 0.75rem !important; }
+    .fi-page-header-heading { font-size: 1.25rem !important; }
+    .fi-page-header::after { width: 64px; }
+    .fi-section-content { padding: 1rem !important; }
+    .fi-fo-field-wrp-label { font-size: 12.5px !important; }
+    .fi-ta-cell { padding: 10px 8px !important; font-size: 12.5px; }
+    .fi-ta-header-cell { padding: 10px 8px !important; font-size: 10.5px !important; }
+    .fi-wi-stats-overview-stat { padding: 1rem !important; }
+    .fi-wi-stats-overview-stat-value { font-size: 1.5rem !important; }
+    .fi-wi-stats-overview-stat-label { font-size: 11px !important; }
+    /* Bell + user menu buttons — larger touch targets */
+    .fi-topbar button { min-width: 36px; min-height: 36px; }
+    /* Modal on mobile — bottom sheet feel */
+    .fi-modal-window { margin: 0.5rem !important; max-height: 92vh !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS — subtle premium polish
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes rowaadFadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.fi-section, .fi-wi-stats-overview-stat, .fi-ta-content {
+    animation: rowaadFadeInUp 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Widgets stagger: first widget appears instantly, then next ones cascade */
+.fi-wi-stats-overview-stat:nth-child(1) { animation-delay: 0ms; }
+.fi-wi-stats-overview-stat:nth-child(2) { animation-delay: 60ms; }
+.fi-wi-stats-overview-stat:nth-child(3) { animation-delay: 120ms; }
+.fi-wi-stats-overview-stat:nth-child(4) { animation-delay: 180ms; }
+.fi-wi-stats-overview-stat:nth-child(5) { animation-delay: 240ms; }
+.fi-wi-stats-overview-stat:nth-child(6) { animation-delay: 300ms; }
+
+/* Loading indicators — brand color */
+.fi-loading-indicator { color: var(--rowaad-teal) !important; }
+
+/* ─── Focus visible ring across the panel ─── */
+:focus-visible { outline: 2px solid var(--rowaad-teal) !important; outline-offset: 2px; border-radius: 6px; }
+.fi-btn:focus-visible { outline-offset: 3px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   FULL-WIDTH LAYOUT — remove Filament default max-width constraints
+   ═══════════════════════════════════════════════════════════════ */
+.fi-page > .fi-page-content-ctn,
+.fi-page-content,
+.fi-page-content > .fi-section,
+.fi-widgets,
+.fi-wi,
+.fi-section-content-ctn,
+.fi-simple-main {
+    max-width: 100% !important;
+    width: 100%;
+}
+.fi-page > div,
+.fi-main-ctn > .fi-main {
+    max-width: 100% !important;
+}
+/* Ensure widgets grid uses full available width */
+.fi-widgets-ctn {
+    max-width: 100% !important;
+    width: 100%;
+}
+/* Widget outer wrapper: never let it constrain content */
+.fi-wi {
+    display: block;
+    width: 100%;
+}

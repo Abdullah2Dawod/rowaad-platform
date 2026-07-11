@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title inertia>{{ config('app.name', 'رواد بلا حدود للإستشارات الإقتصادية') }}</title>
+    <link rel="icon" type="image/png" href="/images/rowaad-logo-symbol.png?v=2">
+    <link rel="shortcut icon" type="image/png" href="/images/rowaad-logo-symbol.png?v=2">
+    <link rel="apple-touch-icon" href="/images/rowaad-logo-symbol.png?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;500;600;700;800;900&family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet" />
+    @vite('resources/js/app.js')
+    @inertiaHead
+</head>
+<body class="antialiased">
+    @inertia
+</body>
+</html>

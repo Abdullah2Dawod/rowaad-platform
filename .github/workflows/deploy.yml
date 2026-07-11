@@ -1,0 +1,59 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐘 Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, xml, ctype, iconv, mysql, gd, zip, bcmath, intl
+          coverage: none
+
+      - name: 📦 Install composer dependencies
+        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install npm packages
+        run: npm ci
+
+      - name: 🎨 Build assets
+        run: npm run build
+
+      - name: 📤 Deploy to Hostinger via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          script: |
+            cd ${{ secrets.HOSTINGER_APP_PATH }}
+            bash deployment/deploy.sh
+
+      # Alternative: rsync build artifacts if you don't use git on the server
+      # - name: 📤 Rsync artifacts
+      #   uses: burnett01/rsync-deployments@6.0.0
+      #   with:
+      #     switches: -avzr --delete --exclude='.git' --exclude='node_modules'
+      #     path: ./
+      #     remote_path: ${{ secrets.HOSTINGER_APP_PATH }}
+      #     remote_host: ${{ secrets.HOSTINGER_HOST }}
+      #     remote_user: ${{ secrets.HOSTINGER_USER }}
+      #     remote_key:  ${{ secrets.HOSTINGER_SSH_KEY }}

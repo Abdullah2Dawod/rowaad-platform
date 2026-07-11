@@ -1,0 +1,170 @@
+{
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "services": "Services",
+        "sectors": "Sectors",
+        "consultants": "Consultants",
+        "blog": "Blog",
+        "contact": "Contact",
+        "book_consultation": "Book Consultation",
+        "explore_services": "Explore Services"
+    },
+    "hero": {
+        "brand_line_1": "Rowaad Bila Hodoud",
+        "brand_line_2": "Economic Consulting",
+        "title_line_1": "Informed Economic",
+        "title_line_2": "Results",
+        "accent_1": "Decisions",
+        "accent_2": "Exceptional",
+        "subtitle": "We are your partner in strategic decision-making. We provide specialized economic consulting and professional feasibility studies for ambitious entrepreneurs and enterprises.",
+        "cta_primary": "Book Free Consultation",
+        "cta_secondary": "Explore Our Services",
+        "strategic_decisions": "Strategic Decisions"
+    },
+    "about": {
+        "eyebrow": "01 · About Us",
+        "title_1": "Empowering",
+        "title_2": "Economic Decisions",
+        "title_3": "with Precision & Expertise",
+        "description": "We are a specialized consulting platform combining local expertise with global standards, serving entrepreneurs and enterprises on their journey to growth and prosperity.",
+        "read_more": "Discover the full story"
+    },
+    "services": {
+        "eyebrow": "02 · Our Services",
+        "title_1": "Consulting",
+        "title_2": "Services",
+        "title_3": "Designed for Results",
+        "all_services": "All Services",
+        "featured": "FEATURED",
+        "learn_more": "Learn More",
+        "economic": {
+            "title": "Economic Consulting",
+            "desc": "Comprehensive economic analysis and deep market insights backed by data to make exceptional decisions."
+        },
+        "feasibility": {
+            "title": "Feasibility Studies",
+            "desc": "Complete feasibility studies (technical, financial, marketing) that ensure your project's success."
+        },
+        "strategic": {
+            "title": "Strategic Planning",
+            "desc": "Building clear, measurable strategic plans that achieve your long-term goals."
+        },
+        "development": {
+            "title": "Business Development",
+            "desc": "Innovative solutions to scale your business and increase efficiency."
+        },
+        "financial": {
+            "title": "Financial Consulting",
+            "desc": "Professional financial management to improve your organization's performance."
+        },
+        "ai": {
+            "title": "AI Solutions",
+            "desc": "Integrating AI technologies into your consulting operations."
+        }
+    },
+    "journey": {
+        "eyebrow": "03 · Our Journey With You",
+        "title_1": "From",
+        "title_2": "Idea",
+        "title_3": "to",
+        "title_4": "Impact",
+        "step_1": { "title": "Discovery & Analysis", "desc": "Deep understanding of your needs, goals, and the challenges you face." },
+        "step_2": { "title": "Strategic Planning", "desc": "Building a clear roadmap with precise measurement indicators." },
+        "step_3": { "title": "Execution & Implementation", "desc": "Practical implementation of solutions with continuous monitoring at every stage." },
+        "step_4": { "title": "Measurement & Development", "desc": "Evaluating results and continuous improvement to ensure maximum return." }
+    },
+    "sectors_section": {
+        "eyebrow": "04 · Sectors",
+        "title_1": "Cross-Sector",
+        "title_2": "Expertise",
+        "description": "We serve a select group of vital sectors, bringing deep, specialized expertise to each based on understanding their unique challenges."
+    },
+    "sectors": {
+        "real_estate": "Real Estate",
+        "industry": "Industry",
+        "retail": "Retail",
+        "healthcare": "Healthcare",
+        "education": "Education",
+        "technology": "Technology",
+        "agriculture": "Agriculture",
+        "tourism": "Tourism"
+    },
+    "testimonial": {
+        "eyebrow": "Client Testimonial",
+        "quote": "Rowaad Bila Hodoud aren't just consultants — they are true partners in our company's growth. Their deep analysis and precise studies helped us make decisions that changed the future of our business.",
+        "author": "Mohammed Al-Otaibi",
+        "role": "CEO · Smart Business Group",
+        "satisfaction": "Client Satisfaction",
+        "value": "Value of Completed Projects"
+    },
+    "cta": {
+        "eyebrow": "Ready to Serve You",
+        "title_1": "Let's Build",
+        "title_2": "a Prosperous Future Together",
+        "description": "Contact us today for a free consultation and start your journey toward achieving your economic vision.",
+        "book_free": "Book Free Consultation",
+        "whatsapp": "Business WhatsApp",
+        "email": "Email",
+        "call": "Call Us",
+        "location": "Location"
+    },
+    "footer": {
+        "cta_title": "Ready to start your journey with us?",
+        "cta_desc": "Contact our team of consultants for a free discovery session.",
+        "description": "We empower entrepreneurs and enterprises to achieve their economic goals through professional consulting and comprehensive feasibility studies.",
+        "quick_links": "Quick Links",
+        "our_services": "Our Services",
+        "contact_us": "Contact Us",
+        "email_label": "Email",
+        "call_label": "Call Us",
+        "location_label": "Location",
+        "location_value": "Riyadh, Saudi Arabia",
+        "rights": "All Rights Reserved",
+        "privacy": "Privacy Policy",
+        "terms": "Terms & Conditions"
+    },
+    "common": {
+        "location": "Riyadh, Saudi Arabia",
+        "read_more": "Read More",
+        "coming_soon": "Coming Soon"
+    },
+    "pages": {
+        "about": {
+            "hero_title": "About Rowaad Bila Hodoud",
+            "hero_subtitle": "Our Story in Economic Consulting",
+            "vision_title": "Our Vision",
+            "vision_desc": "To be the leading consulting platform in the Arab region in the field of economic consulting.",
+            "mission_title": "Our Mission",
+            "mission_desc": "Providing high-quality economic consulting that empowers clients to make strategic decisions.",
+            "values_title": "Our Values",
+            "values_desc": "Integrity, Excellence, Partnership, Innovation."
+        },
+        "services": {
+            "hero_title": "Our Consulting Services",
+            "hero_subtitle": "A comprehensive range of services to achieve your goals"
+        },
+        "sectors": {
+            "hero_title": "Sectors We Serve",
+            "hero_subtitle": "Diverse expertise across vital sectors"
+        },
+        "consultants": {
+            "hero_title": "Our Consultants",
+            "hero_subtitle": "An elite team of certified experts at your service"
+        },
+        "blog": {
+            "hero_title": "Rowaad Blog",
+            "hero_subtitle": "Latest articles and economic analyses"
+        },
+        "contact": {
+            "hero_title": "Contact Us",
+            "hero_subtitle": "We're here to answer your inquiries",
+            "form_name": "Full Name",
+            "form_email": "Email Address",
+            "form_phone": "Phone Number",
+            "form_subject": "Subject",
+            "form_message": "Your Message",
+            "form_submit": "Send Message"
+        }
+    }
+}

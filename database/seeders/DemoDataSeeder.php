@@ -130,7 +130,6 @@ class DemoDataSeeder extends Seeder
                     'name' => $name,
                     'locale' => 'ar',
                     'source' => 'demo',
-                    'confirmation_token' => Str::random(64),
                     'confirmed_at' => $confirmed ? now()->subDays(rand(1, 30)) : null,
                 ]
             );

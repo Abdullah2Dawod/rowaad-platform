@@ -45,6 +45,24 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
     public function isUser(): bool       { return $this->role === 'user'; }
     public function isVerified(): bool   { return ! is_null($this->email_verified_at); }
 
+    /**
+     * Send the email verification notification with Rowaad-branded template.
+     * Overrides Laravel's default plain notification.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new \App\Notifications\VerifyEmailBranded);
+    }
+
+    /**
+     * Send the password reset notification with Rowaad-branded template.
+     * Overrides Laravel's default plain notification.
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new \App\Notifications\ResetPasswordBranded($token));
+    }
+
     // === Relationships ===
     public function consultant(): HasOne
     {

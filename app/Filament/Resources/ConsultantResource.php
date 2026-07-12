@@ -24,7 +24,7 @@ class ConsultantResource extends Resource
     protected static ?string $navigationLabel   = 'المستشارون';
     protected static ?string $modelLabel        = 'مستشار';
     protected static ?string $pluralModelLabel  = 'المستشارون';
-    protected static ?string $navigationGroup   = 'إدارة المستشارين';
+    protected static ?string $navigationGroup   = 'الموقع العام';
     protected static ?int    $navigationSort    = 10;
 
     // Admin-only — consultants don't manage other consultants

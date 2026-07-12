@@ -16,7 +16,7 @@ class ServiceResource extends Resource
     protected static ?string $model = Service::class;
     protected static ?string $navigationIcon  = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'الخدمات';
-    protected static ?string $navigationGroup = 'المحتوى';
+    protected static ?string $navigationGroup = 'الموقع العام';
     protected static ?string $modelLabel      = 'خدمة';
     protected static ?string $pluralModelLabel = 'الخدمات';
     protected static ?int    $navigationSort  = 10;

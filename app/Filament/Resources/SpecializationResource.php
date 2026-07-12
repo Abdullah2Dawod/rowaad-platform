@@ -18,7 +18,7 @@ class SpecializationResource extends Resource
     protected static ?string $navigationLabel   = 'التخصصات';
     protected static ?string $modelLabel        = 'تخصص';
     protected static ?string $pluralModelLabel  = 'التخصصات';
-    protected static ?string $navigationGroup   = 'إدارة المستشارين';
+    protected static ?string $navigationGroup   = 'الموقع العام';
     protected static ?int    $navigationSort    = 20;
 
     // Admin-only

@@ -19,7 +19,7 @@ class FeasibilityStudyResource extends Resource
     protected static ?string $navigationLabel   = 'دراسات الجدوى';
     protected static ?string $modelLabel        = 'دراسة';
     protected static ?string $pluralModelLabel  = 'دراسات الجدوى';
-    protected static ?string $navigationGroup   = 'المحتوى';
+    protected static ?string $navigationGroup   = 'الموقع العام';
     protected static ?int    $navigationSort    = 10;
 
     // Admin-only

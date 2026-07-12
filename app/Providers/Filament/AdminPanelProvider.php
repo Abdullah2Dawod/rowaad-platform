@@ -77,6 +77,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 NavigationGroup::make('نظرة عامة')->collapsible(false),
                 NavigationGroup::make('العمليات')->collapsible(false),
+                NavigationGroup::make('الموقع العام')->collapsible(true)->icon('heroicon-o-globe-alt'),
                 NavigationGroup::make('إدارة المستشارين')->collapsible(false),
                 NavigationGroup::make('المحتوى')->collapsible(false),
                 NavigationGroup::make('إدارة المستخدمين')->collapsible(false),

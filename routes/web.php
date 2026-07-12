@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ConsultantApplicationController;
 use App\Http\Controllers\ConsultantController;
 use App\Http\Controllers\FeasibilityStudyController;
@@ -95,6 +96,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get ('/feasibility/submit', [FeasibilityStudyController::class, 'createForm'])->name('feasibility.submit');
     Route::post('/feasibility/submit', [FeasibilityStudyController::class, 'store'])->name('feasibility.store');
+});
+
+// ─── Live chat API (any authenticated user + consultants + admins) ───
+Route::middleware('auth')->prefix('api/chat')->group(function () {
+    Route::post('/start',                       [ChatController::class, 'start'])->name('chat.start');
+    Route::get ('/{conversation}/messages',     [ChatController::class, 'messages'])->name('chat.messages');
+    Route::post('/{conversation}/send',         [ChatController::class, 'send'])->name('chat.send');
+    Route::post('/{conversation}/close',        [ChatController::class, 'close'])->name('chat.close');
 });
 
 require __DIR__ . '/auth.php';

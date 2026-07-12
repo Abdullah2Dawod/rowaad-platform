@@ -5,15 +5,15 @@
             <slot />
         </main>
         <Footer />
-        <!-- Persistent floating consultation beacon (all pages, always visible) -->
-        <FloatingConsult />
+        <!-- Live chat with support / consultant (all pages, always visible) -->
+        <LiveChat />
     </div>
 </template>
 
 <script setup>
 import Navbar from '@/Components/Navbar.vue';
 import Footer from '@/Components/Footer.vue';
-import FloatingConsult from '@/Components/FloatingConsult.vue';
+import LiveChat from '@/Components/LiveChat.vue';
 import { useTheme } from '@/composables/useTheme';
 
 useTheme();

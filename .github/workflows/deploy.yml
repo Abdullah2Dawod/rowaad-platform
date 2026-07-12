@@ -3,11 +3,11 @@ name: Deploy to Hostinger
 on:
   push:
     branches: [main]
-  workflow_dispatch:  # Allow manual trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
   deploy:
-    name: Build & Deploy
+    name: Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -18,11 +18,12 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: mbstring, xml, ctype, iconv, mysql, gd, zip, bcmath, intl
+          extensions: mbstring, xml, ctype, iconv, mysql, gd, zip, bcmath, intl, dom, fileinfo, pdo
           coverage: none
+          tools: composer:v2
 
       - name: 📦 Install composer dependencies
-        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-scripts
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
@@ -31,29 +32,82 @@ jobs:
           cache: 'npm'
 
       - name: 📦 Install npm packages
-        run: npm ci
+        run: npm ci --no-audit --no-fund
 
       - name: 🎨 Build assets
         run: npm run build
 
-      - name: 📤 Deploy to Hostinger via SSH
-        uses: appleboy/ssh-action@v1.0.3
+      - name: 📤 SSH deploy to Hostinger
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.HOSTINGER_HOST }}
           username: ${{ secrets.HOSTINGER_USER }}
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
           port: ${{ secrets.HOSTINGER_PORT }}
+          script_stop: false
+          command_timeout: 10m
           script: |
-            cd ${{ secrets.HOSTINGER_APP_PATH }}
-            bash deployment/deploy.sh
+            set -e
+            export PATH="/opt/alt/php84/usr/bin:$PATH"
+            APP_DIR="${{ secrets.HOSTINGER_APP_PATH }}"
+            PUBLIC_HTML="$(dirname "$APP_DIR")/public_html"
 
-      # Alternative: rsync build artifacts if you don't use git on the server
-      # - name: 📤 Rsync artifacts
-      #   uses: burnett01/rsync-deployments@6.0.0
-      #   with:
-      #     switches: -avzr --delete --exclude='.git' --exclude='node_modules'
-      #     path: ./
-      #     remote_path: ${{ secrets.HOSTINGER_APP_PATH }}
-      #     remote_host: ${{ secrets.HOSTINGER_HOST }}
-      #     remote_user: ${{ secrets.HOSTINGER_USER }}
-      #     remote_key:  ${{ secrets.HOSTINGER_SSH_KEY }}
+            echo "═══ Deploy to $APP_DIR ═══"
+            cd "$APP_DIR"
+
+            # Pull latest
+            git fetch --all
+            git reset --hard origin/main
+
+            # Composer (no scripts — Hostinger disables proc_open)
+            composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-scripts || true
+            composer dump-autoload -o --no-scripts
+
+            # Migrations
+            php artisan migrate --force || true
+
+            # Storage symlinks
+            [ -L "$APP_DIR/public/storage" ] || ln -sf "$APP_DIR/storage/app/public" "$APP_DIR/public/storage"
+            [ -L "$PUBLIC_HTML/storage" ]     || ln -sf "$APP_DIR/storage/app/public" "$PUBLIC_HTML/storage"
+
+            # Copy build assets to public_html
+            if [ -d "$APP_DIR/public/build" ]; then
+              rm -rf "$PUBLIC_HTML/build"
+              cp -r "$APP_DIR/public/build" "$PUBLIC_HTML/build"
+            fi
+
+            # Sync static assets
+            cp -rf "$APP_DIR/public/images" "$PUBLIC_HTML/" 2>/dev/null || true
+            cp -f  "$APP_DIR/public/favicon.ico" "$PUBLIC_HTML/" 2>/dev/null || true
+            cp -f  "$APP_DIR/public/robots.txt"  "$PUBLIC_HTML/" 2>/dev/null || true
+
+            # Entry files (in case they changed)
+            cp -f "$APP_DIR/deployment/hostinger-index.php" "$PUBLIC_HTML/index.php"
+            cp -f "$APP_DIR/deployment/hostinger-htaccess"  "$PUBLIC_HTML/.htaccess"
+
+            # Rebuild caches
+            php artisan config:clear
+            php artisan view:clear
+            php artisan route:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            # Filament assets (optional)
+            php artisan filament:assets 2>/dev/null || true
+
+            # Permissions
+            chmod -R 775 storage bootstrap/cache 2>/dev/null || true
+
+            echo "═══ ✅ Deploy complete ═══"
+
+      - name: 📤 Copy built assets via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          source: "public/build/*"
+          target: "${{ secrets.HOSTINGER_APP_PATH }}/public/"
+          strip_components: 0

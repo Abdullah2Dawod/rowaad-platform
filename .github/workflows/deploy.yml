@@ -59,6 +59,10 @@ jobs:
             git fetch --all
             git reset --hard origin/main
 
+            # Clear stale build so incoming SCP is authoritative (avoids stale hashes in manifest)
+            rm -rf "$APP_DIR/public/build"
+            mkdir -p "$APP_DIR/public/build"
+
             # Composer (no scripts — Hostinger disables proc_open)
             composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-scripts || true
             composer dump-autoload -o --no-scripts
@@ -112,7 +116,6 @@ jobs:
           target: "${{ secrets.HOSTINGER_APP_PATH }}/public/"
           strip_components: 0
           overwrite: true
-          rm: true
 
       - name: 🔄 Sync build assets to public_html
         uses: appleboy/ssh-action@v1.2.0

@@ -57,7 +57,10 @@ class NewsletterSubscriberResource extends Resource
                 Tables\Filters\Filter::make('unsubscribed')->label('ملغَى الاشتراك')
                     ->query(fn ($q) => $q->whereNotNull('unsubscribed_at')),
             ])
-            ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
+            ->actions([
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
+                Tables\Actions\DeleteAction::make()->iconButton()->tooltip('حذف'),
+            ])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }
 

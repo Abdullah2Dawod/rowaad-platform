@@ -64,7 +64,7 @@ class UserResource extends Resource
                 ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label('تعديل'),
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
             ])
             ->defaultSort('created_at', 'desc');
     }

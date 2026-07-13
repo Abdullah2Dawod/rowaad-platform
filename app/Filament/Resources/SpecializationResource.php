@@ -58,8 +58,8 @@ class SpecializationResource extends Resource
             ->defaultSort('sort_order')
             ->reorderable('sort_order')
             ->actions([
-                Tables\Actions\EditAction::make()->label('تعديل'),
-                Tables\Actions\DeleteAction::make()->label('حذف'),
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
+                Tables\Actions\DeleteAction::make()->iconButton()->tooltip('حذف'),
             ]);
     }
 

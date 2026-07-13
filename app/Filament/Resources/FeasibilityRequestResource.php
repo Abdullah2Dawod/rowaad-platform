@@ -99,7 +99,10 @@ class FeasibilityRequestResource extends Resource
                     'in_progress'=>'قيد التنفيذ','delivered'=>'مُسلَّم','closed'=>'مغلق','rejected'=>'مرفوض',
                 ]),
             ])
-            ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
+            ->actions([
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
+                Tables\Actions\DeleteAction::make()->iconButton()->tooltip('حذف'),
+            ])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }
 

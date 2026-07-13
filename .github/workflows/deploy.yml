@@ -70,6 +70,9 @@ jobs:
             # Migrations
             php artisan migrate --force || true
 
+            # Seed feasibility studies (idempotent — updateOrCreate on title)
+            php artisan db:seed --class=FeasibilityStudySeeder --force || true
+
             # Storage symlinks
             [ -L "$APP_DIR/public/storage" ] || ln -sf "$APP_DIR/storage/app/public" "$APP_DIR/public/storage"
             [ -L "$PUBLIC_HTML/storage" ]     || ln -sf "$APP_DIR/storage/app/public" "$PUBLIC_HTML/storage"

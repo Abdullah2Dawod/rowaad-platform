@@ -74,7 +74,10 @@ class ServiceRequestResource extends Resource
                     'new'=>'جديد','contacted'=>'تم التواصل','qualified'=>'مؤهَّل','won'=>'فوز','lost'=>'مغلق',
                 ]),
             ])
-            ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
+            ->actions([
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
+                Tables\Actions\DeleteAction::make()->iconButton()->tooltip('حذف'),
+            ])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }
 

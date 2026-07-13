@@ -147,8 +147,8 @@ class WithdrawalRequestResource extends Resource
                         Notification::make()->title('تم رفض الطلب')->body('أُعيد المبلغ لرصيد المستشار وأُرسل إشعار له.')->warning()->send();
                     }),
 
-                Tables\Actions\ViewAction::make()->label('عرض'),
-                Tables\Actions\EditAction::make()->label('تعديل'),
+                Tables\Actions\ViewAction::make()->iconButton()->tooltip('عرض'),
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()]),

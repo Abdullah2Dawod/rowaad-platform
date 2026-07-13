@@ -111,8 +111,8 @@ class InvestmentOpportunityResource extends Resource
                 Tables\Filters\TernaryFilter::make('is_featured')->label('مميّزة'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->iconButton(),
-                Tables\Actions\DeleteAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
+                Tables\Actions\DeleteAction::make()->iconButton()->tooltip('حذف'),
             ])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }

@@ -189,7 +189,7 @@ class BookingResource extends Resource
                             ->body("أُبلغ العميل ({$b->user->email}) بالإلغاء وسببه")
                             ->warning()->send();
                     }),
-                Tables\Actions\ViewAction::make()->label('عرض'),
+                Tables\Actions\ViewAction::make()->iconButton()->tooltip('عرض'),
             ])
             ->defaultSort('created_at', 'desc');
     }

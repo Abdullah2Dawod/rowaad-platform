@@ -84,13 +84,13 @@ class SectorResource extends Resource
                 Tables\Filters\TernaryFilter::make('featured')->label('مميّز'),
             ])
             ->actions([
-                Tables\Actions\Action::make('toggleActive')
-                    ->label(fn (Sector $r) => $r->is_active ? 'إيقاف' : 'تفعيل')
+                Tables\Actions\Action::make('toggleActive')->iconButton()
+                    ->tooltip(fn (Sector $r) => $r->is_active ? 'إيقاف' : 'تفعيل')
                     ->icon(fn (Sector $r) => $r->is_active ? 'heroicon-o-pause' : 'heroicon-o-play')
                     ->color(fn (Sector $r) => $r->is_active ? 'warning' : 'success')
                     ->action(fn (Sector $r) => $r->update(['is_active' => ! $r->is_active])),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
+                Tables\Actions\DeleteAction::make()->iconButton()->tooltip('حذف'),
             ])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }

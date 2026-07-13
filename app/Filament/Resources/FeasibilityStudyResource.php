@@ -69,9 +69,15 @@ class FeasibilityStudyResource extends Resource
                 Tables\Columns\ImageColumn::make('cover_image')->label('')->size(50)->square(),
                 Tables\Columns\TextColumn::make('title')->label('العنوان')->searchable()->weight('bold')
                     ->description(fn ($record) => $record->sector)->wrap(),
+                Tables\Columns\TextColumn::make('source')->label('المصدر')
+                    ->state(fn (FeasibilityStudy $record) => $record->user_id ? 'user' : 'admin')
+                    ->badge()
+                    ->formatStateUsing(fn (string $state) => $state === 'user' ? 'من طرف مستخدم' : 'من طرف رواد')
+                    ->color(fn (string $state) => $state === 'user' ? 'warning' : 'primary')
+                    ->icon(fn (string $state) => $state === 'user' ? 'heroicon-o-user' : 'heroicon-o-shield-check'),
                 Tables\Columns\TextColumn::make('uploader.name')->label('المرسِل')
-                    ->formatStateUsing(fn ($state) => $state ?: 'المنصة')->badge()
-                    ->color(fn ($state) => $state ? 'info' : 'gray'),
+                    ->formatStateUsing(fn ($state) => $state ?: 'المنصة')
+                    ->color('gray')->size('xs')->toggleable(),
                 Tables\Columns\TextColumn::make('price')->label('السعر')
                     ->formatStateUsing(fn ($state, $record) => $record->is_free ? 'مجاناً' : number_format((float) $state, 0) . ' ر.س')
                     ->sortable(),
@@ -92,24 +98,42 @@ class FeasibilityStudyResource extends Resource
                 Tables\Filters\SelectFilter::make('status')->label('الحالة')->options([
                     'pending' => 'قيد المراجعة', 'approved' => 'معتمدة',
                     'rejected' => 'مرفوضة', 'hidden' => 'مخفية',
-                ])->default('pending'),
+                ]),
+                Tables\Filters\SelectFilter::make('source')->label('المصدر')
+                    ->options(['admin' => 'من طرف رواد', 'user' => 'من طرف مستخدم'])
+                    ->query(fn ($query, $data) => match ($data['value'] ?? null) {
+                        'admin' => $query->whereNull('user_id'),
+                        'user'  => $query->whereNotNull('user_id'),
+                        default => $query,
+                    }),
             ])
             ->actions([
-                Tables\Actions\Action::make('approve')->label('اعتماد')->icon('heroicon-o-check-badge')->color('success')
+                Tables\Actions\Action::make('approve')->iconButton()->tooltip('اعتماد ونشر')->icon('heroicon-o-check-badge')->color('success')
                     ->visible(fn (FeasibilityStudy $record) => $record->status === 'pending')
                     ->requiresConfirmation()
                     ->action(function (FeasibilityStudy $record) {
                         $record->update(['status' => 'approved', 'reviewed_at' => now(), 'reviewed_by' => auth()->id()]);
-                        Notification::make()->title('تم اعتماد الدراسة')->success()->send();
+                        Notification::make()->title('تم اعتماد الدراسة ونشرها في الموقع')->success()->send();
                     }),
-                Tables\Actions\Action::make('reject')->label('رفض')->icon('heroicon-o-x-circle')->color('danger')
+                Tables\Actions\Action::make('reject')->iconButton()->tooltip('رفض')->icon('heroicon-o-x-circle')->color('danger')
                     ->form([Forms\Components\Textarea::make('rejection_reason')->label('السبب')->required()->rows(3)])
                     ->visible(fn (FeasibilityStudy $record) => $record->status === 'pending')
                     ->action(function (FeasibilityStudy $record, array $data) {
                         $record->update(['status' => 'rejected', 'rejection_reason' => $data['rejection_reason'], 'reviewed_at' => now(), 'reviewed_by' => auth()->id()]);
                         Notification::make()->title('تم رفض الدراسة')->warning()->send();
                     }),
-                Tables\Actions\EditAction::make()->label('تعديل'),
+                Tables\Actions\Action::make('togglePublish')->iconButton()
+                    ->tooltip(fn (FeasibilityStudy $r) => $r->status === 'approved' ? 'إخفاء' : 'نشر')
+                    ->icon(fn (FeasibilityStudy $r) => $r->status === 'approved' ? 'heroicon-o-eye-slash' : 'heroicon-o-eye')
+                    ->color(fn (FeasibilityStudy $r) => $r->status === 'approved' ? 'gray' : 'success')
+                    ->visible(fn (FeasibilityStudy $r) => in_array($r->status, ['approved', 'hidden']))
+                    ->action(function (FeasibilityStudy $record) {
+                        $newStatus = $record->status === 'approved' ? 'hidden' : 'approved';
+                        $record->update(['status' => $newStatus]);
+                        Notification::make()->title($newStatus === 'approved' ? 'تم النشر' : 'تم الإخفاء')->success()->send();
+                    }),
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
+                Tables\Actions\DeleteAction::make()->iconButton()->tooltip('حذف'),
             ])
             ->defaultSort('created_at', 'desc');
     }

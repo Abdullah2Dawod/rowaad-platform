@@ -93,13 +93,13 @@ class ServiceResource extends Resource
                 Tables\Filters\TernaryFilter::make('featured')->label('مميّزة'),
             ])
             ->actions([
-                Tables\Actions\Action::make('toggleActive')
-                    ->label(fn (Service $r) => $r->is_active ? 'إيقاف' : 'تفعيل')
+                Tables\Actions\Action::make('toggleActive')->iconButton()
+                    ->tooltip(fn (Service $r) => $r->is_active ? 'إيقاف' : 'تفعيل')
                     ->icon(fn (Service $r) => $r->is_active ? 'heroicon-o-pause' : 'heroicon-o-play')
                     ->color(fn (Service $r) => $r->is_active ? 'warning' : 'success')
                     ->action(fn (Service $r) => $r->update(['is_active' => ! $r->is_active])),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
+                Tables\Actions\DeleteAction::make()->iconButton()->tooltip('حذف'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

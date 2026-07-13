@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="daBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F2340"/>
+      <stop offset="50%" stop-color="#1F3A66"/>
+      <stop offset="100%" stop-color="#2D4B7E"/>
+    </linearGradient>
+    <linearGradient id="daBar" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#3DAFB9"/>
+      <stop offset="100%" stop-color="#6BC8D2"/>
+    </linearGradient>
+    <radialGradient id="daGlow" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#3DAFB9" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#3DAFB9" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="daGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#6BC8D2" stroke-opacity="0.08" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="800" fill="url(#daBg)"/>
+  <rect width="800" height="800" fill="url(#daGrid)"/>
+  <rect width="800" height="800" fill="url(#daGlow)"/>
+
+  <!-- Saudi geometric star (khatam) -->
+  <g transform="translate(650 130)" opacity="0.18">
+    <path d="M0,-80 L23,-23 L80,0 L23,23 L0,80 L-23,23 L-80,0 L-23,-23 Z" fill="none" stroke="#6BC8D2" stroke-width="2"/>
+    <path d="M0,-56 L16,-16 L56,0 L16,16 L0,56 L-16,16 L-56,0 L-16,-16 Z" fill="none" stroke="#6BC8D2" stroke-width="1.5"/>
+  </g>
+
+  <!-- Palm silhouette (Saudi identity) -->
+  <g transform="translate(90 720)" opacity="0.3">
+    <path d="M0,0 C-4,-90 -4,-160 0,-220" stroke="#6BC8D2" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M0,-220 C-40,-235 -70,-232 -95,-215" stroke="#6BC8D2" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M0,-220 C40,-235 70,-232 95,-215" stroke="#6BC8D2" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M0,-225 C-30,-260 -55,-278 -80,-278" stroke="#6BC8D2" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M0,-225 C30,-260 55,-278 80,-278" stroke="#6BC8D2" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M0,-225 C-15,-275 -18,-305 -8,-320" stroke="#6BC8D2" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M0,-225 C15,-275 18,-305 8,-320" stroke="#6BC8D2" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Dashboard card -->
+  <g transform="translate(160 220)">
+    <rect x="0" y="0" width="480" height="320" rx="24" fill="#0F2340" stroke="#3DAFB9" stroke-opacity="0.35" stroke-width="1.5"/>
+    <rect x="0" y="0" width="480" height="50" rx="24" fill="#3DAFB9" fill-opacity="0.12"/>
+    <circle cx="28" cy="25" r="6" fill="#EF4444" opacity="0.7"/>
+    <circle cx="50" cy="25" r="6" fill="#F59E0B" opacity="0.7"/>
+    <circle cx="72" cy="25" r="6" fill="#10B981" opacity="0.7"/>
+    <rect x="380" y="18" width="80" height="14" rx="7" fill="#6BC8D2" fill-opacity="0.25"/>
+
+    <!-- KPI tiles -->
+    <g transform="translate(24 74)">
+      <rect width="130" height="70" rx="12" fill="#3DAFB9" fill-opacity="0.10"/>
+      <text x="16" y="30" font-family="Arial" font-size="11" fill="#6BC8D2" fill-opacity="0.85">النمو</text>
+      <text x="16" y="55" font-family="Arial" font-weight="800" font-size="22" fill="#fff">+38%</text>
+    </g>
+    <g transform="translate(170 74)">
+      <rect width="130" height="70" rx="12" fill="#3DAFB9" fill-opacity="0.10"/>
+      <text x="16" y="30" font-family="Arial" font-size="11" fill="#6BC8D2" fill-opacity="0.85">العائد</text>
+      <text x="16" y="55" font-family="Arial" font-weight="800" font-size="22" fill="#fff">4.2x</text>
+    </g>
+    <g transform="translate(316 74)">
+      <rect width="140" height="70" rx="12" fill="#3DAFB9" fill-opacity="0.10"/>
+      <text x="16" y="30" font-family="Arial" font-size="11" fill="#6BC8D2" fill-opacity="0.85">الدقة</text>
+      <text x="16" y="55" font-family="Arial" font-weight="800" font-size="22" fill="#fff">99.4%</text>
+    </g>
+
+    <!-- Bar chart -->
+    <g transform="translate(24 170)">
+      <rect x="0"   y="80" width="30" height="50"  rx="4" fill="url(#daBar)" opacity="0.6"/>
+      <rect x="48"  y="60" width="30" height="70"  rx="4" fill="url(#daBar)" opacity="0.7"/>
+      <rect x="96"  y="30" width="30" height="100" rx="4" fill="url(#daBar)" opacity="0.8"/>
+      <rect x="144" y="50" width="30" height="80"  rx="4" fill="url(#daBar)" opacity="0.75"/>
+      <rect x="192" y="12" width="30" height="118" rx="4" fill="url(#daBar)" opacity="0.9"/>
+      <rect x="240" y="34" width="30" height="96"  rx="4" fill="url(#daBar)" opacity="0.85"/>
+
+      <!-- Trend line -->
+      <path d="M15,105 L63,95 L111,80 L159,90 L207,71 L255,82 L303,60 L351,50 L399,40 L432,30"
+            stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="15"  cy="105" r="4" fill="#6BC8D2"/>
+      <circle cx="111" cy="80"  r="4" fill="#6BC8D2"/>
+      <circle cx="207" cy="71"  r="4" fill="#6BC8D2"/>
+      <circle cx="303" cy="60"  r="4" fill="#6BC8D2"/>
+      <circle cx="399" cy="40"  r="4" fill="#6BC8D2"/>
+    </g>
+  </g>
+
+  <!-- Floating data particles -->
+  <g opacity="0.55">
+    <circle cx="120" cy="140" r="3" fill="#6BC8D2"/>
+    <circle cx="700" cy="580" r="4" fill="#3DAFB9"/>
+    <circle cx="720" cy="380" r="2.5" fill="#6BC8D2"/>
+    <circle cx="90"  cy="500" r="3" fill="#3DAFB9"/>
+  </g>
+</svg>

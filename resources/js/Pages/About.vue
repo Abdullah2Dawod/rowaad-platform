@@ -75,17 +75,17 @@
 
                             <!-- Main image -->
                             <div class="absolute top-0 right-0 w-[72%] rounded-[1.75rem] overflow-hidden shadow-card-hover border-4 border-elevated">
-                                <img src="https://images.unsplash.com/photo-1664575602554-2087b04935a5?w=900&auto=format&fit=crop&q=60"
-                                     alt="فريق رواد" loading="lazy"
-                                     class="w-full aspect-[4/4.4] object-cover saturate-[0.7]" />
+                                <img src="/images/about/team-consultation.svg"
+                                     alt="فريق رواد الاستشاري" loading="lazy"
+                                     class="w-full aspect-[4/4.4] object-cover" />
                                 <div class="absolute inset-0 bg-gradient-to-br from-[#2D4B7E]/35 to-[#3DAFB9]/20 mix-blend-multiply"></div>
                             </div>
 
                             <!-- Secondary overlapping image -->
                             <div class="absolute bottom-0 left-0 w-[52%] rounded-[1.5rem] overflow-hidden shadow-card-hover border-4 border-elevated animate-[float_7s_ease-in-out_infinite]">
-                                <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=700&auto=format&fit=crop&q=60"
-                                     alt="شراكة" loading="lazy"
-                                     class="w-full aspect-[4/3.2] object-cover saturate-[0.6]" />
+                                <img src="/images/about/partnership.svg"
+                                     alt="شراكة موثوقة" loading="lazy"
+                                     class="w-full aspect-[4/3.2] object-cover" />
                                 <div class="absolute inset-0 bg-gradient-to-br from-[#2D4B7E]/40 to-[#3DAFB9]/25 mix-blend-multiply"></div>
                             </div>
 

@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 990" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="atBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F2340"/>
+      <stop offset="50%" stop-color="#1F3A66"/>
+      <stop offset="100%" stop-color="#2D4B7E"/>
+    </linearGradient>
+    <linearGradient id="atFloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3DAFB9" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#3DAFB9" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="atPerson" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6BC8D2"/>
+      <stop offset="100%" stop-color="#3DAFB9"/>
+    </linearGradient>
+    <radialGradient id="atGlow" cx="50%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3DAFB9" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#3DAFB9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="900" height="990" fill="url(#atBg)"/>
+  <rect width="900" height="990" fill="url(#atGlow)"/>
+
+  <!-- Riyadh skyline silhouette (Kingdom Tower + skyline hint) -->
+  <g transform="translate(0 720)" opacity="0.25">
+    <path d="M0,0 L900,0 L900,120 L0,120 Z" fill="none"/>
+    <!-- Buildings -->
+    <rect x="30"  y="-70"  width="40" height="70" fill="#6BC8D2" opacity="0.5"/>
+    <rect x="80"  y="-95"  width="30" height="95" fill="#6BC8D2" opacity="0.5"/>
+    <rect x="120" y="-60"  width="35" height="60" fill="#6BC8D2" opacity="0.5"/>
+    <!-- Kingdom Tower silhouette (iconic Riyadh) -->
+    <g transform="translate(400 0)">
+      <path d="M-32,0 L-32,-190 L-18,-220 L-18,-235 L-8,-235 L-8,-260 C-8,-268 -4,-272 0,-272 C4,-272 8,-268 8,-260 L8,-235 L18,-235 L18,-220 L32,-190 L32,0 Z"
+            fill="#6BC8D2" opacity="0.6"/>
+      <!-- Iconic hole -->
+      <path d="M-12,-190 L-12,-215 L12,-215 L12,-190 Z" fill="#0F2340"/>
+    </g>
+    <!-- More buildings -->
+    <rect x="500" y="-105" width="45" height="105" fill="#6BC8D2" opacity="0.5"/>
+    <rect x="555" y="-75"  width="35" height="75"  fill="#6BC8D2" opacity="0.5"/>
+    <rect x="600" y="-150" width="55" height="150" fill="#6BC8D2" opacity="0.55"/>
+    <rect x="670" y="-90"  width="30" height="90"  fill="#6BC8D2" opacity="0.5"/>
+    <rect x="710" y="-115" width="40" height="115" fill="#6BC8D2" opacity="0.55"/>
+    <rect x="760" y="-70"  width="30" height="70"  fill="#6BC8D2" opacity="0.5"/>
+    <rect x="800" y="-88"  width="35" height="88"  fill="#6BC8D2" opacity="0.5"/>
+    <rect x="845" y="-60"  width="30" height="60"  fill="#6BC8D2" opacity="0.5"/>
+    <!-- Ground fade -->
+    <rect x="0" y="0" width="900" height="270" fill="url(#atFloor)"/>
+  </g>
+
+  <!-- Palm trees framing -->
+  <g transform="translate(70 720)" opacity="0.55">
+    <path d="M0,0 C-4,-80 -4,-140 0,-200" stroke="#6BC8D2" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M0,-200 C-36,-215 -63,-210 -85,-195" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-200 C36,-215 63,-210 85,-195" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-205 C-25,-240 -48,-255 -70,-253" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-205 C25,-240 48,-255 70,-253" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-205 C-12,-250 -14,-278 -6,-292" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-205 C12,-250 14,-278 6,-292" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(830 720)" opacity="0.5">
+    <path d="M0,0 C-4,-70 -4,-130 0,-180" stroke="#6BC8D2" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M0,-180 C-30,-195 -55,-190 -75,-175" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-180 C30,-195 55,-190 75,-175" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-185 C-22,-215 -42,-230 -62,-228" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-185 C22,-215 42,-230 62,-228" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-190 C-10,-230 -12,-255 -5,-268" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M0,-190 C10,-230 12,-255 5,-268" stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Arabesque star pattern top -->
+  <g transform="translate(180 130)" opacity="0.2">
+    <path d="M0,-70 L20,-20 L70,0 L20,20 L0,70 L-20,20 L-70,0 L-20,-20 Z" fill="none" stroke="#6BC8D2" stroke-width="1.5"/>
+    <path d="M0,-45 L13,-13 L45,0 L13,13 L0,45 L-13,13 L-45,0 L-13,-13 Z" fill="none" stroke="#6BC8D2" stroke-width="1"/>
+  </g>
+  <g transform="translate(720 200)" opacity="0.15">
+    <path d="M0,-50 L14.5,-14.5 L50,0 L14.5,14.5 L0,50 L-14.5,14.5 L-50,0 L-14.5,-14.5 Z" fill="none" stroke="#6BC8D2" stroke-width="1.5"/>
+  </g>
+
+  <!-- Two consultants in majlis/meeting scene -->
+  <!-- Consultant 1 (male with ghutra, right) -->
+  <g transform="translate(560 500)">
+    <!-- Body -->
+    <path d="M-60,180 C-60,90 -30,50 0,50 C30,50 60,90 60,180 Z" fill="#F8FAFC" opacity="0.95"/>
+    <!-- Head -->
+    <circle cy="0" r="42" fill="url(#atPerson)"/>
+    <!-- Ghutra (traditional Saudi red-white checkered head cover) -->
+    <path d="M-45,-25 C-52,-55 -32,-70 0,-70 C32,-70 52,-55 45,-25 L45,15 L-45,15 Z"
+          fill="#F8FAFC" stroke="#3DAFB9" stroke-width="1"/>
+    <!-- Ghutra pattern hint -->
+    <g stroke="#EF4444" stroke-width="0.8" opacity="0.6">
+      <line x1="-40" y1="-45" x2="-30" y2="-35"/>
+      <line x1="-25" y1="-55" x2="-15" y2="-45"/>
+      <line x1="0"   y1="-60" x2="10"  y2="-50"/>
+      <line x1="20"  y1="-55" x2="30"  y2="-45"/>
+      <line x1="35"  y1="-42" x2="45"  y2="-32"/>
+    </g>
+    <!-- Igal (black cord on top) -->
+    <ellipse cx="0" cy="-58" rx="30" ry="6" fill="#0F2340"/>
+    <!-- Face features hint -->
+    <circle cx="-10" cy="-8" r="2" fill="#0F2340" opacity="0.6"/>
+    <circle cx="10"  cy="-8" r="2" fill="#0F2340" opacity="0.6"/>
+    <!-- Neck line -->
+    <path d="M-45,15 L-45,45 M45,15 L45,45" stroke="#3DAFB9" stroke-width="1" opacity="0.4"/>
+    <!-- Laptop/tablet in hands -->
+    <rect x="-25" y="130" width="50" height="30" rx="3" fill="#0F2340" stroke="#6BC8D2" stroke-width="1"/>
+    <rect x="-22" y="133" width="44" height="24" rx="1" fill="#3DAFB9" opacity="0.4"/>
+  </g>
+
+  <!-- Consultant 2 (female with hijab, left) -->
+  <g transform="translate(330 520)">
+    <!-- Body/blazer -->
+    <path d="M-58,170 C-58,85 -28,45 0,45 C28,45 58,85 58,170 Z" fill="#2D4B7E" opacity="0.9"/>
+    <!-- Head -->
+    <circle cy="0" r="40" fill="url(#atPerson)"/>
+    <!-- Hijab (elegant navy) -->
+    <path d="M-48,-15 C-55,-50 -30,-72 0,-72 C30,-72 55,-50 48,-15 L52,10 L48,25 L-48,25 L-52,10 Z"
+          fill="#0F2340" stroke="#6BC8D2" stroke-width="1"/>
+    <!-- Hijab drape line -->
+    <path d="M-30,15 C-20,20 -10,20 0,15" stroke="#3DAFB9" stroke-width="1" opacity="0.5" fill="none"/>
+    <!-- Face features -->
+    <circle cx="-8" cy="-6" r="2" fill="#0F2340" opacity="0.6"/>
+    <circle cx="8"  cy="-6" r="2" fill="#0F2340" opacity="0.6"/>
+    <!-- Notebook -->
+    <g transform="translate(-25 130)">
+      <rect width="50" height="35" rx="2" fill="#F8FAFC"/>
+      <line x1="8" y1="10" x2="42" y2="10" stroke="#3DAFB9" stroke-width="1" opacity="0.6"/>
+      <line x1="8" y1="17" x2="38" y2="17" stroke="#3DAFB9" stroke-width="1" opacity="0.5"/>
+      <line x1="8" y1="24" x2="42" y2="24" stroke="#3DAFB9" stroke-width="1" opacity="0.5"/>
+    </g>
+  </g>
+
+  <!-- Meeting table -->
+  <g transform="translate(450 720)">
+    <ellipse cx="0" cy="0" rx="200" ry="18" fill="#3DAFB9" fill-opacity="0.15" stroke="#6BC8D2" stroke-opacity="0.4" stroke-width="1"/>
+    <!-- Arabic coffee dallah (traditional coffee pot) -->
+    <g transform="translate(-80 -30)">
+      <path d="M-8,0 L-8,-20 C-8,-25 -3,-30 0,-30 C3,-30 8,-25 8,-20 L8,0 Z" fill="#6BC8D2" opacity="0.85"/>
+      <path d="M-10,0 L10,0 L12,15 L-12,15 Z" fill="#3DAFB9"/>
+      <path d="M8,-15 C15,-15 18,-10 15,-5" stroke="#6BC8D2" stroke-width="2" fill="none" opacity="0.8"/>
+      <path d="M0,-35 L-3,-40 L3,-40 Z" fill="#6BC8D2"/>
+    </g>
+    <!-- Coffee cups -->
+    <g transform="translate(-30 -12)">
+      <path d="M-8,0 L8,0 L6,10 L-6,10 Z" fill="#F8FAFC" opacity="0.9"/>
+    </g>
+    <g transform="translate(30 -12)">
+      <path d="M-8,0 L8,0 L6,10 L-6,10 Z" fill="#F8FAFC" opacity="0.9"/>
+    </g>
+    <!-- Documents -->
+    <g transform="translate(80 -8)">
+      <rect x="-20" y="-4" width="40" height="12" fill="#F8FAFC" opacity="0.9" transform="rotate(-8)"/>
+      <rect x="-20" y="-4" width="40" height="12" fill="#F8FAFC" opacity="0.7" transform="rotate(4)"/>
+    </g>
+  </g>
+
+  <!-- Floating sparkles -->
+  <g opacity="0.7">
+    <circle cx="150" cy="220" r="3" fill="#6BC8D2"/>
+    <circle cx="770" cy="380" r="3.5" fill="#3DAFB9"/>
+    <circle cx="120" cy="450" r="2.5" fill="#6BC8D2"/>
+  </g>
+</svg>

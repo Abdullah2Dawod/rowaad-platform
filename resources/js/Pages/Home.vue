@@ -9,7 +9,7 @@
                 <!-- Professional consulting background image (very subtle, blurred) -->
                 <div class="absolute inset-0 opacity-[0.10] dark:opacity-[0.06]" style="filter: blur(3px);">
                     <img
-                        src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&auto=format&fit=crop&q=50"
+                        src="/images/why-us/data-analysis.svg"
                         alt=""
                         class="w-full h-full object-cover"
                         loading="lazy"
@@ -1636,25 +1636,25 @@ const pillars = [
         iconSlug: 'graph-up-bold-duotone',
         title: 'تحليل مبني على البيانات',
         desc: 'كل توصية مدعومة ببيانات دقيقة ونماذج تحليل متقدمة.',
-        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=60',
+        image: '/images/why-us/data-analysis.svg',
     },
     {
         iconSlug: 'shield-check-bold-duotone',
         title: 'موثوقية وضمان',
         desc: 'سجل حافل بالنجاحات وعملاء يثقون بنا منذ 2010.',
-        image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&auto=format&fit=crop&q=60',
+        image: '/images/why-us/trust-shield.svg',
     },
     {
         iconSlug: 'target-bold-duotone',
         title: 'دقة في التنفيذ',
         desc: 'حلول مخصصة لكل عميل تحقق أهدافه المحددة.',
-        image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&auto=format&fit=crop&q=60',
+        image: '/images/why-us/precision-target.svg',
     },
     {
         iconSlug: 'users-group-two-rounded-bold-duotone',
         title: 'فريق متخصص',
         desc: 'نخبة من الخبراء المعتمدين في مختلف القطاعات.',
-        image: 'https://images.unsplash.com/photo-1664575602554-2087b04935a5?w=800&auto=format&fit=crop&q=60',
+        image: '/images/why-us/expert-team.svg',
     },
 ];
 

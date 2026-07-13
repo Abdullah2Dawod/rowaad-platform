@@ -20,7 +20,11 @@ Route::middleware('guest')->group(function () {
     Route::get ('login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    // Quick signup for regular users (booking flow)
+    // Dedicated register page for regular users
+    Route::get ('register', [QuickSignupController::class, 'create'])->name('register');
+    Route::post('register', [QuickSignupController::class, 'store'])->name('register.store');
+
+    // Legacy quick signup endpoint kept for booking flow compatibility
     Route::post('signup', [QuickSignupController::class, 'store'])->name('signup');
 
     // Forgot password

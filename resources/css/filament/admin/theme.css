@@ -757,6 +757,16 @@ h1, h2, h3, h4 {
     align-items: center;
     flex-wrap: nowrap;
 }
+
+/* ─── HIDE DUPLICATE ACTION MENU (three-dots) — we use inline icon buttons ─── */
+.fi-ta-actions-cell .fi-dropdown-trigger:has(.fi-icon-btn) + .fi-ta-actions-inline-actions-ctn,
+.fi-ta-actions > .fi-dropdown:has(> .fi-dropdown-trigger > .fi-icon-btn[aria-label="Actions"]) {
+    display: none;
+}
+/* Hide the "Actions" dropdown when we have iconButton() actions inline */
+.fi-ta-row .fi-dropdown[data-fi-dropdown-trigger-attributes*="Actions"] {
+    display: none !important;
+}
 .fi-ta-actions .fi-btn,
 .fi-ta-actions .fi-icon-btn,
 .fi-ta-actions button {

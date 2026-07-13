@@ -84,6 +84,16 @@
                         </div>
 
                         <div class="p-5 flex-1 flex flex-col">
+                            <div class="flex items-center gap-1.5 mb-2">
+                                <span v-if="s.source === 'admin'" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-l from-[#2D4B7E]/12 to-[#3DAFB9]/12 text-[9.5px] font-black text-[#2D4B7E] dark:text-[#6BC8D2] border border-[#3DAFB9]/25">
+                                    <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                    من طرف رواد
+                                </span>
+                                <span v-else class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 text-[9.5px] font-black text-amber-700 dark:text-amber-400 border border-amber-500/25">
+                                    <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                    من طرف مستخدم
+                                </span>
+                            </div>
                             <h3 class="text-[15px] font-black text-ink group-hover:text-[#2D4B7E] dark:group-hover:text-[#6BC8D2] transition-colors line-clamp-2 leading-snug">{{ s.title }}</h3>
                             <p class="text-[12.5px] text-ink-body leading-relaxed mt-2 line-clamp-3 flex-1">{{ s.excerpt }}</p>
                             <div class="flex items-center justify-between mt-4 pt-4 border-t border-soft">

@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Inertia\Inertia;
+use Inertia\Response;
 
 /**
  * Quick signup for regular users — invoked from the login page's "create account"
@@ -18,6 +20,12 @@ use Illuminate\Validation\Rules\Password;
  */
 class QuickSignupController extends Controller
 {
+    /** Show the dedicated register page (branded, matches Login visually). */
+    public function create(): Response
+    {
+        return Inertia::render('Auth/Register');
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([

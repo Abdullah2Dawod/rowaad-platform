@@ -16,13 +16,12 @@
                 :aria-label="hasUnread ? 'رسائل جديدة — تحدث مع مستشارك' : 'تحدث مع مستشارك'"
             >
                 <span class="rw-chat-fab-pulse"></span>
-                <span class="rw-chat-fab-inner">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                    </svg>
-                </span>
+                <span class="rw-chat-fab-pulse rw-chat-fab-pulse-2"></span>
+                <svg class="rw-chat-fab-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
                 <span v-if="hasUnread" class="rw-chat-fab-badge">{{ unreadCount }}</span>
-                <span class="rw-chat-fab-label">
+                <span class="rw-chat-fab-tooltip" role="tooltip">
                     تحدث مع مستشارك
                 </span>
             </button>
@@ -312,55 +311,76 @@ watch(isOpen, (open) => {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 4px 4px 4px 18px;
-    height: 56px;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
     border: none;
-    border-radius: 999px;
+    border-radius: 50%;
     background: linear-gradient(135deg, var(--brand-navy), var(--brand-teal));
     color: white;
     cursor: pointer;
-    box-shadow: 0 16px 40px -12px rgba(45, 75, 126, 0.55),
-                0 8px 20px -6px rgba(61, 175, 185, 0.4);
-    transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 26px -8px rgba(45, 75, 126, 0.55),
+                0 4px 12px -4px rgba(61, 175, 185, 0.45);
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1);
     font-family: inherit;
-    padding-inline-end: 18px;
+    animation: rw-chat-float 3.6s ease-in-out infinite;
 }
 .rw-chat-fab:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 24px 50px -12px rgba(45, 75, 126, 0.65),
-                0 12px 24px -6px rgba(61, 175, 185, 0.5);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 16px 34px -8px rgba(45, 75, 126, 0.65),
+                0 8px 18px -4px rgba(61, 175, 185, 0.55);
+    animation-play-state: paused;
 }
-.rw-chat-fab-inner {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    flex-shrink: 0;
+.rw-chat-fab:hover .rw-chat-fab-tooltip {
+    opacity: 1;
+    transform: translateY(-4px);
+    pointer-events: auto;
 }
-.rw-chat-fab-inner svg { width: 22px; height: 22px; }
-.rw-chat-fab-label {
-    font-size: 13.5px;
-    font-weight: 800;
-    letter-spacing: -0.01em;
+.rw-chat-fab-icon { width: 22px; height: 22px; position: relative; z-index: 2; }
+.rw-chat-fab-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    inset-inline-end: 0;
+    padding: 8px 14px;
+    background: rgba(15, 23, 42, 0.94);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
     white-space: nowrap;
-    padding-inline-end: 6px;
+    border-radius: 10px;
+    box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(4px);
+    transition: opacity 200ms ease, transform 200ms ease;
+    backdrop-filter: blur(6px);
+}
+.rw-chat-fab-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    inset-inline-end: 18px;
+    border: 6px solid transparent;
+    border-top-color: rgba(15, 23, 42, 0.94);
 }
 .rw-chat-fab-pulse {
     position: absolute;
-    inset: -4px;
-    border-radius: 999px;
+    inset: 0;
+    border-radius: 50%;
     border: 2px solid var(--brand-teal-soft);
     opacity: 0.6;
-    animation: rw-chat-pulse 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    animation: rw-chat-pulse 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+    pointer-events: none;
 }
+.rw-chat-fab-pulse-2 { animation-delay: 1.2s; }
 @keyframes rw-chat-pulse {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50%      { transform: scale(1.08); opacity: 0; }
+    0%   { transform: scale(1);    opacity: 0.6; }
+    100% { transform: scale(1.55); opacity: 0;   }
+}
+@keyframes rw-chat-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-4px); }
 }
 .rw-chat-fab-badge {
     position: absolute;
@@ -671,8 +691,7 @@ watch(isOpen, (open) => {
 /* Mobile refinements */
 @media (max-width: 640px) {
     .rw-chat { bottom: 12px; inset-inline-end: 12px; }
-    .rw-chat-fab-label { display: none; }
-    .rw-chat-fab { padding-inline-end: 4px; }
+    .rw-chat-fab-tooltip { display: none; }
     .rw-chat-panel {
         width: calc(100vw - 24px);
         height: calc(100vh - 80px);

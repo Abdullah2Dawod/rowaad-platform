@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\FeasibilityStudy;
 use App\Models\Specialization;
+use App\Models\User;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
@@ -46,6 +48,7 @@ class FeasibilityStudyController extends Controller
                 'sector'       => $s->sector,
                 'pages_count'  => $s->pages_count,
                 'purchases_count' => $s->purchases_count,
+                'source'       => $s->user_id ? 'user' : 'admin',
                 'specialization' => $s->specialization?->only(['slug','name_ar','icon']),
             ]),
             'specializations' => Specialization::active()->orderBy('sort_order')->get(['slug','name_ar','icon']),
@@ -79,6 +82,8 @@ class FeasibilityStudyController extends Controller
                 'language'      => $feasibility->language,
                 'views_count'   => $feasibility->views_count,
                 'purchases_count' => $feasibility->purchases_count,
+                'source'        => $feasibility->user_id ? 'user' : 'admin',
+                'author'        => $feasibility->user_id ? $feasibility->uploader?->name : 'رواد',
                 'specialization' => $feasibility->specialization?->only(['slug','name_ar','icon']),
             ],
         ]);
@@ -116,7 +121,7 @@ class FeasibilityStudyController extends Controller
         }
         $paths['file_path'] = $request->file('file')->store('feasibility/files', 'public');
 
-        FeasibilityStudy::create([
+        $study = FeasibilityStudy::create([
             'user_id'           => $request->user()->id,
             'specialization_id' => $data['specialization_id'],
             'title'             => $data['title'],
@@ -131,6 +136,21 @@ class FeasibilityStudyController extends Controller
             'status'            => FeasibilityStudy::STATUS_PENDING,
             ...$paths,
         ]);
+
+        // Notify all admins of the new pending submission
+        User::where('role', 'admin')->get()->each(function ($admin) use ($study) {
+            FilamentNotification::make()
+                ->title('دراسة جدوى جديدة بانتظار المراجعة')
+                ->body('قام مستخدم بإرسال دراسة: ' . $study->title)
+                ->icon('heroicon-o-document-magnifying-glass')
+                ->color('warning')
+                ->actions([
+                    \Filament\Notifications\Actions\Action::make('review')
+                        ->label('مراجعة')
+                        ->url('/admin/feasibility-studies/' . $study->id . '/edit'),
+                ])
+                ->sendToDatabase($admin);
+        });
 
         return redirect()->route('feasibility.index')
             ->with('success', 'تم استلام دراستك وستُراجَع خلال 24 ساعة.');

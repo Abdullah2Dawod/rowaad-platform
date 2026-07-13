@@ -4,6 +4,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ConsultantApplicationController;
 use App\Http\Controllers\ConsultantController;
+use App\Http\Controllers\ConsultantReviewController;
 use App\Http\Controllers\FeasibilityStudyController;
 use App\Http\Controllers\InvestmentOpportunityController;
 use App\Http\Controllers\InvoiceController;
@@ -104,6 +105,14 @@ Route::middleware('auth')->prefix('api/chat')->group(function () {
     Route::get ('/{conversation}/messages',     [ChatController::class, 'messages'])->name('chat.messages');
     Route::post('/{conversation}/send',         [ChatController::class, 'send'])->name('chat.send');
     Route::post('/{conversation}/close',        [ChatController::class, 'close'])->name('chat.close');
+});
+
+// ─── Consultant reviews ─────────────────────────────────────────
+// Public read + authenticated write. Any registered user can rate any approved consultant.
+Route::get ('/api/consultants/{consultant}/reviews',    [ConsultantReviewController::class, 'index']);
+Route::middleware('auth')->group(function () {
+    Route::get ('/api/consultants/{consultant}/my-review',  [ConsultantReviewController::class, 'myReview']);
+    Route::post('/api/consultants/{consultant}/reviews',    [ConsultantReviewController::class, 'store']);
 });
 
 require __DIR__ . '/auth.php';

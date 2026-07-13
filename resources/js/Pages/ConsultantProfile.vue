@@ -197,6 +197,16 @@
                 </div>
             </div>
         </div>
+
+        <!-- ============ RATING WIDGET ============ -->
+        <section class="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-10 pb-16">
+            <ConsultantRating
+                :consultant-id="consultant.id"
+                :consultant-name="consultant.name"
+                :initial-avg="Number(consultant.rating_avg) || 0"
+                :initial-count="consultant.rating_count || 0"
+            />
+        </section>
     </MainLayout>
 </template>
 
@@ -204,6 +214,7 @@
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
+import ConsultantRating from '@/Components/ConsultantRating.vue';
 import { useTheme } from '@/composables/useTheme';
 
 defineProps({

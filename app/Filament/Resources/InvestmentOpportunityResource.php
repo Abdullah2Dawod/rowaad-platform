@@ -30,60 +30,89 @@ class InvestmentOpportunityResource extends Resource
     {
         return $form->schema([
             Forms\Components\Section::make('البيانات الأساسية')->schema([
-                Forms\Components\TextInput::make('title')->label('عنوان الفرصة')->required()->maxLength(255)
+                Forms\Components\TextInput::make('title')->label('عنوان الفرصة')->required()->maxLength(200)
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn ($state, $set, $get) =>
                         blank($get('slug')) ? $set('slug', Str::slug($state)) : null),
                 Forms\Components\TextInput::make('slug')->label('المعرّف (slug)')->required()->maxLength(120)->unique(ignoreRecord: true),
-                Forms\Components\TextInput::make('sector')->label('القطاع')->required()->maxLength(100),
-                Forms\Components\TextInput::make('location')->label('الموقع')->maxLength(100),
-                Forms\Components\Textarea::make('summary')->label('الملخص')->rows(3)->columnSpanFull(),
+                Forms\Components\TextInput::make('subtitle')->label('العنوان الفرعي')->maxLength(200)->columnSpanFull(),
+                Forms\Components\Textarea::make('summary')->label('الملخص')->rows(2)->columnSpanFull(),
                 Forms\Components\Textarea::make('description')->label('الوصف الكامل')->rows(5)->columnSpanFull(),
             ])->columns(2),
 
+            Forms\Components\Section::make('التصنيف والموقع')->schema([
+                Forms\Components\TextInput::make('sector')->label('القطاع')->required()->maxLength(100),
+                Forms\Components\TextInput::make('city')->label('المدينة')->maxLength(100),
+                Forms\Components\TextInput::make('region')->label('المنطقة')->maxLength(100),
+                Forms\Components\Select::make('risk_level')->label('مستوى المخاطرة')
+                    ->options(['low' => 'منخفض', 'medium' => 'متوسط', 'high' => 'عالٍ']),
+            ])->columns(2),
+
             Forms\Components\Section::make('البيانات المالية')->schema([
-                Forms\Components\TextInput::make('min_investment')->label('الحد الأدنى (ر.س)')->numeric(),
-                Forms\Components\TextInput::make('expected_return')->label('العائد المتوقع (%)')->numeric()->suffix('%'),
-                Forms\Components\TextInput::make('duration_months')->label('المدة (شهر)')->numeric(),
-                Forms\Components\TextInput::make('risk_level')->label('مستوى المخاطرة')->maxLength(50),
+                Forms\Components\TextInput::make('investment_min')->label('الحد الأدنى للاستثمار (ر.س)')->numeric()->prefix('ر.س'),
+                Forms\Components\TextInput::make('investment_max')->label('الحد الأقصى للاستثمار (ر.س)')->numeric()->prefix('ر.س'),
+                Forms\Components\TextInput::make('expected_roi')->label('العائد المتوقع (%)')->numeric()->suffix('%'),
+                Forms\Components\TextInput::make('payback_months')->label('استرداد رأس المال (شهر)')->numeric()->suffix('شهر'),
+                Forms\Components\TextInput::make('duration_years')->label('مدة المشروع (سنة)')->numeric()->suffix('سنة'),
             ])->columns(2),
 
             Forms\Components\Section::make('العناصر البصرية')->schema([
-                Forms\Components\TextInput::make('icon')->label('أيقونة Solar')->maxLength(100),
-                Forms\Components\FileUpload::make('hero_image')->label('صورة الغلاف')->image()->disk('public')->directory('investments')->maxSize(4096),
-            ])->columns(2),
+                Forms\Components\FileUpload::make('cover_image')->label('صورة الغلاف')->image()->disk('public')->directory('investments')->maxSize(4096)->columnSpanFull(),
+            ]),
 
-            Forms\Components\Section::make('الإعدادات')->schema([
-                Forms\Components\Toggle::make('is_active')->label('مفعّلة')->default(true),
-                Forms\Components\Toggle::make('is_featured')->label('مميّزة'),
-                Forms\Components\TextInput::make('sort_order')->label('ترتيب العرض')->numeric()->default(0),
-            ])->columns(3),
+            Forms\Components\Section::make('المصدر والتوثيق')->schema([
+                Forms\Components\TextInput::make('source')->label('المصدر')->maxLength(100)->placeholder('مثل: وزارة الاستثمار'),
+                Forms\Components\TextInput::make('source_name')->label('اسم المرجع')->maxLength(150),
+                Forms\Components\TextInput::make('source_url')->label('رابط المصدر')->url()->columnSpanFull(),
+                Forms\Components\TextInput::make('external_ref')->label('المرجع الخارجي')->maxLength(100),
+            ])->columns(2)->collapsed(),
+
+            Forms\Components\Section::make('النشر والحالة')->schema([
+                Forms\Components\Select::make('status')->label('الحالة')
+                    ->options([
+                        'draft'     => 'مسودة',
+                        'published' => 'منشورة',
+                        'closed'    => 'مغلقة',
+                    ])->default('draft')->required(),
+                Forms\Components\Toggle::make('is_featured')->label('مميّزة')->inline(false),
+                Forms\Components\DateTimePicker::make('published_at')->label('تاريخ النشر'),
+                Forms\Components\DateTimePicker::make('deadline_at')->label('تاريخ انتهاء الفرصة'),
+            ])->columns(2),
         ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('sort_order')
-            ->reorderable('sort_order')
+            ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\ImageColumn::make('hero_image')->label('')->size(48)->disk('public'),
-                Tables\Columns\TextColumn::make('title')->label('العنوان')->searchable()->weight('bold'),
+                Tables\Columns\ImageColumn::make('cover_image')->label('')->size(40)->disk('public')->circular(),
+                Tables\Columns\TextColumn::make('title')->label('العنوان')->searchable()->weight('bold')
+                    ->description(fn ($record) => $record->subtitle),
                 Tables\Columns\TextColumn::make('sector')->label('القطاع')->badge()->color('info'),
-                Tables\Columns\TextColumn::make('location')->label('الموقع')->toggleable(),
-                Tables\Columns\TextColumn::make('min_investment')->label('الحد الأدنى')->money('SAR')->toggleable(),
-                Tables\Columns\TextColumn::make('expected_return')->label('العائد')
-                    ->formatStateUsing(fn ($state) => $state ? "{$state}%" : '—'),
-                Tables\Columns\IconColumn::make('is_featured')->label('مميّزة')->boolean(),
-                Tables\Columns\IconColumn::make('is_active')->label('مفعّلة')->boolean(),
+                Tables\Columns\TextColumn::make('city')->label('المدينة')->toggleable()->color('gray'),
+                Tables\Columns\TextColumn::make('investment_min')->label('من')->money('SAR')->toggleable(),
+                Tables\Columns\TextColumn::make('expected_roi')->label('العائد')
+                    ->formatStateUsing(fn ($state) => $state ? "{$state}%" : '—')
+                    ->color('success')->weight('bold'),
+                Tables\Columns\TextColumn::make('status')->label('الحالة')->badge()
+                    ->color(fn ($state) => match ($state) {
+                        'published' => 'success', 'draft' => 'warning', 'closed' => 'danger', default => 'gray',
+                    })
+                    ->formatStateUsing(fn ($state) => [
+                        'draft' => 'مسودة', 'published' => 'منشورة', 'closed' => 'مغلقة',
+                    ][$state] ?? $state),
+                Tables\Columns\IconColumn::make('is_featured')->label('')->boolean()->trueIcon('heroicon-s-star')->trueColor('warning')->falseIcon(''),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_active')->label('الحالة'),
+                Tables\Filters\SelectFilter::make('status')->options([
+                    'draft' => 'مسودة', 'published' => 'منشورة', 'closed' => 'مغلقة',
+                ]),
                 Tables\Filters\TernaryFilter::make('is_featured')->label('مميّزة'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton(),
             ])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }

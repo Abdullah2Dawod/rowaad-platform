@@ -1,8 +1,7 @@
 /* =========================================================
-   ROWAAD ADMIN PANEL — Brand overrides on top of Filament base.
-   Injected via renderHook (see AdminPanelProvider).
+   ROWAAD ADMIN PANEL — Cairo font · Compact tables · Modern 2026 UI
    ========================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@200;300;400;500;600;700;800;900&family=Almarai:wght@300;400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
     --rowaad-navy: #2D4B7E;
@@ -12,22 +11,28 @@
     --rowaad-ink-2: #122440;
 }
 
-/* ─────── Typography ─────── */
+/* ─────── Typography — Cairo everywhere in the admin ─────── */
 .fi-body,
 .fi-sidebar,
 .fi-topbar,
-.fi-main {
-    font-family: 'Alexandria', 'Almarai', ui-sans-serif, system-ui, sans-serif;
-    letter-spacing: -0.005em;
+.fi-main,
+.fi-modal,
+.fi-dropdown-panel,
+input, textarea, select, button {
+    font-family: 'Cairo', ui-sans-serif, system-ui, sans-serif !important;
+    letter-spacing: 0;
+    font-feature-settings: 'ss01', 'ss02';
 }
 
-/* Headings — geometric */
+/* Headings — bold + tighter */
 .fi-header-heading,
 .fi-section-header-heading,
 .fi-page-header-heading,
+.fi-modal-heading,
 h1, h2, h3, h4 {
-    font-family: 'Alexandria', 'Almarai', sans-serif;
-    letter-spacing: -0.015em;
+    font-family: 'Cairo', sans-serif !important;
+    letter-spacing: -0.01em;
+    font-weight: 800;
 }
 
 /* ─────── Brand gradient on primary buttons ─────── */
@@ -605,4 +610,308 @@ h1, h2, h3, h4 {
 .fi-wi {
     display: block;
     width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ROWAAD 2026 · COMPACT + MODERN — Cairo-optimized redesign
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Base body scale ─── */
+.fi-body {
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+/* ─── Page headers — refined, less huge ─── */
+.fi-page-header-heading {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.015em !important;
+}
+.fi-page-header-subheading {
+    font-size: 12.5px !important;
+    color: rgb(100 116 139) !important;
+    margin-top: 2px !important;
+}
+.fi-page-header::after { width: 72px !important; }
+
+/* ─── SECTIONS — tighter, more elegant ─── */
+.fi-section {
+    border-radius: 14px !important;
+    border-color: rgba(15, 23, 42, 0.06) !important;
+}
+.dark .fi-section { border-color: rgba(107, 200, 210, 0.10) !important; }
+.fi-section-header { padding: 18px 20px !important; }
+.fi-section-header-heading { font-size: 14.5px !important; font-weight: 800 !important; }
+.fi-section-header-description { font-size: 12px !important; margin-top: 3px !important; }
+.fi-section-content { padding: 20px !important; }
+@media (max-width: 640px) { .fi-section-content { padding: 14px !important; } }
+
+/* ─── FORM FIELDS — modern, refined ─── */
+.fi-fo-field-wrp-label {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: rgb(51 65 85) !important;
+    margin-bottom: 6px !important;
+    letter-spacing: -0.005em;
+}
+.dark .fi-fo-field-wrp-label { color: rgb(203 213 225) !important; }
+.fi-fo-field-wrp-helper-text {
+    font-size: 11.5px !important;
+    margin-top: 4px !important;
+}
+
+/* Input heights + refinement */
+.fi-input, .fi-select-input, .fi-textarea {
+    font-size: 13px !important;
+    padding-block: 8px !important;
+    padding-inline: 12px !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(15, 23, 42, 0.10) !important;
+    background: rgba(248, 250, 252, 0.6) !important;
+    transition: all 180ms ease !important;
+}
+.dark .fi-input, .dark .fi-select-input, .dark .fi-textarea {
+    background: rgba(10, 23, 41, 0.4) !important;
+    border-color: rgba(107, 200, 210, 0.15) !important;
+}
+.fi-input:hover, .fi-select-input:hover {
+    border-color: rgba(61, 175, 185, 0.35) !important;
+    background: rgba(240, 249, 250, 0.5) !important;
+}
+.fi-input:focus, .fi-select-input:focus, .fi-textarea:focus {
+    background: white !important;
+    border-color: var(--rowaad-teal) !important;
+    box-shadow: 0 0 0 3px rgba(61, 175, 185, 0.12) !important;
+}
+.dark .fi-input:focus, .dark .fi-select-input:focus, .dark .fi-textarea:focus {
+    background: rgba(18, 36, 64, 0.6) !important;
+}
+
+/* ─── COMPACT TABLES · 2026 style ─── */
+.fi-ta-header {
+    padding: 12px 16px !important;
+    border-bottom: 1px solid rgba(15,23,42,.06) !important;
+}
+.dark .fi-ta-header { border-bottom-color: rgba(107,200,210,.10) !important; }
+.fi-ta-header-cell {
+    padding: 10px 12px !important;
+    font-size: 10.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.06em !important;
+    color: rgb(100 116 139) !important;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, rgba(15,23,42,.02), transparent) !important;
+}
+.dark .fi-ta-header-cell {
+    color: rgb(148 163 184) !important;
+    background: linear-gradient(180deg, rgba(107,200,210,.03), transparent) !important;
+}
+.fi-ta-cell {
+    padding: 10px 12px !important;
+    font-size: 12.5px !important;
+    vertical-align: middle !important;
+}
+.fi-ta-row {
+    border-bottom: 1px solid rgba(15, 23, 42, 0.04) !important;
+    transition: background 150ms ease;
+}
+.dark .fi-ta-row { border-bottom-color: rgba(107, 200, 210, 0.05) !important; }
+.fi-ta-row:hover {
+    background: linear-gradient(90deg, rgba(61,175,185,.045), rgba(45,75,126,.02)) !important;
+}
+.fi-ta-row:last-child { border-bottom: none !important; }
+
+/* Text columns — tighter */
+.fi-ta-text-item { padding-block: 2px !important; }
+.fi-ta-text-item-label {
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: rgb(15 23 42) !important;
+}
+.dark .fi-ta-text-item-label { color: rgb(241 245 249) !important; }
+.fi-ta-text-item-description {
+    font-size: 11px !important;
+    color: rgb(100 116 139) !important;
+    margin-top: 1px !important;
+}
+
+/* Badges — sleek pill design */
+.fi-badge {
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    padding: 3px 9px !important;
+    border-radius: 999px !important;
+    letter-spacing: 0.02em;
+}
+
+/* Icon columns — smaller and cleaner */
+.fi-ta-icon-item-icon svg { width: 16px !important; height: 16px !important; }
+.fi-ta-image-item img { border-radius: 8px !important; }
+
+/* ─── COMPACT ACTION BUTTONS — icon-only, refined ─── */
+.fi-ta-actions {
+    gap: 3px !important;
+    padding-block: 0 !important;
+    display: inline-flex !important;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.fi-ta-actions .fi-btn,
+.fi-ta-actions .fi-icon-btn,
+.fi-ta-actions button {
+    min-width: 30px !important;
+    min-height: 30px !important;
+    width: 30px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    border-radius: 8px !important;
+    background: rgba(15, 23, 42, 0.04) !important;
+    color: rgb(71 85 105) !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 180ms ease !important;
+    box-shadow: none !important;
+}
+.dark .fi-ta-actions .fi-btn,
+.dark .fi-ta-actions .fi-icon-btn,
+.dark .fi-ta-actions button {
+    background: rgba(107, 200, 210, 0.06) !important;
+    color: rgb(148 163 184) !important;
+}
+.fi-ta-actions .fi-btn:hover { background: rgba(61,175,185,.15) !important; color: var(--rowaad-teal) !important; }
+.fi-ta-actions .fi-btn.fi-color-danger:hover { background: rgba(239,68,68,.15) !important; color: #DC2626 !important; }
+.fi-ta-actions .fi-btn.fi-color-success:hover { background: rgba(16,185,129,.15) !important; color: #059669 !important; }
+.fi-ta-actions .fi-btn.fi-color-warning:hover { background: rgba(245,158,11,.15) !important; color: #D97706 !important; }
+.fi-ta-actions .fi-btn svg,
+.fi-ta-actions .fi-icon-btn svg,
+.fi-ta-actions button svg { width: 15px !important; height: 15px !important; }
+.fi-ta-actions .fi-btn > span:not(.fi-btn-icon):not(:has(svg)) {
+    display: none !important; /* Hide labels — icon-only in tables */
+}
+
+/* ─── RATING star column — compact ─── */
+.fi-ta-cell .rating-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 11px;
+    color: #F59E0B;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ─── PAGINATION — refined ─── */
+.fi-pagination { padding: 12px 16px !important; }
+.fi-pagination-item { min-width: 30px; height: 30px; }
+.fi-pagination-item button { font-size: 12px !important; }
+
+/* ─── FILTERS bar — compact ─── */
+.fi-ta-filters-form { padding: 12px 16px !important; }
+.fi-ta-search-field {
+    max-width: 320px;
+}
+.fi-ta-search-field input {
+    height: 34px !important;
+    font-size: 12.5px !important;
+    padding-inline-start: 34px !important;
+    border-radius: 999px !important;
+}
+
+/* ─── DROPDOWN Z-INDEX + POSITIONING FIX ─── */
+/* Filament Select "Create option" popover — ensure it renders above form actions */
+.fi-fo-select-menu,
+.fi-dropdown-panel,
+[x-ref="panel"] {
+    z-index: 60 !important;
+}
+/* Choices dropdown flip guard — allow flip upward */
+.choices__list--dropdown {
+    z-index: 60 !important;
+}
+/* Ensure form actions (Save/Cancel) never overlap floating dropdowns */
+.fi-form-actions {
+    position: relative;
+    z-index: 1;
+}
+
+/* Select input options — modern & readable */
+.fi-fo-select .fi-input {
+    padding-inline-end: 32px !important;
+}
+.fi-select-input option { padding: 6px 10px; }
+
+/* ─── SIDEBAR — trimmer nav items ─── */
+.fi-sidebar-item-button {
+    padding: 8px 12px !important;
+    font-size: 12.5px !important;
+    border-radius: 10px !important;
+    margin-inline: 6px !important;
+}
+.fi-sidebar-item-icon { width: 16px !important; height: 16px !important; }
+.fi-sidebar-group-label {
+    padding: 10px 16px 6px !important;
+    font-size: 9.5px !important;
+    letter-spacing: 0.15em !important;
+}
+.fi-sidebar-nav > ul > li { margin-bottom: 1px; }
+
+/* ─── MODAL — clean spacing ─── */
+.fi-modal-content { padding: 20px 22px !important; }
+.fi-modal-header { padding: 18px 22px !important; }
+.fi-modal-footer { padding: 14px 22px !important; }
+
+/* ─── ACTIONS BAR on tables (heading side) ─── */
+.fi-header-actions .fi-btn {
+    font-size: 12.5px !important;
+    padding: 8px 16px !important;
+    border-radius: 10px !important;
+}
+
+/* ─── COMPACT stat overview widget ─── */
+.fi-wi-stats-overview-stat {
+    padding: 16px !important;
+    border-radius: 14px !important;
+}
+.fi-wi-stats-overview-stat-label {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em;
+}
+.fi-wi-stats-overview-stat-value { font-size: 22px !important; }
+.fi-wi-stats-overview-stat-description { font-size: 10.5px !important; margin-top: 4px !important; }
+
+/* ─── Filepond field — tighter drop area ─── */
+.filepond--drop-label { padding: 16px !important; font-size: 12.5px !important; }
+.filepond--panel-root { border-radius: 12px !important; }
+
+/* ─── Tab tags — refined ─── */
+.fi-tabs { gap: 2px; padding: 4px; border-radius: 12px !important; background: rgba(15,23,42,.04); }
+.dark .fi-tabs { background: rgba(107,200,210,.05); }
+.fi-tabs-tab {
+    padding: 6px 14px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+
+/* ─── Fieldset legend (grouped fields) ─── */
+.fi-fo-fieldset { border-radius: 12px !important; padding: 14px !important; }
+.fi-fo-fieldset-label { font-size: 11.5px !important; font-weight: 800 !important; }
+
+/* ─── Icon buttons in modals/forms — uniform ─── */
+.fi-icon-btn {
+    padding: 6px !important;
+    border-radius: 8px !important;
+}
+.fi-icon-btn svg { width: 15px !important; height: 15px !important; }
+
+/* ─── Mobile refinements ─── */
+@media (max-width: 640px) {
+    .fi-page-header-heading { font-size: 18px !important; }
+    .fi-section-content { padding: 12px !important; }
+    .fi-ta-cell { padding: 8px 6px !important; font-size: 11.5px !important; }
+    .fi-ta-header-cell { padding: 8px 6px !important; font-size: 9.5px !important; }
+    .fi-ta-actions .fi-btn { width: 28px !important; height: 28px !important; min-width: 28px !important; min-height: 28px !important; }
 }

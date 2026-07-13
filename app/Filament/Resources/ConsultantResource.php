@@ -99,7 +99,9 @@ class ConsultantResource extends Resource
                     Forms\Components\Select::make('specialization_id')
                         ->label('التخصص الرئيسي')
                         ->relationship('specialization', 'name_ar')
-                        ->searchable(),
+                        ->searchable()
+                        ->preload()
+                        ->native(false),
                     Forms\Components\TextInput::make('years_experience')->label('سنوات الخبرة')->numeric(),
                     Forms\Components\TextInput::make('hourly_rate')->label('سعر الجلسة (ر.س)')->numeric()->prefix('ر.س'),
                 ]),
@@ -157,8 +159,10 @@ class ConsultantResource extends Resource
                 Tables\Columns\TextColumn::make('rating_avg')
                     ->label('التقييم')
                     ->formatStateUsing(fn ($state, $record) => $state > 0
-                        ? '⭐ ' . number_format($state, 1) . " ({$record->rating_count})"
+                        ? '★ ' . number_format($state, 1) . ' · ' . $record->rating_count
                         : '—')
+                    ->badge()
+                    ->color(fn ($state) => $state >= 4.5 ? 'success' : ($state >= 3.5 ? 'warning' : 'gray'))
                     ->sortable(),
 
                 Tables\Columns\IconColumn::make('is_featured')
@@ -331,8 +335,8 @@ class ConsultantResource extends Resource
                             ->warning()->send();
                     }),
 
-                Tables\Actions\ViewAction::make()->label('عرض'),
-                Tables\Actions\EditAction::make()->label('تعديل'),
+                Tables\Actions\ViewAction::make()->iconButton()->tooltip('عرض'),
+                Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

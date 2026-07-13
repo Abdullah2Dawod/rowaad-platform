@@ -113,8 +113,8 @@ jobs:
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
           port: ${{ secrets.HOSTINGER_PORT }}
           source: "public/build/*"
-          target: "${{ secrets.HOSTINGER_APP_PATH }}/public/"
-          strip_components: 0
+          target: "${{ secrets.HOSTINGER_APP_PATH }}/public/build/"
+          strip_components: 2
           overwrite: true
 
       - name: 🔄 Sync build assets to public_html

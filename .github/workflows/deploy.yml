@@ -111,6 +111,8 @@ jobs:
           source: "public/build/*"
           target: "${{ secrets.HOSTINGER_APP_PATH }}/public/"
           strip_components: 0
+          overwrite: true
+          rm: true
 
       - name: 🔄 Sync build assets to public_html
         uses: appleboy/ssh-action@v1.2.0

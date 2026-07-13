@@ -166,8 +166,7 @@
                     <div class="pt-5 border-t border-soft space-y-3">
                         <p class="text-[12px] text-ink-body text-center leading-relaxed">
                             جديد على المنصة؟
-                            <button type="button" @click="mode = 'signup'"
-                                    class="text-[#3DAFB9] font-bold hover:underline">أنشئ حساباً</button>
+                            <Link href="/register" class="text-[#3DAFB9] font-bold hover:underline">أنشئ حساباً</Link>
                             لحجز الاستشارات.
                         </p>
                         <p class="text-[12px] text-ink-body text-center leading-relaxed">

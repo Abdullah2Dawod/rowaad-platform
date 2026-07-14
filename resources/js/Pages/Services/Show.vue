@@ -182,6 +182,10 @@
                             </div>
                         </div>
 
+                        <!-- Rating widget -->
+                        <RatingWidget v-if="service.id" type="service" :id="service.id"
+                                      :initial-avg="service.rating_avg" :initial-count="service.rating_count" />
+
                         <!-- FAQ -->
                         <div v-if="rich.faq?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8 shadow-card">
                             <div class="flex items-center gap-3 mb-5">
@@ -356,6 +360,7 @@ import { Link, useForm } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import PremiumModal from '@/Components/UI/PremiumModal.vue';
 import PremiumField from '@/Components/UI/PremiumField.vue';
+import RatingWidget from '@/Components/RatingWidget.vue';
 import { useTheme } from '@/composables/useTheme';
 
 const props = defineProps({ service: Object, related: Array });

@@ -34,6 +34,9 @@ class ServiceRequestController extends Controller
             'stats'        => $s->stats ?? [],
             'rich_content' => $s->rich_content ?? [],
             'featured'     => (bool) $s->featured,
+            'id'           => $s->id,
+            'rating_avg'   => (float) ($s->rating_avg ?? 0),
+            'rating_count' => (int)   ($s->rating_count ?? 0),
         ])->all();
     }
 

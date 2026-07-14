@@ -115,4 +115,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/api/consultants/{consultant}/reviews',    [ConsultantReviewController::class, 'store']);
 });
 
+// ─── Universal reviews (service | feasibility | investment) ────
+Route::get ('/api/reviews/{type}/{id}', [\App\Http\Controllers\ReviewController::class, 'index'])
+    ->whereIn('type', ['service', 'feasibility', 'investment']);
+Route::middleware('auth')->group(function () {
+    Route::get ('/api/reviews/{type}/{id}/mine', [\App\Http\Controllers\ReviewController::class, 'myReview'])
+        ->whereIn('type', ['service', 'feasibility', 'investment']);
+    Route::post('/api/reviews/{type}/{id}',      [\App\Http\Controllers\ReviewController::class, 'store'])
+        ->whereIn('type', ['service', 'feasibility', 'investment']);
+});
+
 require __DIR__ . '/auth.php';

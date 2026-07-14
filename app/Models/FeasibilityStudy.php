@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FeasibilityStudy extends Model
 {
+    use \App\Traits\Reviewable;
+
     protected $guarded = ['id'];
 
     protected $casts = [

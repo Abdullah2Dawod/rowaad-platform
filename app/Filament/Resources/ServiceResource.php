@@ -167,6 +167,11 @@ class ServiceResource extends Resource
                 Tables\Columns\TextColumn::make('slug')->label('المعرّف')->fontFamily('mono')->color('gray')->size('sm'),
                 Tables\Columns\IconColumn::make('featured')->label('مميّزة')->boolean(),
                 Tables\Columns\IconColumn::make('is_active')->label('مفعّلة')->boolean(),
+                Tables\Columns\TextColumn::make('rating_avg')->label('التقييم')->sortable()
+                    ->formatStateUsing(fn ($state, $record) => ($record->rating_count ?? 0) > 0
+                        ? '⭐ ' . number_format((float) $state, 1) . ' (' . $record->rating_count . ')'
+                        : '—'
+                    )->badge()->color('warning'),
                 Tables\Columns\TextColumn::make('sort_order')->label('الترتيب')->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')->label('آخر تحديث')->since()->toggleable(),
             ])

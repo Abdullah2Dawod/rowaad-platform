@@ -190,6 +190,11 @@ class InvestmentOpportunityResource extends Resource
                         'draft' => 'مسودة', 'published' => 'منشورة', 'closed' => 'مغلقة',
                     ][$state] ?? $state),
                 Tables\Columns\IconColumn::make('is_featured')->label('')->boolean()->trueIcon('heroicon-s-star')->trueColor('warning')->falseIcon(''),
+                Tables\Columns\TextColumn::make('rating_avg')->label('التقييم')->sortable()
+                    ->formatStateUsing(fn ($state, $record) => ($record->rating_count ?? 0) > 0
+                        ? '⭐ ' . number_format((float) $state, 1) . ' (' . $record->rating_count . ')'
+                        : '—'
+                    )->badge()->color('warning'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')->options([

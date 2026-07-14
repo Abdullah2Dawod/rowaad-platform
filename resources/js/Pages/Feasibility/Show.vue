@@ -216,6 +216,10 @@
                         <SectionHeader icon="clipboard" title="تفاصيل الدراسة" />
                         <div class="mt-4 text-[14px] text-ink-body leading-[2] whitespace-pre-line">{{ study.description }}</div>
                     </section>
+
+                    <!-- Rating widget -->
+                    <RatingWidget type="feasibility" :id="study.id"
+                                  :initial-avg="study.rating_avg" :initial-count="study.rating_count" />
                 </div>
 
                 <!-- Right sidebar: What's included -->
@@ -267,6 +271,7 @@
 import { computed } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
+import RatingWidget from '@/Components/RatingWidget.vue';
 
 const props = defineProps({ study: Object });
 // Normalize: target_market / includes may be array of strings OR array of {item: string}

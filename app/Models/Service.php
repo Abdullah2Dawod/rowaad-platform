@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Reviewable;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
+    use Reviewable;
+
     protected $fillable = [
         'slug', 'title', 'tagline', 'icon', 'hero_image', 'summary',
         'includes', 'deliverables', 'stats', 'rich_content',

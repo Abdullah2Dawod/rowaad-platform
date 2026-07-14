@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class InvestmentOpportunity extends Model
 {
+    use \App\Traits\Reviewable;
+
     protected $guarded = ['id'];
 
     protected $casts = [

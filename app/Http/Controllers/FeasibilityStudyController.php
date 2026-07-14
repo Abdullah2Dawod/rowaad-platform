@@ -85,6 +85,8 @@ class FeasibilityStudyController extends Controller
                 'source'        => $feasibility->user_id ? 'user' : 'admin',
                 'author'        => $feasibility->user_id ? $feasibility->uploader?->name : 'رواد',
                 'rich_content'  => $feasibility->rich_content,
+                'rating_avg'    => (float) ($feasibility->rating_avg ?? 0),
+                'rating_count'  => (int)   ($feasibility->rating_count ?? 0),
                 'specialization' => $feasibility->specialization?->only(['slug','name_ar','icon']),
             ],
         ]);

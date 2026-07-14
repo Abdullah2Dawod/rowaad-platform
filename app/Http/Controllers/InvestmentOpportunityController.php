@@ -115,6 +115,8 @@ class InvestmentOpportunityController extends Controller
                 'deadline_at'     => $investment->deadline_at?->format('Y-m-d'),
                 'published_at'    => $investment->published_at?->format('Y-m-d'),
                 'rich_content'    => $investment->rich_content,
+                'rating_avg'      => (float) ($investment->rating_avg ?? 0),
+                'rating_count'    => (int)   ($investment->rating_count ?? 0),
             ],
             'related' => InvestmentOpportunity::open()
                 ->where('id', '!=', $investment->id)

@@ -177,6 +177,11 @@ class FeasibilityStudyResource extends Resource
                     ][$state] ?? 'gray'),
                 Tables\Columns\TextColumn::make('purchases_count')->label('المبيعات')->sortable(),
                 Tables\Columns\TextColumn::make('views_count')->label('المشاهدات')->sortable()->toggleable(),
+                Tables\Columns\TextColumn::make('rating_avg')->label('التقييم')->sortable()
+                    ->formatStateUsing(fn ($state, $record) => $record->rating_count > 0
+                        ? '⭐ ' . number_format((float) $state, 1) . ' (' . $record->rating_count . ')'
+                        : '—'
+                    )->badge()->color('warning'),
                 Tables\Columns\IconColumn::make('is_featured')->label('مميّز')->boolean()->trueIcon('heroicon-s-star')->trueColor('warning'),
             ])
             ->filters([

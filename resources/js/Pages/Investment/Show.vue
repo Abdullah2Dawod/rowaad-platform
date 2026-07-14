@@ -206,6 +206,10 @@
                             </div>
                         </div>
 
+                        <!-- Rating widget -->
+                        <RatingWidget type="investment" :id="opportunity.id"
+                                      :initial-avg="opportunity.rating_avg" :initial-count="opportunity.rating_count" />
+
                         <!-- Risks + Investor Perks side by side -->
                         <div v-if="rich.risks?.length || investorPerks.length" class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div v-if="rich.risks?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-6 shadow-card">
@@ -390,6 +394,7 @@ import { Link, useForm } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import PremiumModal from '@/Components/UI/PremiumModal.vue';
 import PremiumField from '@/Components/UI/PremiumField.vue';
+import RatingWidget from '@/Components/RatingWidget.vue';
 import { useTheme } from '@/composables/useTheme';
 
 const props = defineProps({

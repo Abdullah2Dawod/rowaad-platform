@@ -84,6 +84,120 @@
                                 </ul>
                             </div>
                         </div>
+
+                        <!-- ═══════════ RICH CONTENT ═══════════ -->
+                        <!-- Overview -->
+                        <div v-if="rich.overview" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8 shadow-card">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="w-1 h-7 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">نظرة عامة</h2>
+                            </div>
+                            <p class="text-[14.5px] text-ink-body leading-[2] whitespace-pre-line">{{ rich.overview }}</p>
+                        </div>
+
+                        <!-- Benefits -->
+                        <div v-if="rich.benefits?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8 shadow-card">
+                            <div class="flex items-center gap-3 mb-5">
+                                <span class="w-1 h-7 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">لماذا تختار هذه الخدمة</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div v-for="(b, i) in rich.benefits" :key="i"
+                                     class="p-4 rounded-xl bg-gradient-to-br from-white to-canvas border border-soft hover:border-[#3DAFB9]/40 transition-colors">
+                                    <div class="flex items-start gap-2 mb-2">
+                                        <svg class="w-5 h-5 text-[#3DAFB9] mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118L2.05 10.101c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                                        <h4 class="text-[14px] font-black text-ink leading-snug">{{ b.title }}</h4>
+                                    </div>
+                                    <p class="text-[12.5px] text-ink-body leading-[1.85]">{{ b.desc }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Process timeline -->
+                        <div v-if="rich.process?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8 shadow-card">
+                            <div class="flex items-center gap-3 mb-6">
+                                <span class="w-1 h-7 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">مراحل تقديم الخدمة</h2>
+                            </div>
+                            <div class="relative pr-6 rtl:pr-0 rtl:pl-6">
+                                <div class="absolute right-2 rtl:right-auto rtl:left-2 top-2 bottom-2 w-0.5 bg-gradient-to-b from-[#3DAFB9] via-[#2D4B7E] to-[#3DAFB9]/30"></div>
+                                <div v-for="(p, i) in rich.process" :key="i" class="relative flex items-start gap-4 pb-6 last:pb-0">
+                                    <div class="shrink-0 -mr-6 rtl:mr-0 rtl:-ml-6 w-10 h-10 rounded-full bg-gradient-to-br from-[#3DAFB9] to-[#2D4B7E] text-white text-[11px] font-black flex items-center justify-center shadow-md ring-4 ring-elevated">
+                                        {{ String(i+1).padStart(2, '0') }}
+                                    </div>
+                                    <div class="flex-1 pt-1">
+                                        <div class="flex items-center gap-2 flex-wrap mb-1">
+                                            <h4 class="text-[14px] font-black text-ink">{{ p.title }}</h4>
+                                            <span class="text-[10.5px] px-2 py-0.5 rounded-full bg-[#3DAFB9]/12 text-[#3DAFB9] font-bold">{{ p.duration }}</span>
+                                        </div>
+                                        <p class="text-[13px] text-ink-body leading-relaxed">{{ p.desc }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Target audience + Outcomes side by side -->
+                        <div v-if="targetAudience.length || outcomes.length" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div v-if="targetAudience.length" class="rounded-[1.5rem] bg-elevated border border-soft p-6 shadow-card">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <svg class="w-5 h-5 text-[#3DAFB9]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                    <h3 class="text-[15px] font-black text-ink">لمن هذه الخدمة</h3>
+                                </div>
+                                <ul class="space-y-2">
+                                    <li v-for="(t, i) in targetAudience" :key="i" class="flex items-start gap-2 text-[13px] text-ink-body">
+                                        <span class="mt-1.5 w-1.5 h-1.5 shrink-0 rounded-full bg-[#3DAFB9]"></span>
+                                        <span class="leading-relaxed">{{ t }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div v-if="outcomes.length" class="rounded-[1.5rem] bg-gradient-to-br from-[#EAF6F7] to-white dark:from-[#0F2340]/60 dark:to-[#122440]/40 border border-[#3DAFB9]/25 p-6 shadow-card">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <svg class="w-5 h-5 text-[#3DAFB9]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                                    <h3 class="text-[15px] font-black text-[#2D4B7E] dark:text-[#6BC8D2]">النتائج المتوقعة</h3>
+                                </div>
+                                <ul class="space-y-2">
+                                    <li v-for="(o, i) in outcomes" :key="i" class="flex items-start gap-2 text-[13px] text-ink-body">
+                                        <svg class="w-4 h-4 mt-0.5 shrink-0 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M5 13l4 4L19 7"/></svg>
+                                        <span class="leading-relaxed">{{ o }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Pricing plans -->
+                        <div v-if="rich.pricing_plans?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8 shadow-card">
+                            <div class="flex items-center gap-3 mb-5">
+                                <span class="w-1 h-7 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">خطط التسعير</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div v-for="(pl, i) in rich.pricing_plans" :key="i"
+                                     class="relative p-5 rounded-2xl border transition-all"
+                                     :class="pl.featured ? 'bg-gradient-to-br from-[#2D4B7E] to-[#3DAFB9] text-white border-transparent shadow-card-hover scale-[1.02]' : 'bg-canvas border-soft'">
+                                    <span v-if="pl.featured" class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#F59E0B] text-white text-[10px] font-black">الأفضل</span>
+                                    <h4 class="text-[14px] font-black mb-1" :class="pl.featured ? 'text-white' : 'text-ink'">{{ pl.name }}</h4>
+                                    <div class="text-[22px] font-black mb-2" :class="pl.featured ? 'text-white' : 'text-gradient-brand'">{{ pl.price }}</div>
+                                    <p class="text-[12.5px] leading-relaxed" :class="pl.featured ? 'text-white/85' : 'text-ink-body'">{{ pl.desc }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ -->
+                        <div v-if="rich.faq?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8 shadow-card">
+                            <div class="flex items-center gap-3 mb-5">
+                                <span class="w-1 h-7 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">أسئلة شائعة</h2>
+                            </div>
+                            <div class="divide-y divide-soft">
+                                <details v-for="(f, i) in rich.faq" :key="i" class="group py-3">
+                                    <summary class="flex items-center justify-between cursor-pointer list-none">
+                                        <span class="text-[13.5px] font-bold text-ink pe-4">{{ f.q }}</span>
+                                        <svg class="w-4 h-4 text-[#3DAFB9] shrink-0 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M19 9l-7 7-7-7"/></svg>
+                                    </summary>
+                                    <p class="text-[13px] text-ink-body leading-[1.9] pt-3">{{ f.a }}</p>
+                                </details>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- CTA sidebar -->
@@ -246,6 +360,14 @@ import { useTheme } from '@/composables/useTheme';
 
 const props = defineProps({ service: Object, related: Array });
 const { isDark } = useTheme();
+
+// Rich content (all optional — sections hide when empty)
+const normalize = (arr) => Array.isArray(arr)
+    ? arr.map(x => (typeof x === 'string' ? x : (x?.item ?? ''))).filter(Boolean)
+    : [];
+const rich = computed(() => props.service.rich_content || {});
+const targetAudience = computed(() => normalize(rich.value.target_audience));
+const outcomes = computed(() => normalize(rich.value.outcomes));
 
 // Brand-colored Solar icon for privacy notice
 const iconLocked = computed(() => {

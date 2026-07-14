@@ -54,22 +54,99 @@ class ServiceResource extends Resource
                     ->helperText('صورة الخدمة كما تظهر في بطاقتها · 1200×800 · حتى 5MB'),
             ])->columns(2),
 
-            Forms\Components\Section::make('المحتوى')->schema([
+            Forms\Components\Section::make('المحتوى الأساسي')->schema([
                 Forms\Components\Repeater::make('includes')
                     ->label('ما تشمله الخدمة')
-                    ->simple(Forms\Components\TextInput::make('item')->required())
-                    ->reorderable()->addActionLabel('إضافة عنصر')->defaultItems(0),
+                    ->schema([
+                        Forms\Components\TextInput::make('item')->hiddenLabel()->required()->columnSpanFull()
+                            ->placeholder('مثال: تحليل السوق المفصّل'),
+                    ])
+                    ->reorderable()->collapsed()->addActionLabel('إضافة عنصر')->defaultItems(0)
+                    ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'item') ?: 'عنصر', 60)),
                 Forms\Components\Repeater::make('deliverables')
                     ->label('المخرجات')
-                    ->simple(Forms\Components\TextInput::make('item')->required())
-                    ->reorderable()->addActionLabel('إضافة مخرج')->defaultItems(0),
+                    ->schema([
+                        Forms\Components\TextInput::make('item')->hiddenLabel()->required()->columnSpanFull()
+                            ->placeholder('مثال: تقرير مفصّل بـ 40 صفحة'),
+                    ])
+                    ->reorderable()->collapsed()->addActionLabel('إضافة مخرج')->defaultItems(0)
+                    ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'item') ?: 'مخرج', 60)),
                 Forms\Components\Repeater::make('stats')
-                    ->label('الإحصائيات')
+                    ->label('الإحصائيات (كروت الأرقام)')
                     ->schema([
                         Forms\Components\TextInput::make('label')->label('التسمية')->required(),
                         Forms\Components\TextInput::make('value')->label('القيمة')->required(),
-                    ])->columns(2)->reorderable()->addActionLabel('إضافة إحصائية')->defaultItems(0),
+                    ])->columns(2)->reorderable()->collapsed()->addActionLabel('إضافة إحصائية')->defaultItems(0)
+                    ->itemLabel(fn (?array $s = []) => data_get($s, 'label') ?: 'إحصائية'),
             ])->columns(1),
+
+            // ═══════════ RICH CONTENT SECTIONS (all optional) ═══════════
+            Forms\Components\Section::make('المحتوى التفصيلي (يظهر في صفحة الخدمة)')
+                ->description('كل الحقول اختيارية — الحقول الفارغة لن تظهر في الموقع الخارجي')
+                ->collapsible()->schema([
+                    Forms\Components\Textarea::make('rich_content.overview')
+                        ->label('نظرة عامة موسّعة (فقرة تعريفية)')
+                        ->rows(4)->columnSpanFull(),
+
+                    Forms\Components\Repeater::make('rich_content.benefits')
+                        ->label('لماذا تختار هذه الخدمة (المميزات)')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')->label('العنوان')->required(),
+                            Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->required(),
+                        ])->columns(2)->columnSpanFull()->collapsed()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'title') ?: 'ميزة')
+                        ->addActionLabel('إضافة ميزة')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.process')
+                        ->label('مراحل تقديم الخدمة (خطوات العمل)')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')->label('اسم المرحلة')->required(),
+                            Forms\Components\TextInput::make('duration')->label('المدة')->placeholder('مثال: 3–5 أيام')->required(),
+                            Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->required()->columnSpanFull(),
+                        ])->columns(2)->columnSpanFull()->collapsed()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'title') ?: 'مرحلة')
+                        ->addActionLabel('إضافة مرحلة')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.target_audience')
+                        ->label('الفئة المستهدفة (لمن تناسب هذه الخدمة)')
+                        ->schema([
+                            Forms\Components\TextInput::make('item')->hiddenLabel()->required()->columnSpanFull()
+                                ->placeholder('مثال: الشركات الناشئة في مرحلة التوسّع'),
+                        ])
+                        ->columnSpanFull()->collapsed()->reorderable()
+                        ->addActionLabel('إضافة شريحة')
+                        ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'item') ?: 'شريحة', 60)),
+
+                    Forms\Components\Repeater::make('rich_content.outcomes')
+                        ->label('النتائج المتوقعة (ماذا سيحقق العميل)')
+                        ->schema([
+                            Forms\Components\TextInput::make('item')->hiddenLabel()->required()->columnSpanFull()
+                                ->placeholder('مثال: زيادة في العائد بنسبة 40%'),
+                        ])
+                        ->columnSpanFull()->collapsed()->reorderable()
+                        ->addActionLabel('إضافة نتيجة')
+                        ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'item') ?: 'نتيجة', 60)),
+
+                    Forms\Components\Repeater::make('rich_content.pricing_plans')
+                        ->label('خطط التسعير')
+                        ->schema([
+                            Forms\Components\TextInput::make('name')->label('اسم الخطة')->required(),
+                            Forms\Components\TextInput::make('price')->label('السعر')->required()->placeholder('مثال: 4,500 ر.س'),
+                            Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->columnSpanFull(),
+                            Forms\Components\Toggle::make('featured')->label('مميّزة')->default(false),
+                        ])->columns(2)->columnSpanFull()->collapsed()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'name') ?: 'خطة')
+                        ->addActionLabel('إضافة خطة')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.faq')
+                        ->label('الأسئلة الشائعة')
+                        ->schema([
+                            Forms\Components\TextInput::make('q')->label('السؤال')->required(),
+                            Forms\Components\Textarea::make('a')->label('الإجابة')->rows(3)->required(),
+                        ])->columnSpanFull()->collapsed()
+                        ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'q') ?: 'سؤال', 60))
+                        ->addActionLabel('إضافة سؤال')->reorderable(),
+                ]),
 
             Forms\Components\Section::make('الإعدادات')->schema([
                 Forms\Components\Toggle::make('is_active')->label('مفعّلة')->default(true),

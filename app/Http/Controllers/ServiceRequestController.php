@@ -32,6 +32,7 @@ class ServiceRequestController extends Controller
             'includes'     => $s->includes ?? [],
             'deliverables' => $s->deliverables ?? [],
             'stats'        => $s->stats ?? [],
+            'rich_content' => $s->rich_content ?? [],
             'featured'     => (bool) $s->featured,
         ])->all();
     }

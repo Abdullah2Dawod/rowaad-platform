@@ -8,13 +8,15 @@ class Service extends Model
 {
     protected $fillable = [
         'slug', 'title', 'tagline', 'icon', 'hero_image', 'summary',
-        'includes', 'deliverables', 'stats', 'featured', 'is_active', 'sort_order',
+        'includes', 'deliverables', 'stats', 'rich_content',
+        'featured', 'is_active', 'sort_order',
     ];
 
     protected $casts = [
         'includes'     => 'array',
         'deliverables' => 'array',
         'stats'        => 'array',
+        'rich_content' => 'array',
         'featured'     => 'boolean',
         'is_active'    => 'boolean',
     ];

@@ -6,10 +6,10 @@
         <section class="relative pt-28 sm:pt-32 lg:pt-28 pb-12 sm:pb-16 lg:pb-20 overflow-hidden bg-paper">
             <!-- BACKGROUND LAYERS -->
             <div class="absolute inset-0 pointer-events-none">
-                <!-- Subtle branded hero background (SVG, theme-aware) -->
-                <div class="absolute inset-0 opacity-[0.14] dark:opacity-[0.10]">
+                <!-- Original consulting background photo (very subtle, blurred) -->
+                <div class="absolute inset-0 opacity-[0.10] dark:opacity-[0.06]" style="filter: blur(3px);">
                     <img
-                        :src="isDark ? '/images/why-us/data-analysis-dark.svg' : '/images/why-us/data-analysis.svg'"
+                        src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&auto=format&fit=crop&q=50"
                         alt=""
                         class="w-full h-full object-cover"
                         loading="lazy"
@@ -361,37 +361,89 @@
                         <!-- ===== DESKTOP: radial hub layout ===== -->
                         <div class="hidden lg:block relative" style="min-height: 620px;">
 
-                            <!-- Connecting branches SVG (behind everything) -->
+                            <!-- Connecting branches SVG with flowing energy particles -->
                             <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 700 620" preserveAspectRatio="none" fill="none">
                                 <defs>
                                     <linearGradient id="branchGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="#2D4B7E" stop-opacity="0.45"/>
-                                        <stop offset="100%" stop-color="#3DAFB9" stop-opacity="0.45"/>
+                                        <stop offset="0%"   stop-color="#3DAFB9" stop-opacity="0.75"/>
+                                        <stop offset="100%" stop-color="#6BC8D2" stop-opacity="0.55"/>
                                     </linearGradient>
+                                    <radialGradient id="particleGrad" cx="50%" cy="50%" r="50%">
+                                        <stop offset="0%"   stop-color="#6BC8D2" stop-opacity="1"/>
+                                        <stop offset="60%"  stop-color="#3DAFB9" stop-opacity="0.9"/>
+                                        <stop offset="100%" stop-color="#3DAFB9" stop-opacity="0"/>
+                                    </radialGradient>
+                                    <!-- Named branch paths so particles can ride them -->
+                                    <path id="brA" d="M398,262 Q 500,155 582,64"/>
+                                    <path id="brB" d="M302,262 Q 200,155 118,64"/>
+                                    <path id="brC" d="M302,358 Q 200,428 118,468"/>
+                                    <path id="brD" d="M398,358 Q 500,428 582,468"/>
                                 </defs>
-                                <!-- 4 curved branches — endpoints land EXACTLY at node-circle centers -->
-                                <path d="M398,262 Q 500,155 582,64"  stroke="url(#branchGrad)" stroke-width="1.5" stroke-dasharray="5 7" class="dash-flow"/>
-                                <path d="M302,262 Q 200,155 118,64"  stroke="url(#branchGrad)" stroke-width="1.5" stroke-dasharray="5 7" class="dash-flow" style="animation-delay: 0.6s;"/>
-                                <path d="M302,358 Q 200,428 118,468" stroke="url(#branchGrad)" stroke-width="1.5" stroke-dasharray="5 7" class="dash-flow" style="animation-delay: 1.2s;"/>
-                                <path d="M398,358 Q 500,428 582,468" stroke="url(#branchGrad)" stroke-width="1.5" stroke-dasharray="5 7" class="dash-flow" style="animation-delay: 1.8s;"/>
-                                <!-- Pulsing junction dots on branches (midpoints) -->
-                                <circle cx="497" cy="152" r="3.5" fill="#3DAFB9"><animate attributeName="opacity" values="1;0.3;1" dur="2.5s" repeatCount="indefinite"/></circle>
-                                <circle cx="203" cy="152" r="3.5" fill="#2D4B7E"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.5s" repeatCount="indefinite"/></circle>
-                                <circle cx="203" cy="422" r="3.5" fill="#3DAFB9"><animate attributeName="opacity" values="1;0.3;1" dur="3s" repeatCount="indefinite"/></circle>
-                                <circle cx="497" cy="422" r="3.5" fill="#2D4B7E"><animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/></circle>
+
+                                <!-- Static base curves (soft dashed) -->
+                                <use href="#brA" stroke="url(#branchGrad)" stroke-width="1.6" stroke-dasharray="5 7" stroke-linecap="round" class="dash-flow"/>
+                                <use href="#brB" stroke="url(#branchGrad)" stroke-width="1.6" stroke-dasharray="5 7" stroke-linecap="round" class="dash-flow" style="animation-delay: 0.6s;"/>
+                                <use href="#brC" stroke="url(#branchGrad)" stroke-width="1.6" stroke-dasharray="5 7" stroke-linecap="round" class="dash-flow" style="animation-delay: 1.2s;"/>
+                                <use href="#brD" stroke="url(#branchGrad)" stroke-width="1.6" stroke-dasharray="5 7" stroke-linecap="round" class="dash-flow" style="animation-delay: 1.8s;"/>
+
+                                <!-- Flowing energy particles traveling from hub → each pillar -->
+                                <circle r="5" fill="url(#particleGrad)">
+                                    <animateMotion dur="3.2s" repeatCount="indefinite" rotate="auto"><mpath href="#brA"/></animateMotion>
+                                    <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle r="5" fill="url(#particleGrad)">
+                                    <animateMotion dur="3.2s" begin="0.4s" repeatCount="indefinite" rotate="auto"><mpath href="#brB"/></animateMotion>
+                                    <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" begin="0.4s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle r="5" fill="url(#particleGrad)">
+                                    <animateMotion dur="3.2s" begin="0.8s" repeatCount="indefinite" rotate="auto"><mpath href="#brC"/></animateMotion>
+                                    <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" begin="0.8s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle r="5" fill="url(#particleGrad)">
+                                    <animateMotion dur="3.2s" begin="1.2s" repeatCount="indefinite" rotate="auto"><mpath href="#brD"/></animateMotion>
+                                    <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" begin="1.2s" repeatCount="indefinite"/>
+                                </circle>
+
+                                <!-- Secondary trailing particles for continuous flow -->
+                                <circle r="3" fill="#6BC8D2">
+                                    <animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite"><mpath href="#brA"/></animateMotion>
+                                    <animate attributeName="opacity" values="0;0.8;0" dur="3.2s" begin="1.6s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle r="3" fill="#6BC8D2">
+                                    <animateMotion dur="3.2s" begin="2.0s" repeatCount="indefinite"><mpath href="#brB"/></animateMotion>
+                                    <animate attributeName="opacity" values="0;0.8;0" dur="3.2s" begin="2.0s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle r="3" fill="#6BC8D2">
+                                    <animateMotion dur="3.2s" begin="2.4s" repeatCount="indefinite"><mpath href="#brC"/></animateMotion>
+                                    <animate attributeName="opacity" values="0;0.8;0" dur="3.2s" begin="2.4s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle r="3" fill="#6BC8D2">
+                                    <animateMotion dur="3.2s" begin="2.8s" repeatCount="indefinite"><mpath href="#brD"/></animateMotion>
+                                    <animate attributeName="opacity" values="0;0.8;0" dur="3.2s" begin="2.8s" repeatCount="indefinite"/>
+                                </circle>
+
+                                <!-- Static midpoint dots (soft pulse) -->
+                                <circle cx="497" cy="152" r="3" fill="#3DAFB9" opacity="0.5"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.5s" repeatCount="indefinite"/></circle>
+                                <circle cx="203" cy="152" r="3" fill="#3DAFB9" opacity="0.5"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="2.5s" repeatCount="indefinite"/></circle>
+                                <circle cx="203" cy="422" r="3" fill="#3DAFB9" opacity="0.5"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite"/></circle>
+                                <circle cx="497" cy="422" r="3" fill="#3DAFB9" opacity="0.5"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="3s" repeatCount="indefinite"/></circle>
                             </svg>
 
                             <!-- ===== CENTRAL HUB ===== -->
                             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                                 <div class="relative">
                                     <!-- Pulsing halo rings -->
-                                    <div class="absolute inset-0 rounded-full bg-[#3DAFB9]/12 animate-ping" style="animation-duration: 3.5s;"></div>
-                                    <div class="absolute -inset-4 rounded-full border border-[#3DAFB9]/20" style="animation: brandSpin 24s linear infinite;"></div>
-                                    <div class="absolute -inset-8 rounded-full border border-dashed border-[#3DAFB9]/15" style="animation: brandSpin 40s linear infinite reverse;"></div>
-                                    <!-- Hub core -->
-                                    <div class="relative w-36 h-36 rounded-full bg-gradient-to-br from-[#0A1729] via-[#122440] to-[#1A2F50] border-2 border-[#3DAFB9]/40 shadow-brand flex flex-col items-center justify-center text-center p-4">
-                                        <img :src="'/images/rowaad-logo-symbol-dark.png'" alt="رواد" class="w-14 h-auto object-contain mb-1.5" />
-                                        <span class="text-[10px] font-bold text-white leading-tight">لماذا رواد<br>بلا حدود؟</span>
+                                    <div class="absolute inset-0 rounded-full bg-[#3DAFB9]/20 dark:bg-[#3DAFB9]/12 animate-ping" style="animation-duration: 3.5s;"></div>
+                                    <div class="absolute -inset-4 rounded-full border border-[#3DAFB9]/35 dark:border-[#3DAFB9]/20" style="animation: brandSpin 24s linear infinite;"></div>
+                                    <div class="absolute -inset-8 rounded-full border border-dashed border-[#3DAFB9]/25 dark:border-[#3DAFB9]/15" style="animation: brandSpin 40s linear infinite reverse;"></div>
+                                    <!-- Hub core — soft light day mode, deep dark night mode -->
+                                    <div class="relative w-36 h-36 rounded-full
+                                                bg-gradient-to-br from-white via-[#EAF6F7] to-[#D9EEF1] border-2 border-[#3DAFB9]/45
+                                                dark:from-[#0A1729] dark:via-[#122440] dark:to-[#1A2F50] dark:border-[#3DAFB9]/40
+                                                shadow-brand flex flex-col items-center justify-center text-center p-4">
+                                        <!-- Theme-aware logo (dark logo on light bg, light logo on dark bg) -->
+                                        <img :src="isDark ? '/images/rowaad-logo-symbol-dark.png' : '/images/rowaad-logo-symbol.png'" alt="رواد" class="w-14 h-auto object-contain mb-1.5" />
+                                        <span class="text-[10px] font-bold leading-tight text-[#2D4B7E] dark:text-white">لماذا رواد<br>بلا حدود؟</span>
                                     </div>
                                 </div>
                             </div>

@@ -39,6 +39,25 @@ class FeasibilityStudyResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
+            Forms\Components\Section::make('صورة الغلاف')
+                ->description('الصورة التي تظهر في بطاقة الدراسة على الموقع — يُفضّل مقاس 1200×800')
+                ->schema([
+                    Forms\Components\FileUpload::make('cover_image')
+                        ->hiddenLabel()
+                        ->image()
+                        ->imageEditor()
+                        ->imageEditorAspectRatios(['16:9', '4:3', '1:1'])
+                        ->imagePreviewHeight('220')
+                        ->disk('public')
+                        ->directory('feasibility/covers')
+                        ->maxSize(5120)
+                        ->downloadable()
+                        ->openable()
+                        ->deletable()
+                        ->columnSpanFull()
+                        ->helperText('اسحب صورة أو اضغط للاختيار. صيغ مقبولة: JPG, PNG, WebP · الحد الأقصى: 5MB'),
+                ]),
+
             Forms\Components\Section::make('البيانات الأساسية')->columns(2)->schema([
                 Forms\Components\TextInput::make('title')->label('العنوان')->required()->columnSpanFull(),
                 Forms\Components\TextInput::make('sector')->label('القطاع'),
@@ -131,7 +150,8 @@ class FeasibilityStudyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('cover_image')->label('')->size(50)->square(),
+                Tables\Columns\ImageColumn::make('cover_image')->label('')->size(50)->square()
+                    ->disk('public')->defaultImageUrl(asset('images/rowaad-logo-symbol.png')),
                 Tables\Columns\TextColumn::make('title')->label('العنوان')->searchable()->weight('bold')
                     ->description(fn ($record) => $record->sector)->wrap(),
                 Tables\Columns\TextColumn::make('source')->label('المصدر')

@@ -82,6 +82,20 @@ class ConsultantResource extends Resource
                         ->visible(fn (callable $get) => $get('status') === Consultant::STATUS_REJECTED),
                 ]),
 
+            Forms\Components\Section::make('الصورة الشخصية')
+                ->description('صورة المستشار كما تظهر في بطاقة المستشار وصفحته — يُفضّل مقاس مربّع 800×800')
+                ->schema([
+                    Forms\Components\FileUpload::make('avatar_path')
+                        ->hiddenLabel()->image()
+                        ->imageEditor()->imageEditorAspectRatios(['1:1', '4:5', '3:4'])
+                        ->imagePreviewHeight('220')->avatar()
+                        ->disk('public')->directory('consultants/avatars')
+                        ->maxSize(5120)
+                        ->downloadable()->openable()->deletable()
+                        ->columnSpanFull()
+                        ->helperText('اسحب صورة أو اضغط للاختيار · JPG/PNG/WebP · الحد الأقصى 5MB'),
+                ]),
+
             Forms\Components\Section::make('الملف الشخصي')
                 ->columns(2)
                 ->schema([

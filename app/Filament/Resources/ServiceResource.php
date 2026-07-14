@@ -46,7 +46,12 @@ class ServiceResource extends Resource
                 Forms\Components\TextInput::make('icon')->label('أيقونة (Solar)')
                     ->helperText('مثال: graph-up-bold-duotone'),
                 Forms\Components\FileUpload::make('hero_image')
-                    ->label('صورة الغلاف')->image()->disk('public')->directory('services')->maxSize(4096),
+                    ->label('صورة الغلاف')->image()
+                    ->imageEditor()->imageEditorAspectRatios(['16:9', '4:3'])
+                    ->imagePreviewHeight('200')
+                    ->disk('public')->directory('services')->maxSize(5120)
+                    ->downloadable()->openable()->deletable()
+                    ->helperText('صورة الخدمة كما تظهر في بطاقتها · 1200×800 · حتى 5MB'),
             ])->columns(2),
 
             Forms\Components\Section::make('المحتوى')->schema([

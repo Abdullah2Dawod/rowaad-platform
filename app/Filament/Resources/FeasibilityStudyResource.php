@@ -59,6 +59,63 @@ class FeasibilityStudyResource extends Resource
                 Forms\Components\Textarea::make('rejection_reason')->label('سبب الرفض')->rows(3)->columnSpanFull()
                     ->visible(fn ($get) => $get('status') === 'rejected'),
             ]),
+
+            // ═══════════ RICH CONTENT SECTIONS (all optional) ═══════════
+            Forms\Components\Section::make('المحتوى التفصيلي (يظهر في صفحة الدراسة)')
+                ->description('كل الحقول اختيارية — الحقول الفارغة لن تظهر في الموقع الخارجي')
+                ->collapsible()->schema([
+                    Forms\Components\Textarea::make('rich_content.summary')
+                        ->label('الملخص التنفيذي')
+                        ->rows(4)->columnSpanFull(),
+
+                    Forms\Components\Repeater::make('rich_content.financials')
+                        ->label('المؤشرات المالية')
+                        ->schema([
+                            Forms\Components\TextInput::make('label')->label('العنوان')->placeholder('مثال: العائد السنوي المتوقع')->required(),
+                            Forms\Components\TextInput::make('value')->label('القيمة')->placeholder('مثال: 38%')->required(),
+                            Forms\Components\Select::make('icon')->label('الأيقونة')->native(false)->options([
+                                'wallet' => '💼 محفظة', 'trend' => '📈 نمو',
+                                'clock' => '⏱️ ساعة', 'coin' => '💰 عملة',
+                                'chart' => '📊 مخطط', 'balance' => '⚖️ ميزان',
+                            ])->default('chart'),
+                        ])->columns(3)->columnSpanFull()->collapsed()
+                        ->itemLabel(fn (array $s) => $s['label'] ?? 'مؤشر مالي')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.target_market')
+                        ->label('السوق المستهدف')
+                        ->simple(Forms\Components\TextInput::make('item')->required()->placeholder('مثال: الشباب المهني في الرياض'))
+                        ->columnSpanFull()->collapsed()->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.advantages')
+                        ->label('مميزات المشروع')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')->label('العنوان')->required(),
+                            Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->required(),
+                        ])->columns(2)->columnSpanFull()->collapsed()
+                        ->itemLabel(fn (array $s) => $s['title'] ?? 'ميزة')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.phases')
+                        ->label('مراحل التنفيذ')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')->label('اسم المرحلة')->required(),
+                            Forms\Components\TextInput::make('duration')->label('المدة')->placeholder('مثال: الشهر 1–3')->required(),
+                            Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->required()->columnSpanFull(),
+                        ])->columns(2)->columnSpanFull()->collapsed()
+                        ->itemLabel(fn (array $s) => $s['title'] ?? 'مرحلة')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.risks')
+                        ->label('المخاطر وحلولها')
+                        ->schema([
+                            Forms\Components\Textarea::make('risk')->label('الخطر')->rows(2)->required(),
+                            Forms\Components\Textarea::make('mitigation')->label('الحل المقترح')->rows(2)->required(),
+                        ])->columns(2)->columnSpanFull()->collapsed()
+                        ->itemLabel(fn (array $s) => \Illuminate\Support\Str::limit($s['risk'] ?? 'خطر', 40))->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.includes')
+                        ->label('ماذا سيحصل عليه المشتري')
+                        ->simple(Forms\Components\TextInput::make('item')->required()->placeholder('مثال: ملف PDF كامل بـ 80 صفحة'))
+                        ->columnSpanFull()->collapsed()->reorderable(),
+                ]),
         ]);
     }
 

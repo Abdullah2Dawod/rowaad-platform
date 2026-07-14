@@ -269,7 +269,18 @@ import { Head, Link } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
 
 const props = defineProps({ study: Object });
-const rich = computed(() => props.study.rich_content || {});
+// Normalize: target_market / includes may be array of strings OR array of {item: string}
+const normalize = (arr) => Array.isArray(arr)
+    ? arr.map(x => (typeof x === 'string' ? x : (x?.item ?? ''))).filter(Boolean)
+    : [];
+const rich = computed(() => {
+    const r = props.study.rich_content || {};
+    return {
+        ...r,
+        target_market: normalize(r.target_market),
+        includes: normalize(r.includes),
+    };
+});
 const hasRich = computed(() =>
     !!(rich.value.summary || rich.value.financials?.length || rich.value.target_market?.length || rich.value.advantages?.length)
 );

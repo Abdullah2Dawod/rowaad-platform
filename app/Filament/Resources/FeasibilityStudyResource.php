@@ -79,12 +79,16 @@ class FeasibilityStudyResource extends Resource
                                 'chart' => '📊 مخطط', 'balance' => '⚖️ ميزان',
                             ])->default('chart'),
                         ])->columns(3)->columnSpanFull()->collapsed()
-                        ->itemLabel(fn (array $s) => $s['label'] ?? 'مؤشر مالي')->reorderable(),
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'label') ?: 'مؤشر مالي')->reorderable(),
 
                     Forms\Components\Repeater::make('rich_content.target_market')
                         ->label('السوق المستهدف')
-                        ->simple(Forms\Components\TextInput::make('item')->required()->placeholder('مثال: الشباب المهني في الرياض'))
-                        ->columnSpanFull()->collapsed()->reorderable(),
+                        ->schema([
+                            Forms\Components\TextInput::make('item')->hiddenLabel()->required()->placeholder('مثال: الشباب المهني في الرياض')->columnSpanFull(),
+                        ])
+                        ->addActionLabel('إضافة شريحة سوقية')
+                        ->columnSpanFull()->collapsed()->reorderable()
+                        ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'item') ?: 'شريحة', 60)),
 
                     Forms\Components\Repeater::make('rich_content.advantages')
                         ->label('مميزات المشروع')
@@ -92,7 +96,7 @@ class FeasibilityStudyResource extends Resource
                             Forms\Components\TextInput::make('title')->label('العنوان')->required(),
                             Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->required(),
                         ])->columns(2)->columnSpanFull()->collapsed()
-                        ->itemLabel(fn (array $s) => $s['title'] ?? 'ميزة')->reorderable(),
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'title') ?: 'ميزة')->reorderable(),
 
                     Forms\Components\Repeater::make('rich_content.phases')
                         ->label('مراحل التنفيذ')
@@ -101,7 +105,7 @@ class FeasibilityStudyResource extends Resource
                             Forms\Components\TextInput::make('duration')->label('المدة')->placeholder('مثال: الشهر 1–3')->required(),
                             Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->required()->columnSpanFull(),
                         ])->columns(2)->columnSpanFull()->collapsed()
-                        ->itemLabel(fn (array $s) => $s['title'] ?? 'مرحلة')->reorderable(),
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'title') ?: 'مرحلة')->reorderable(),
 
                     Forms\Components\Repeater::make('rich_content.risks')
                         ->label('المخاطر وحلولها')
@@ -109,12 +113,16 @@ class FeasibilityStudyResource extends Resource
                             Forms\Components\Textarea::make('risk')->label('الخطر')->rows(2)->required(),
                             Forms\Components\Textarea::make('mitigation')->label('الحل المقترح')->rows(2)->required(),
                         ])->columns(2)->columnSpanFull()->collapsed()
-                        ->itemLabel(fn (array $s) => \Illuminate\Support\Str::limit($s['risk'] ?? 'خطر', 40))->reorderable(),
+                        ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'risk') ?: 'خطر', 40))->reorderable(),
 
                     Forms\Components\Repeater::make('rich_content.includes')
                         ->label('ماذا سيحصل عليه المشتري')
-                        ->simple(Forms\Components\TextInput::make('item')->required()->placeholder('مثال: ملف PDF كامل بـ 80 صفحة'))
-                        ->columnSpanFull()->collapsed()->reorderable(),
+                        ->schema([
+                            Forms\Components\TextInput::make('item')->hiddenLabel()->required()->placeholder('مثال: ملف PDF كامل بـ 80 صفحة')->columnSpanFull(),
+                        ])
+                        ->addActionLabel('إضافة بند')
+                        ->columnSpanFull()->collapsed()->reorderable()
+                        ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'item') ?: 'بند', 60)),
                 ]),
         ]);
     }

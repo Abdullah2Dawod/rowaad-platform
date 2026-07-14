@@ -84,6 +84,7 @@ class FeasibilityStudyController extends Controller
                 'purchases_count' => $feasibility->purchases_count,
                 'source'        => $feasibility->user_id ? 'user' : 'admin',
                 'author'        => $feasibility->user_id ? $feasibility->uploader?->name : 'رواد',
+                'rich_content'  => $feasibility->rich_content,
                 'specialization' => $feasibility->specialization?->only(['slug','name_ar','icon']),
             ],
         ]);

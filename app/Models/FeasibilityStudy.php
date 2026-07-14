@@ -11,10 +11,11 @@ class FeasibilityStudy extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'is_free'     => 'boolean',
-        'is_featured' => 'boolean',
-        'price'       => 'decimal:2',
-        'reviewed_at' => 'datetime',
+        'is_free'      => 'boolean',
+        'is_featured'  => 'boolean',
+        'price'        => 'decimal:2',
+        'reviewed_at'  => 'datetime',
+        'rich_content' => 'array',
     ];
 
     public const STATUS_PENDING  = 'pending';

@@ -119,6 +119,87 @@ class ConsultantResource extends Resource
                     Forms\Components\TextInput::make('years_experience')->label('سنوات الخبرة')->numeric(),
                     Forms\Components\TextInput::make('hourly_rate')->label('سعر الجلسة (ر.س)')->numeric()->prefix('ر.س'),
                 ]),
+
+            // ═══════════ RICH CONTENT SECTIONS (all optional) ═══════════
+            Forms\Components\Section::make('المحتوى التفصيلي (يظهر في صفحة المستشار)')
+                ->description('كل الحقول اختيارية — الحقول الفارغة لا تظهر على الموقع')
+                ->collapsible()->schema([
+                    Forms\Components\Textarea::make('rich_content.long_bio')
+                        ->label('السيرة الموسّعة')
+                        ->rows(5)->columnSpanFull(),
+
+                    Forms\Components\Repeater::make('rich_content.expertise')
+                        ->label('مجالات الخبرة (Areas of Expertise)')
+                        ->schema([
+                            Forms\Components\TextInput::make('item')->hiddenLabel()->required()->columnSpanFull()
+                                ->placeholder('مثال: تحليل الأسواق الناشئة'),
+                        ])
+                        ->collapsed()->reorderable()->addActionLabel('إضافة مجال')
+                        ->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'item') ?: 'مجال', 60)),
+
+                    Forms\Components\Repeater::make('rich_content.education')
+                        ->label('المؤهلات العلمية')
+                        ->schema([
+                            Forms\Components\TextInput::make('degree')->label('الدرجة/الشهادة')->required(),
+                            Forms\Components\TextInput::make('institution')->label('الجهة المانحة')->required(),
+                            Forms\Components\TextInput::make('year')->label('السنة')->placeholder('مثال: 2018'),
+                        ])->columns(2)->collapsed()->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'degree') ?: 'شهادة')
+                        ->addActionLabel('إضافة مؤهل')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.experience')
+                        ->label('الخبرات المهنية')
+                        ->schema([
+                            Forms\Components\TextInput::make('role')->label('المنصب')->required(),
+                            Forms\Components\TextInput::make('company')->label('جهة العمل')->required(),
+                            Forms\Components\TextInput::make('period')->label('الفترة')->placeholder('مثال: 2019 – 2023'),
+                            Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->columnSpanFull(),
+                        ])->columns(2)->collapsed()->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'role') ?: 'خبرة')
+                        ->addActionLabel('إضافة خبرة')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.certifications')
+                        ->label('الشهادات المهنية والاعتمادات')
+                        ->schema([
+                            Forms\Components\TextInput::make('name')->label('اسم الشهادة')->required(),
+                            Forms\Components\TextInput::make('issuer')->label('الجهة المُصدرة'),
+                            Forms\Components\TextInput::make('year')->label('السنة'),
+                        ])->columns(3)->collapsed()->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'name') ?: 'شهادة')
+                        ->addActionLabel('إضافة شهادة')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.services_offered')
+                        ->label('الخدمات التي يقدّمها')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')->label('العنوان')->required(),
+                            Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2),
+                        ])->columns(2)->collapsed()->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'title') ?: 'خدمة')
+                        ->addActionLabel('إضافة خدمة')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.achievements')
+                        ->label('الإنجازات البارزة')
+                        ->schema([
+                            Forms\Components\TextInput::make('item')->hiddenLabel()->required()->columnSpanFull()
+                                ->placeholder('مثال: إدارة محفظة استثمارية بقيمة 500 مليون ريال'),
+                        ])
+                        ->collapsed()->columnSpanFull()->reorderable()
+                        ->addActionLabel('إضافة إنجاز')
+                        ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'item') ?: 'إنجاز', 60)),
+
+                    Forms\Components\Repeater::make('rich_content.languages_list')
+                        ->label('اللغات (مع مستوى الإتقان)')
+                        ->schema([
+                            Forms\Components\TextInput::make('language')->label('اللغة')->required(),
+                            Forms\Components\Select::make('level')->label('المستوى')->native(false)->options([
+                                'native' => 'اللغة الأم', 'fluent' => 'إتقان تام',
+                                'advanced' => 'متقدّم', 'intermediate' => 'متوسط',
+                            ])->default('fluent'),
+                        ])->columns(2)->collapsed()->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'language') ?: 'لغة')
+                        ->addActionLabel('إضافة لغة')->reorderable(),
+                ]),
         ]);
     }
 

@@ -104,15 +104,50 @@
                             <p class="text-[14.5px] text-ink-body leading-[1.9] whitespace-pre-line">{{ consultant.bio }}</p>
                         </div>
 
-                        <!-- Services -->
-                        <div v-if="consultant.services?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8">
+                        <!-- Long bio (from rich_content) -->
+                        <div v-if="rich.long_bio" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="w-1 h-6 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">السيرة الموسّعة</h2>
+                            </div>
+                            <p class="text-[14px] text-ink-body leading-[2] whitespace-pre-line">{{ rich.long_bio }}</p>
+                        </div>
+
+                        <!-- Expertise areas -->
+                        <div v-if="expertise.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8">
+                            <div class="flex items-center gap-3 mb-5">
+                                <span class="w-1 h-6 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">مجالات الخبرة</h2>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span v-for="(e, i) in expertise" :key="i"
+                                      class="px-3.5 py-1.5 rounded-full bg-gradient-to-br from-[#3DAFB9]/10 to-[#2D4B7E]/8 border border-[#3DAFB9]/25 text-[12.5px] font-bold text-[#2D4B7E] dark:text-[#6BC8D2]">
+                                    {{ e }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Services offered (rich) or legacy services -->
+                        <div v-if="rich.services_offered?.length || consultant.services?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8">
                             <div class="flex items-center gap-3 mb-5">
                                 <span class="w-1 h-6 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
                                 <h2 class="text-xl font-black text-ink">الخدمات المقدَّمة</h2>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div v-if="rich.services_offered?.length" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div v-for="(s, i) in rich.services_offered" :key="i"
+                                     class="p-4 rounded-2xl border border-soft hover:border-[#3DAFB9]/40 transition-colors">
+                                    <div class="flex items-start gap-2 mb-1.5">
+                                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#3DAFB9]/12 to-[#2D4B7E]/10 border border-[#3DAFB9]/20 flex items-center justify-center shrink-0">
+                                            <svg class="w-4 h-4 text-[#3DAFB9]" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                        </div>
+                                        <h4 class="text-[13.5px] font-black text-ink leading-tight">{{ s.title }}</h4>
+                                    </div>
+                                    <p v-if="s.desc" class="text-[12.5px] text-ink-body leading-relaxed pl-10">{{ s.desc }}</p>
+                                </div>
+                            </div>
+                            <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div v-for="(s, i) in consultant.services" :key="i"
-                                     class="flex items-start gap-3 p-4 rounded-2xl border border-soft hover:border-[#3DAFB9]/30 transition-colors">
+                                     class="flex items-start gap-3 p-4 rounded-2xl border border-soft">
                                     <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#3DAFB9]/12 to-[#2D4B7E]/10 border border-[#3DAFB9]/20 flex items-center justify-center shrink-0">
                                         <svg class="w-4 h-4 text-[#3DAFB9]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     </div>
@@ -121,6 +156,72 @@
                                         <div v-if="s.duration_min" class="text-[11px] text-ink-muted mt-0.5">{{ s.duration_min }} دقيقة</div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Experience timeline -->
+                        <div v-if="rich.experience?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8">
+                            <div class="flex items-center gap-3 mb-6">
+                                <span class="w-1 h-6 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">الخبرات المهنية</h2>
+                            </div>
+                            <div class="relative pr-6 rtl:pr-0 rtl:pl-6">
+                                <div class="absolute right-2 rtl:right-auto rtl:left-2 top-2 bottom-2 w-0.5 bg-gradient-to-b from-[#3DAFB9] via-[#2D4B7E] to-[#3DAFB9]/30"></div>
+                                <div v-for="(x, i) in rich.experience" :key="i" class="relative flex items-start gap-4 pb-5 last:pb-0">
+                                    <div class="shrink-0 -mr-6 rtl:mr-0 rtl:-ml-6 w-4 h-4 rounded-full bg-gradient-to-br from-[#3DAFB9] to-[#2D4B7E] ring-4 ring-elevated mt-1"></div>
+                                    <div class="flex-1">
+                                        <div class="flex items-baseline justify-between gap-3 flex-wrap mb-1">
+                                            <h4 class="text-[13.5px] font-black text-ink">{{ x.role }}</h4>
+                                            <span class="text-[10.5px] text-ink-muted font-bold whitespace-nowrap">{{ x.period }}</span>
+                                        </div>
+                                        <div class="text-[12.5px] text-[#3DAFB9] font-bold mb-1">{{ x.company }}</div>
+                                        <p v-if="x.desc" class="text-[12.5px] text-ink-body leading-relaxed">{{ x.desc }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Education + Certifications side by side -->
+                        <div v-if="rich.education?.length || rich.certifications?.length" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div v-if="rich.education?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-6">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <svg class="w-5 h-5 text-[#3DAFB9]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>
+                                    <h3 class="text-[14.5px] font-black text-ink">المؤهلات العلمية</h3>
+                                </div>
+                                <ul class="space-y-3">
+                                    <li v-for="(ed, i) in rich.education" :key="i" class="p-3 rounded-xl bg-canvas border border-soft">
+                                        <div class="text-[13px] font-black text-ink">{{ ed.degree }}</div>
+                                        <div class="text-[12px] text-ink-body mt-0.5">{{ ed.institution }}<span v-if="ed.year"> · {{ ed.year }}</span></div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div v-if="rich.certifications?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-6">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <svg class="w-5 h-5 text-[#F59E0B]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 15.39l-3.76 2.27.99-4.28-3.32-2.88 4.38-.38L12 6.09l1.71 4.03 4.38.38-3.32 2.88.99 4.28M20 6a2 2 0 00-2-2h-3.82A2.99 2.99 0 0012 2a2.99 2.99 0 00-2.82 2H5.5A1.5 1.5 0 004 5.5V19a2 2 0 002 2h12a2 2 0 002-2V6z"/></svg>
+                                    <h3 class="text-[14.5px] font-black text-ink">الشهادات المهنية</h3>
+                                </div>
+                                <ul class="space-y-3">
+                                    <li v-for="(c, i) in rich.certifications" :key="i" class="p-3 rounded-xl bg-canvas border border-soft">
+                                        <div class="text-[13px] font-black text-ink">{{ c.name }}</div>
+                                        <div v-if="c.issuer" class="text-[12px] text-ink-body mt-0.5">{{ c.issuer }}<span v-if="c.year"> · {{ c.year }}</span></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Achievements -->
+                        <div v-if="achievements.length" class="rounded-[1.5rem] bg-gradient-to-br from-[#0A1729] via-[#122440] to-[#1A2F50] p-7 lg:p-8 relative overflow-hidden">
+                            <div class="absolute -top-16 -right-16 w-72 h-72 rounded-full aurora-drift"
+                                 style="background: radial-gradient(circle, rgba(61,175,185,0.20), transparent 70%);"></div>
+                            <div class="relative">
+                                <div class="text-[10.5px] text-[#6BC8D2] tracking-widest font-black uppercase mb-2">إنجازات مميّزة</div>
+                                <h2 class="text-xl font-black text-white mb-5">ما فخور به</h2>
+                                <ul class="space-y-3">
+                                    <li v-for="(a, i) in achievements" :key="i" class="flex items-start gap-3 text-white/90 text-[13.5px]">
+                                        <svg class="w-5 h-5 text-[#F59E0B] shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                        <span class="leading-relaxed">{{ a }}</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -211,16 +312,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import ConsultantRating from '@/Components/ConsultantRating.vue';
 import { useTheme } from '@/composables/useTheme';
 
-defineProps({
+const props = defineProps({
     consultant: Object,
     related:    Array,
 });
+
+// Rich content — hide sections that are empty
+const normalize = (arr) => Array.isArray(arr)
+    ? arr.map(x => (typeof x === 'string' ? x : (x?.item ?? ''))).filter(Boolean)
+    : [];
+const rich = computed(() => props.consultant.rich_content || {});
+const expertise = computed(() => normalize(rich.value.expertise));
+const achievements = computed(() => normalize(rich.value.achievements));
 
 const { isDark } = useTheme();
 const openBooking = ref(false);

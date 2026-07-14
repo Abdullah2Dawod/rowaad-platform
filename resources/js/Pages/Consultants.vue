@@ -79,72 +79,69 @@
                     <p class="text-ink-body">لا يوجد مستشارون مطابقون. جرّب فلتراً آخر.</p>
                 </div>
 
-                <!-- Grid -->
-                <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                <!-- Grid — 4 per row on desktop, clean classic card -->
+                <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
                     <Link
                         v-for="c in consultants.data" :key="c.id"
                         :href="`/consultants/${c.id}`"
-                        class="group relative flex flex-col rounded-3xl bg-elevated border border-soft hover:border-[#3DAFB9]/40 hover:shadow-card-hover overflow-hidden transition-all duration-500 hover:-translate-y-1"
+                        class="group relative flex flex-col rounded-2xl bg-elevated border border-soft hover:border-[#3DAFB9]/50 hover:-translate-y-1 hover:shadow-card-hover overflow-hidden transition-all duration-500 p-5"
                     >
-                        <!-- Featured ribbon -->
-                        <div v-if="c.is_featured"
-                             class="absolute top-4 left-4 rtl:left-auto rtl:right-4 z-10 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white text-[10px] font-black shadow-md">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <!-- Featured chip (top-left corner) -->
+                        <span v-if="c.is_featured"
+                              class="absolute top-3 left-3 rtl:left-auto rtl:right-3 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white text-[9.5px] font-black shadow-sm">
+                            <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                             مميّز
+                        </span>
+
+                        <!-- Circular avatar with soft brand ring -->
+                        <div class="relative mx-auto mb-3">
+                            <div class="absolute -inset-1 rounded-full bg-gradient-to-br from-[#3DAFB9]/40 to-[#2D4B7E]/30 opacity-0 group-hover:opacity-100 blur transition-opacity duration-500"></div>
+                            <div class="relative w-24 h-24 rounded-full overflow-hidden ring-2 ring-elevated shadow-card">
+                                <img :src="c.avatar" :alt="c.name" loading="lazy"
+                                     class="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700" />
+                            </div>
+                            <!-- Verified badge -->
+                            <span class="absolute -bottom-0.5 -right-0.5 rtl:-right-auto rtl:-left-0.5 w-6 h-6 rounded-full bg-gradient-to-br from-[#3DAFB9] to-[#2D4B7E] flex items-center justify-center ring-2 ring-elevated">
+                                <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" d="M5 13l4 4L19 7"/></svg>
+                            </span>
                         </div>
 
-                        <!-- Avatar area -->
-                        <div class="relative aspect-[4/3.2] overflow-hidden">
-                            <img :src="c.avatar" :alt="c.name" loading="lazy"
-                                 class="w-full h-full object-cover saturate-[0.75] group-hover:saturate-100 group-hover:scale-[1.04] transition-all duration-[900ms]" />
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#0A1729]/85 via-[#0A1729]/15 to-transparent"></div>
+                        <!-- Name + title -->
+                        <div class="text-center mb-2.5">
+                            <h3 class="text-[14.5px] font-black text-ink group-hover:text-[#2D4B7E] dark:group-hover:text-[#6BC8D2] transition-colors line-clamp-1">{{ c.name }}</h3>
+                            <div class="text-[11.5px] text-[#3DAFB9] font-bold mt-0.5 line-clamp-1">{{ c.title }}</div>
+                        </div>
 
-                            <!-- Specialization tag over image -->
-                            <div v-if="c.specialization" class="absolute bottom-4 left-4 rtl:left-auto rtl:right-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 dark:bg-[#122440]/90 backdrop-blur border border-white/60">
-                                <img :src="specIcon(c.specialization.icon, false)" class="w-3.5 h-3.5" alt="" />
-                                <span class="text-[11px] font-bold text-ink">{{ c.specialization.name_ar }}</span>
+                        <!-- Specialization pill -->
+                        <div v-if="c.specialization" class="mx-auto mb-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3DAFB9]/8 border border-[#3DAFB9]/20">
+                            <img :src="specIcon(c.specialization.icon, isDark)" class="w-3 h-3" alt="" />
+                            <span class="text-[10.5px] font-bold text-ink-body">{{ c.specialization.name_ar }}</span>
+                        </div>
+
+                        <!-- Rating + Price (compact bottom bar) -->
+                        <div class="mt-auto pt-3 border-t border-soft flex items-center justify-between text-[11.5px]">
+                            <div class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-[#F59E0B]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <span class="font-black text-ink">{{ Number(c.rating_avg).toFixed(1) }}</span>
+                                <span class="text-[9.5px] text-ink-muted">({{ c.rating_count }})</span>
+                            </div>
+                            <div>
+                                <span class="font-black text-ink">{{ formatPrice(c.hourly_rate) }}</span>
+                                <span class="text-[9.5px] text-ink-muted mr-0.5">ر.س</span>
                             </div>
                         </div>
 
-                        <!-- Body -->
-                        <div class="p-5 flex-1 flex flex-col">
-                            <h3 class="text-[17px] font-black text-ink group-hover:text-[#2D4B7E] dark:group-hover:text-[#6BC8D2] transition-colors">{{ c.name }}</h3>
-                            <div class="text-[12px] text-[#3DAFB9] font-bold mt-0.5">{{ c.title }}</div>
-
-                            <p class="text-[13px] text-ink-body leading-relaxed mt-3 line-clamp-3 flex-1">{{ c.bio }}</p>
-
-                            <!-- Meta row -->
-                            <div class="flex items-center justify-between mt-4 pt-4 border-t border-soft">
-                                <!-- Rating -->
-                                <div class="flex items-center gap-1.5">
-                                    <svg class="w-3.5 h-3.5 text-[#F59E0B]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                                    <span class="text-[13px] font-black text-ink">{{ Number(c.rating_avg).toFixed(1) }}</span>
-                                    <span class="text-[10px] text-ink-muted">({{ c.rating_count }})</span>
-                                </div>
-                                <!-- Price -->
-                                <div class="text-left rtl:text-left">
-                                    <span class="text-[15px] font-black text-ink">{{ formatPrice(c.hourly_rate) }}</span>
-                                    <span class="text-[10px] text-ink-muted mr-1">ر.س / جلسة</span>
-                                </div>
-                            </div>
-
-                            <!-- Small stats strip -->
-                            <div class="flex items-center gap-3 mt-3 text-[10.5px] text-ink-muted">
-                                <span class="inline-flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>
-                                    {{ c.years_experience }}+ سنوات
-                                </span>
-                                <span class="text-ink-muted/50">·</span>
-                                <span class="inline-flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    {{ c.sessions_completed }} جلسة
-                                </span>
-                                <span class="text-ink-muted/50">·</span>
-                                <span class="inline-flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                    {{ c.city }}
-                                </span>
-                            </div>
+                        <!-- Micro meta row -->
+                        <div class="mt-2 flex items-center justify-center gap-2 text-[9.5px] text-ink-muted">
+                            <span class="inline-flex items-center gap-1">
+                                <svg class="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+                                {{ c.years_experience }}+ سنة
+                            </span>
+                            <span class="opacity-40">·</span>
+                            <span class="inline-flex items-center gap-1">
+                                <svg class="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                {{ c.city }}
+                            </span>
                         </div>
                     </Link>
                 </div>

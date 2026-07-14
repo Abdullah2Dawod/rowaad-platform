@@ -23,6 +23,7 @@ class Consultant extends Model
         'rating_avg'                 => 'decimal:2',
         'pending_changes'                => 'array',
         'pending_changes_submitted_at'   => 'datetime',
+        'rich_content'                   => 'array',
     ];
 
     /**

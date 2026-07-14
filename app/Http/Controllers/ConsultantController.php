@@ -102,6 +102,7 @@ class ConsultantController extends Controller
                 'sessions_completed'  => $consultant->sessions_completed,
                 'is_featured'         => $consultant->is_featured,
                 'approved_at'         => $consultant->approved_at,
+                'rich_content'        => $consultant->rich_content,
             ],
             'related' => Consultant::approved()
                 ->where('id', '!=', $consultant->id)

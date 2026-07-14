@@ -19,6 +19,7 @@ class InvestmentOpportunity extends Model
         'investment_min'   => 'decimal:2',
         'investment_max'   => 'decimal:2',
         'expected_roi'     => 'decimal:2',
+        'rich_content'     => 'array',
     ];
 
     public const STATUS_OPEN     = 'open';

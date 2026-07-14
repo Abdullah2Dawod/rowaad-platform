@@ -99,6 +99,142 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- ═══════ RICH CONTENT ═══════ -->
+                        <!-- Executive summary -->
+                        <div v-if="rich.executive_summary" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8 shadow-card">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="w-1 h-7 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">الملخص التنفيذي</h2>
+                            </div>
+                            <p class="text-[14.5px] text-ink-body leading-[2] whitespace-pre-line">{{ rich.executive_summary }}</p>
+                        </div>
+
+                        <!-- Investment highlights (metric cards) -->
+                        <div v-if="rich.investment_highlights?.length" class="rounded-[1.5rem] bg-gradient-to-br from-[#EAF6F7] to-white dark:from-[#0F2340]/60 dark:to-[#122440]/40 border border-[#3DAFB9]/25 p-7 lg:p-8">
+                            <div class="flex items-center gap-3 mb-5">
+                                <span class="w-1 h-7 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">أبرز مؤشرات الاستثمار</h2>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                <div v-for="(m, i) in rich.investment_highlights" :key="i"
+                                     class="p-4 rounded-xl bg-white dark:bg-[#0A1729]/60 border border-[#3DAFB9]/20">
+                                    <div class="text-[10.5px] text-ink-muted mb-1 font-medium">{{ m.label }}</div>
+                                    <div class="text-[17px] font-black text-[#2D4B7E] dark:text-[#6BC8D2]">{{ m.value }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Why this opportunity -->
+                        <div v-if="rich.opportunity_reasons?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8 shadow-card">
+                            <div class="flex items-center gap-3 mb-5">
+                                <span class="w-1 h-7 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">لماذا هذه الفرصة الآن؟</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div v-for="(r, i) in rich.opportunity_reasons" :key="i"
+                                     class="p-4 rounded-xl bg-canvas border border-soft hover:border-[#3DAFB9]/35 transition-colors">
+                                    <div class="flex items-start gap-2 mb-2">
+                                        <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#3DAFB9] to-[#2D4B7E] text-white text-[11px] font-black flex items-center justify-center shrink-0">{{ i+1 }}</span>
+                                        <h4 class="text-[14px] font-black text-ink leading-snug">{{ r.title }}</h4>
+                                    </div>
+                                    <p class="text-[12.5px] text-ink-body leading-[1.85] pl-9">{{ r.desc }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Market data -->
+                        <div v-if="rich.market_data?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-6 shadow-card">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="w-1 h-6 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h3 class="text-lg font-black text-ink">بيانات السوق</h3>
+                            </div>
+                            <dl class="divide-y divide-soft">
+                                <div v-for="(m, i) in rich.market_data" :key="i" class="flex items-center justify-between py-2.5 text-[13px]">
+                                    <dt class="text-ink-muted">{{ m.label }}</dt>
+                                    <dd class="font-black text-ink">{{ m.value }}</dd>
+                                </div>
+                            </dl>
+                        </div>
+
+                        <!-- Financial projections table -->
+                        <div v-if="rich.financial_projections?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-6 shadow-card overflow-hidden">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="w-1 h-6 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h3 class="text-lg font-black text-ink">التوقعات المالية</h3>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-[13px]">
+                                    <thead>
+                                        <tr class="border-b border-soft text-ink-muted text-[11px] font-bold uppercase tracking-wider">
+                                            <th class="text-start py-3 px-3">السنة</th>
+                                            <th class="text-start py-3 px-3">الإيرادات</th>
+                                            <th class="text-start py-3 px-3">صافي الربح</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-soft">
+                                        <tr v-for="(p, i) in rich.financial_projections" :key="i">
+                                            <td class="py-3 px-3 font-black text-ink">{{ p.year }}</td>
+                                            <td class="py-3 px-3 font-bold text-ink">{{ p.revenue }}</td>
+                                            <td class="py-3 px-3 font-bold text-emerald-600 dark:text-emerald-400">{{ p.profit }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Timeline -->
+                        <div v-if="rich.timeline?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-7 lg:p-8 shadow-card">
+                            <div class="flex items-center gap-3 mb-6">
+                                <span class="w-1 h-7 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
+                                <h2 class="text-xl font-black text-ink">الجدول الزمني للتنفيذ</h2>
+                            </div>
+                            <div class="relative pr-6 rtl:pr-0 rtl:pl-6">
+                                <div class="absolute right-2 rtl:right-auto rtl:left-2 top-2 bottom-2 w-0.5 bg-gradient-to-b from-[#3DAFB9] via-[#2D4B7E] to-[#3DAFB9]/30"></div>
+                                <div v-for="(p, i) in rich.timeline" :key="i" class="relative flex items-start gap-4 pb-6 last:pb-0">
+                                    <div class="shrink-0 -mr-6 rtl:mr-0 rtl:-ml-6 w-10 h-10 rounded-full bg-gradient-to-br from-[#3DAFB9] to-[#2D4B7E] text-white text-[11px] font-black flex items-center justify-center shadow-md ring-4 ring-elevated">
+                                        {{ String(i+1).padStart(2, '0') }}
+                                    </div>
+                                    <div class="flex-1 pt-1">
+                                        <div class="flex items-center gap-2 flex-wrap mb-1">
+                                            <h4 class="text-[14px] font-black text-ink">{{ p.phase }}</h4>
+                                            <span class="text-[10.5px] px-2 py-0.5 rounded-full bg-[#3DAFB9]/12 text-[#3DAFB9] font-bold">{{ p.duration }}</span>
+                                        </div>
+                                        <p class="text-[13px] text-ink-body leading-relaxed">{{ p.desc }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Risks + Investor Perks side by side -->
+                        <div v-if="rich.risks?.length || investorPerks.length" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div v-if="rich.risks?.length" class="rounded-[1.5rem] bg-elevated border border-soft p-6 shadow-card">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <svg class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M12 9v2m0 4h.01M5 19h14a2 2 0 001.84-2.75L13.74 4a2 2 0 00-3.48 0l-7.1 12.25A2 2 0 005 19z"/></svg>
+                                    <h3 class="text-[15px] font-black text-ink">المخاطر وحلولها</h3>
+                                </div>
+                                <div class="space-y-3">
+                                    <div v-for="(r, i) in rich.risks" :key="i" class="p-3 rounded-xl bg-canvas border border-soft">
+                                        <div class="text-[10.5px] text-amber-700 dark:text-amber-400 font-bold mb-1">الخطر</div>
+                                        <p class="text-[12.5px] text-ink-body leading-relaxed">{{ r.risk }}</p>
+                                        <div class="text-[10.5px] text-emerald-700 dark:text-emerald-400 font-bold mt-2 mb-1">الحل</div>
+                                        <p class="text-[12.5px] text-ink-body leading-relaxed">{{ r.mitigation }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="investorPerks.length" class="rounded-[1.5rem] bg-gradient-to-br from-[#2D4B7E] to-[#3DAFB9] p-6 shadow-card">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <svg class="w-5 h-5 text-[#C2EBEF]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    <h3 class="text-[15px] font-black text-white">ماذا يحصل عليه المستثمر</h3>
+                                </div>
+                                <ul class="space-y-2.5">
+                                    <li v-for="(p, i) in investorPerks" :key="i" class="flex items-start gap-2 text-white/95 text-[13px]">
+                                        <svg class="w-4 h-4 mt-0.5 shrink-0 text-[#C2EBEF]" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622"/></svg>
+                                        <span class="leading-relaxed">{{ p }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Right: apply CTA -->
@@ -260,6 +396,12 @@ const props = defineProps({
     opportunity: Object,
     related:     Array,
 });
+
+const normalize = (arr) => Array.isArray(arr)
+    ? arr.map(x => (typeof x === 'string' ? x : (x?.item ?? ''))).filter(Boolean)
+    : [];
+const rich = computed(() => props.opportunity.rich_content || {});
+const investorPerks = computed(() => normalize(rich.value.investor_perks));
 
 const { isDark } = useTheme();
 const showModal = ref(false);

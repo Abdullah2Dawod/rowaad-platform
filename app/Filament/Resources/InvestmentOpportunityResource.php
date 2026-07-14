@@ -74,6 +74,86 @@ class InvestmentOpportunityResource extends Resource
                 Forms\Components\TextInput::make('external_ref')->label('المرجع الخارجي')->maxLength(100),
             ])->columns(2)->collapsed(),
 
+            // ═══════════ RICH CONTENT SECTIONS (all optional) ═══════════
+            Forms\Components\Section::make('المحتوى التفصيلي (يظهر في صفحة الفرصة)')
+                ->description('كل الحقول اختيارية — الحقول الفارغة لا تظهر في الموقع الخارجي')
+                ->collapsible()->schema([
+                    Forms\Components\Textarea::make('rich_content.executive_summary')
+                        ->label('الملخص التنفيذي')
+                        ->rows(4)->columnSpanFull(),
+
+                    Forms\Components\Repeater::make('rich_content.investment_highlights')
+                        ->label('أبرز مؤشرات الاستثمار')
+                        ->schema([
+                            Forms\Components\TextInput::make('label')->label('العنوان')->required(),
+                            Forms\Components\TextInput::make('value')->label('القيمة')->required(),
+                            Forms\Components\Select::make('icon')->label('الأيقونة')->native(false)->options([
+                                'wallet' => '💼 محفظة', 'trend' => '📈 نمو',
+                                'clock' => '⏱️ استرداد', 'coin' => '💰 عائد',
+                                'chart' => '📊 حصة سوق', 'balance' => '⚖️ تعادل',
+                            ])->default('chart'),
+                        ])->columns(3)->columnSpanFull()->collapsed()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'label') ?: 'مؤشر')
+                        ->addActionLabel('إضافة مؤشر')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.opportunity_reasons')
+                        ->label('لماذا هذه الفرصة الآن؟')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')->label('العنوان')->required(),
+                            Forms\Components\Textarea::make('desc')->label('الشرح')->rows(2)->required(),
+                        ])->columns(2)->collapsed()->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'title') ?: 'سبب')
+                        ->addActionLabel('إضافة سبب')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.market_data')
+                        ->label('بيانات السوق')
+                        ->schema([
+                            Forms\Components\TextInput::make('label')->label('التسمية')->required(),
+                            Forms\Components\TextInput::make('value')->label('القيمة')->required(),
+                        ])->columns(2)->collapsed()->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'label') ?: 'بيان')
+                        ->addActionLabel('إضافة بيان')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.financial_projections')
+                        ->label('التوقعات المالية (سنوات)')
+                        ->schema([
+                            Forms\Components\TextInput::make('year')->label('السنة')->required()->placeholder('السنة 1'),
+                            Forms\Components\TextInput::make('revenue')->label('الإيرادات')->placeholder('3.2 مليون ر.س'),
+                            Forms\Components\TextInput::make('profit')->label('صافي الربح')->placeholder('850 ألف ر.س'),
+                        ])->columns(3)->collapsed()->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'year') ?: 'سنة')
+                        ->addActionLabel('إضافة سنة')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.timeline')
+                        ->label('الجدول الزمني للتنفيذ')
+                        ->schema([
+                            Forms\Components\TextInput::make('phase')->label('المرحلة')->required(),
+                            Forms\Components\TextInput::make('duration')->label('المدة')->required()->placeholder('الشهر 1–3'),
+                            Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->required()->columnSpanFull(),
+                        ])->columns(2)->collapsed()->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'phase') ?: 'مرحلة')
+                        ->addActionLabel('إضافة مرحلة')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.risks')
+                        ->label('المخاطر وطرق تجاوزها')
+                        ->schema([
+                            Forms\Components\Textarea::make('risk')->label('الخطر')->rows(2)->required(),
+                            Forms\Components\Textarea::make('mitigation')->label('طريقة التخفيف')->rows(2)->required(),
+                        ])->columns(2)->collapsed()->columnSpanFull()
+                        ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'risk') ?: 'خطر', 40))
+                        ->addActionLabel('إضافة خطر')->reorderable(),
+
+                    Forms\Components\Repeater::make('rich_content.investor_perks')
+                        ->label('ماذا يحصل عليه المستثمر')
+                        ->schema([
+                            Forms\Components\TextInput::make('item')->hiddenLabel()->required()->columnSpanFull()
+                                ->placeholder('مثال: حصة تصويتية في المجلس'),
+                        ])
+                        ->collapsed()->reorderable()->columnSpanFull()
+                        ->addActionLabel('إضافة ميزة')
+                        ->itemLabel(fn (?array $s = []) => \Illuminate\Support\Str::limit(data_get($s, 'item') ?: 'ميزة', 60)),
+                ]),
+
             Forms\Components\Section::make('النشر والحالة')->schema([
                 Forms\Components\Select::make('status')->label('الحالة')
                     ->options([

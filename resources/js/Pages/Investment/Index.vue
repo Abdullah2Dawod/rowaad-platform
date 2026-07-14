@@ -107,73 +107,83 @@
                     <p class="text-ink-body">لا توجد فرص مطابقة. جرّب فلاتر أخرى.</p>
                 </div>
 
-                <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                <!-- Cinematic horizontal card grid (2/row) — completely different from consultants/feasibility -->
+                <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
                     <Link v-for="o in opportunities.data" :key="o.id" :href="`/investments/${o.id}`"
-                          class="group relative flex flex-col rounded-3xl bg-elevated border border-soft hover:border-[#3DAFB9]/40 hover:shadow-card-hover overflow-hidden transition-all duration-500 hover:-translate-y-1.5">
-                        <!-- Cover -->
-                        <div class="relative aspect-[16/9.5] overflow-hidden bg-gradient-to-br from-[#2D4B7E] to-[#3DAFB9]">
+                          class="group relative flex flex-col sm:flex-row rounded-3xl bg-elevated border border-soft hover:border-[#3DAFB9]/45 hover:shadow-card-hover overflow-hidden transition-all duration-500 hover:-translate-y-1 min-h-[240px]">
+                        <!-- LEFT: cinematic cover (40%) -->
+                        <div class="relative sm:w-2/5 shrink-0 overflow-hidden bg-gradient-to-br from-[#2D4B7E] to-[#3DAFB9] min-h-[180px] sm:min-h-0">
                             <img v-if="o.cover_image" :src="o.cover_image" :alt="o.title" loading="lazy"
-                                 class="w-full h-full object-cover saturate-[0.85] group-hover:saturate-100 group-hover:scale-[1.05] transition-all duration-[900ms]" />
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#0A1729]/70 via-[#0A1729]/10 to-transparent"></div>
+                                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.08] transition-transform duration-[1200ms]" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0A1729]/85 via-[#0A1729]/35 to-[#0A1729]/10"></div>
+                            <div class="absolute inset-0 bg-gradient-to-l rtl:bg-gradient-to-r from-elevated via-transparent to-transparent sm:opacity-100 opacity-0"></div>
 
-                            <!-- Badges -->
-                            <div class="absolute top-3 left-3 rtl:left-auto rtl:right-3 flex flex-wrap gap-1.5">
+                            <!-- Top-left badges -->
+                            <div class="absolute top-3 left-3 rtl:left-auto rtl:right-3 flex flex-col gap-1.5">
                                 <span v-if="o.is_featured"
-                                      class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white text-[10px] font-black shadow-md">
-                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                      class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white text-[9.5px] font-black shadow-md">
+                                    <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                                     مميّزة
                                 </span>
-                                <span v-if="o.source === 'gov_api'"
-                                      class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/95 dark:bg-[#122440]/95 text-[#2D4B7E] dark:text-[#6BC8D2] text-[10px] font-black border border-white dark:border-[#3DAFB9]/40 backdrop-blur">
-                                    🏛️ حكومية
-                                </span>
-                                <span :class="['inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black shadow-sm',
-                                               riskClass(o.risk_level)]">
-                                    مخاطر: {{ riskLabel(o.risk_level) }}
+                                <span :class="['inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black shadow-sm', riskClass(o.risk_level)]">
+                                    {{ riskLabel(o.risk_level) }}
                                 </span>
                             </div>
 
-                            <!-- Sector chip -->
-                            <div class="absolute bottom-3 right-3 rtl:right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 dark:bg-[#122440]/95 backdrop-blur border border-white dark:border-[#3DAFB9]/40">
-                                <span class="text-[10.5px] font-bold text-ink">{{ o.sector }}</span>
-                                <span v-if="o.city" class="text-[10px] text-ink-muted">· {{ o.city }}</span>
+                            <!-- Big ROI ring at bottom-left corner -->
+                            <div v-if="o.expected_roi" class="absolute bottom-3 left-3 rtl:left-auto rtl:right-3 w-16 h-16 rounded-full bg-white/95 dark:bg-[#0A1729]/95 backdrop-blur border-2 border-[#3DAFB9] flex flex-col items-center justify-center shadow-lg">
+                                <div class="text-[16px] font-black leading-none text-[#3DAFB9]">{{ o.expected_roi }}%</div>
+                                <div class="text-[8px] text-ink-muted mt-0.5 tracking-wider">عائد</div>
                             </div>
                         </div>
 
-                        <!-- Body -->
-                        <div class="p-5 flex-1 flex flex-col">
-                            <h3 class="text-[15px] font-black text-ink group-hover:text-[#2D4B7E] dark:group-hover:text-[#6BC8D2] transition-colors line-clamp-2 leading-snug">{{ o.title }}</h3>
-                            <p v-if="o.subtitle" class="text-[11.5px] text-[#3DAFB9] font-bold mt-1 line-clamp-1">{{ o.subtitle }}</p>
-                            <p class="text-[12.5px] text-ink-body leading-relaxed mt-2.5 line-clamp-3 flex-1">{{ o.summary }}</p>
-
-                            <!-- Financial highlights -->
-                            <div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-soft">
-                                <div>
-                                    <div class="text-[10px] text-ink-muted tracking-wider">قيمة الاستثمار</div>
-                                    <div class="text-[13px] font-black text-ink mt-0.5">{{ formatMoney(o.investment_min) }}</div>
+                        <!-- RIGHT: content -->
+                        <div class="flex-1 p-5 flex flex-col justify-between">
+                            <!-- Top block: sector + title + tagline -->
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap mb-2">
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#3DAFB9]/12 border border-[#3DAFB9]/25 text-[10px] font-black text-[#2D4B7E] dark:text-[#6BC8D2]">
+                                        {{ o.sector }}
+                                    </span>
+                                    <span v-if="o.city" class="text-[10.5px] text-ink-muted inline-flex items-center gap-0.5">
+                                        <svg class="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                        {{ o.city }}
+                                    </span>
+                                    <span v-if="o.source === 'gov_api'" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#2D4B7E]/10 border border-[#2D4B7E]/25 text-[9.5px] font-black text-[#2D4B7E] dark:text-[#6BC8D2]">
+                                        🏛️ حكومية
+                                    </span>
                                 </div>
-                                <div>
-                                    <div class="text-[10px] text-ink-muted tracking-wider">العائد المتوقّع</div>
-                                    <div class="text-[13px] font-black text-green-600 dark:text-green-400 mt-0.5">{{ o.expected_roi }}%</div>
-                                </div>
+                                <h3 class="text-[15.5px] lg:text-[16.5px] font-black text-ink group-hover:text-[#2D4B7E] dark:group-hover:text-[#6BC8D2] transition-colors line-clamp-2 leading-snug">{{ o.title }}</h3>
+                                <p v-if="o.subtitle" class="text-[11.5px] text-[#3DAFB9] font-bold mt-1 line-clamp-1">{{ o.subtitle }}</p>
+                                <p class="text-[12.5px] text-ink-body leading-relaxed mt-2 line-clamp-2">{{ o.summary }}</p>
                             </div>
 
-                            <!-- Meta strip -->
-                            <div class="flex items-center gap-3 mt-3 text-[10.5px] text-ink-muted">
-                                <span class="inline-flex items-center gap-1" v-if="o.duration_years">
-                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>
-                                    {{ o.duration_years }} سنوات
-                                </span>
-                                <span v-if="o.duration_years" class="text-ink-muted/50">·</span>
-                                <span class="inline-flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                    {{ o.views_count }}
-                                </span>
-                                <span class="text-ink-muted/50">·</span>
-                                <span class="inline-flex items-center gap-1">
-                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                                    {{ o.applications_count }} طلب
-                                </span>
+                            <!-- Bottom block: metrics + CTA -->
+                            <div class="mt-4 pt-3 border-t border-dashed border-soft">
+                                <div class="grid grid-cols-3 gap-2 text-center">
+                                    <div>
+                                        <div class="text-[9.5px] text-ink-muted uppercase tracking-wider mb-0.5">استثمار من</div>
+                                        <div class="text-[12.5px] font-black text-ink">{{ formatMoney(o.investment_min) }}</div>
+                                    </div>
+                                    <div v-if="o.duration_years" class="border-x border-soft">
+                                        <div class="text-[9.5px] text-ink-muted uppercase tracking-wider mb-0.5">مدة</div>
+                                        <div class="text-[12.5px] font-black text-ink">{{ o.duration_years }} سنوات</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-[9.5px] text-ink-muted uppercase tracking-wider mb-0.5">طلبات</div>
+                                        <div class="text-[12.5px] font-black text-ink">{{ o.applications_count }}</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 flex items-center justify-between">
+                                    <div class="text-[10px] text-ink-muted inline-flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        {{ o.views_count }} مشاهدة
+                                    </div>
+                                    <span class="inline-flex items-center gap-1.5 text-[11.5px] font-black text-[#3DAFB9] group-hover:gap-2.5 transition-all">
+                                        عرض التفاصيل
+                                        <svg class="w-3 h-3 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </Link>

@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
   <defs>
     <linearGradient id="etBg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0F2340"/>
-      <stop offset="100%" stop-color="#2D4B7E"/>
+      <stop offset="0%" stop-color="#F1FAFB"/>
+      <stop offset="100%" stop-color="#DEF0F3"/>
     </linearGradient>
     <radialGradient id="etGlow" cx="50%" cy="45%" r="55%">
-      <stop offset="0%" stop-color="#3DAFB9" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#3DAFB9" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#6BC8D2" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#6BC8D2" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="etPerson" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#6BC8D2"/>
@@ -18,7 +18,7 @@
   <rect width="800" height="800" fill="url(#etGlow)"/>
 
   <!-- Geometric background pattern -->
-  <g opacity="0.12" fill="none" stroke="#6BC8D2">
+  <g opacity="0.18" fill="none" stroke="#2D4B7E">
     <g transform="translate(140 150)">
       <path d="M0,-40 L11.5,-11.5 L40,0 L11.5,11.5 L0,40 L-11.5,11.5 L-40,0 L-11.5,-11.5 Z" stroke-width="1"/>
     </g>
@@ -32,70 +32,69 @@
 
   <!-- Central connection hub -->
   <g transform="translate(400 400)">
-    <circle r="180" fill="none" stroke="#3DAFB9" stroke-opacity="0.25" stroke-width="1" stroke-dasharray="4 6"/>
-    <circle r="120" fill="none" stroke="#3DAFB9" stroke-opacity="0.35" stroke-width="1"/>
-    <circle r="40"  fill="#3DAFB9" fill-opacity="0.2" stroke="#6BC8D2" stroke-width="1.5"/>
-    <circle r="14"  fill="#6BC8D2"/>
+    <circle r="180" fill="none" stroke="#3DAFB9" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="4 6"/>
+    <circle r="120" fill="none" stroke="#3DAFB9" stroke-opacity="0.4" stroke-width="1"/>
+    <circle r="40"  fill="#3DAFB9" fill-opacity="0.15" stroke="#3DAFB9" stroke-width="1.5"/>
+    <circle r="14"  fill="#2D4B7E"/>
 
     <!-- Connection lines to team members -->
-    <line x1="0" y1="0" x2="-150" y2="-100" stroke="#6BC8D2" stroke-opacity="0.4" stroke-width="1.5"/>
-    <line x1="0" y1="0" x2="150"  y2="-100" stroke="#6BC8D2" stroke-opacity="0.4" stroke-width="1.5"/>
-    <line x1="0" y1="0" x2="-190" y2="80"  stroke="#6BC8D2" stroke-opacity="0.4" stroke-width="1.5"/>
-    <line x1="0" y1="0" x2="190"  y2="80"  stroke="#6BC8D2" stroke-opacity="0.4" stroke-width="1.5"/>
-    <line x1="0" y1="0" x2="0"    y2="180" stroke="#6BC8D2" stroke-opacity="0.4" stroke-width="1.5"/>
+    <line x1="0" y1="0" x2="-150" y2="-100" stroke="#3DAFB9" stroke-opacity="0.55" stroke-width="1.5"/>
+    <line x1="0" y1="0" x2="150"  y2="-100" stroke="#3DAFB9" stroke-opacity="0.55" stroke-width="1.5"/>
+    <line x1="0" y1="0" x2="-190" y2="80"  stroke="#3DAFB9" stroke-opacity="0.55" stroke-width="1.5"/>
+    <line x1="0" y1="0" x2="190"  y2="80"  stroke="#3DAFB9" stroke-opacity="0.55" stroke-width="1.5"/>
+    <line x1="0" y1="0" x2="0"    y2="180" stroke="#3DAFB9" stroke-opacity="0.55" stroke-width="1.5"/>
   </g>
 
-  <!-- Team members: silhouettes representing diverse Saudi professionals -->
-  <!-- Male 1 (business, top-left) -->
+  <!-- Team member 1 (male, ghutra, top-left) -->
   <g transform="translate(250 300)">
-    <circle r="42" fill="#0F2340" stroke="#6BC8D2" stroke-width="2"/>
+    <circle r="42" fill="#FFFFFF" stroke="#3DAFB9" stroke-width="2"/>
     <circle cy="-8" r="14" fill="url(#etPerson)"/>
     <path d="M-22,22 C-22,4 -12,-4 0,-4 C12,-4 22,4 22,22 Z" fill="url(#etPerson)"/>
-    <!-- Ghutra (traditional Saudi headdress) -->
-    <path d="M-14,-14 C-16,-22 -14,-26 -8,-26 L8,-26 C14,-26 16,-22 14,-14 Z" fill="#F1F5F9" opacity="0.9"/>
-    <path d="M-14,-22 L14,-22" stroke="#6BC8D2" stroke-width="1" opacity="0.6"/>
+    <!-- Ghutra (Saudi headdress) -->
+    <path d="M-15,-14 C-17,-24 -14,-28 -8,-28 L8,-28 C14,-28 17,-24 15,-14 Z" fill="#F1F5F9" stroke="#2D4B7E" stroke-width="0.6"/>
+    <!-- Igal (black cord) -->
+    <ellipse cx="0" cy="-24" rx="12" ry="2.5" fill="#2D4B7E"/>
   </g>
 
-  <!-- Female (top-right, hijab) -->
+  <!-- Team member 2 (female with hijab, top-right) -->
   <g transform="translate(550 300)">
-    <circle r="42" fill="#0F2340" stroke="#6BC8D2" stroke-width="2"/>
+    <circle r="42" fill="#FFFFFF" stroke="#3DAFB9" stroke-width="2"/>
     <circle cy="-8" r="14" fill="url(#etPerson)"/>
     <path d="M-22,22 C-22,4 -12,-4 0,-4 C12,-4 22,4 22,22 Z" fill="url(#etPerson)"/>
     <!-- Hijab -->
-    <path d="M-18,-4 C-22,-18 -14,-28 0,-28 C14,-28 22,-18 18,-4 L18,4 L-18,4 Z" fill="#2D4B7E" stroke="#6BC8D2" stroke-width="1"/>
+    <path d="M-18,-4 C-22,-20 -14,-30 0,-30 C14,-30 22,-20 18,-4 L18,4 L-18,4 Z" fill="#2D4B7E" stroke="#3DAFB9" stroke-width="1"/>
   </g>
 
-  <!-- Male 2 (left, modern professional) -->
+  <!-- Team member 3 (male modern, left) -->
   <g transform="translate(210 480)">
-    <circle r="42" fill="#0F2340" stroke="#6BC8D2" stroke-width="2"/>
+    <circle r="42" fill="#FFFFFF" stroke="#3DAFB9" stroke-width="2"/>
     <circle cy="-6" r="13" fill="url(#etPerson)"/>
     <path d="M-22,22 C-22,4 -12,-2 0,-2 C12,-2 22,4 22,22 Z" fill="url(#etPerson)"/>
-    <!-- Hair -->
-    <path d="M-13,-16 C-15,-20 -12,-22 -8,-21 L8,-21 C12,-22 15,-20 13,-16" fill="#0F2340"/>
+    <path d="M-13,-16 C-15,-20 -12,-22 -8,-21 L8,-21 C12,-22 15,-20 13,-16" fill="#2D4B7E"/>
   </g>
 
-  <!-- Female 2 (right, hijab, different style) -->
+  <!-- Team member 4 (female with hijab, right) -->
   <g transform="translate(590 480)">
-    <circle r="42" fill="#0F2340" stroke="#6BC8D2" stroke-width="2"/>
+    <circle r="42" fill="#FFFFFF" stroke="#3DAFB9" stroke-width="2"/>
     <circle cy="-8" r="14" fill="url(#etPerson)"/>
     <path d="M-22,22 C-22,4 -12,-4 0,-4 C12,-4 22,4 22,22 Z" fill="url(#etPerson)"/>
-    <path d="M-19,-2 C-24,-16 -15,-30 0,-30 C15,-30 24,-16 19,-2 L19,6 L-19,6 Z" fill="#3DAFB9" stroke="#6BC8D2" stroke-width="1"/>
+    <path d="M-19,-2 C-24,-18 -15,-32 0,-32 C15,-32 24,-18 19,-2 L19,6 L-19,6 Z" fill="#3DAFB9" stroke="#2D4B7E" stroke-width="1"/>
   </g>
 
-  <!-- Male 3 (bottom center, thobe/ghutra) -->
+  <!-- Team member 5 (male with ghutra, bottom center) -->
   <g transform="translate(400 600)">
-    <circle r="42" fill="#0F2340" stroke="#6BC8D2" stroke-width="2"/>
+    <circle r="42" fill="#FFFFFF" stroke="#3DAFB9" stroke-width="2"/>
     <circle cy="-8" r="14" fill="url(#etPerson)"/>
     <path d="M-22,22 C-22,4 -12,-4 0,-4 C12,-4 22,4 22,22 Z" fill="url(#etPerson)"/>
-    <path d="M-14,-14 C-16,-22 -14,-26 -8,-26 L8,-26 C14,-26 16,-22 14,-14 Z" fill="#F1F5F9" opacity="0.9"/>
-    <path d="M-8,-25 L8,-25" stroke="#2D4B7E" stroke-width="2"/>
+    <path d="M-15,-14 C-17,-24 -14,-28 -8,-28 L8,-28 C14,-28 17,-24 15,-14 Z" fill="#F1F5F9" stroke="#2D4B7E" stroke-width="0.6"/>
+    <ellipse cx="0" cy="-24" rx="12" ry="2.5" fill="#2D4B7E"/>
   </g>
 
-  <!-- Small orbiting dots -->
-  <g opacity="0.6">
-    <circle cx="140" cy="380" r="3" fill="#6BC8D2"/>
-    <circle cx="670" cy="200" r="3" fill="#3DAFB9"/>
-    <circle cx="660" cy="580" r="3" fill="#6BC8D2"/>
-    <circle cx="120" cy="200" r="3" fill="#3DAFB9"/>
+  <!-- Sparkles -->
+  <g opacity="0.7">
+    <circle cx="140" cy="380" r="3" fill="#3DAFB9"/>
+    <circle cx="670" cy="200" r="3" fill="#2D4B7E"/>
+    <circle cx="660" cy="580" r="3" fill="#3DAFB9"/>
+    <circle cx="120" cy="200" r="3" fill="#2D4B7E"/>
   </g>
 </svg>

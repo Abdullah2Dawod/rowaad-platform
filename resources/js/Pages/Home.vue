@@ -6,10 +6,10 @@
         <section class="relative pt-28 sm:pt-32 lg:pt-28 pb-12 sm:pb-16 lg:pb-20 overflow-hidden bg-paper">
             <!-- BACKGROUND LAYERS -->
             <div class="absolute inset-0 pointer-events-none">
-                <!-- Professional consulting background image (very subtle, blurred) -->
-                <div class="absolute inset-0 opacity-[0.10] dark:opacity-[0.06]" style="filter: blur(3px);">
+                <!-- Subtle branded hero background (SVG, theme-aware) -->
+                <div class="absolute inset-0 opacity-[0.14] dark:opacity-[0.10]">
                     <img
-                        src="/images/why-us/data-analysis.svg"
+                        :src="isDark ? '/images/why-us/data-analysis-dark.svg' : '/images/why-us/data-analysis.svg'"
                         alt=""
                         class="w-full h-full object-cover"
                         loading="lazy"
@@ -420,13 +420,13 @@
                                         <!-- Image circle (soft treatment) -->
                                         <div class="relative w-28 h-28 rounded-full overflow-hidden ring-4 ring-elevated shadow-card group-hover:shadow-card-hover transition-all duration-500 group-hover:scale-105">
                                             <img
-                                                :src="item.image"
+                                                :src="isDark ? item.image.replace('.svg', '-dark.svg') : item.image"
                                                 :alt="item.title"
                                                 loading="lazy"
-                                                class="w-full h-full object-cover saturate-[0.6] contrast-[0.92] group-hover:saturate-[0.9] transition-all duration-700"
+                                                class="w-full h-full object-cover transition-all duration-700"
                                             />
-                                            <!-- Soft brand tint (softens harshness) -->
-                                            <div class="absolute inset-0 bg-gradient-to-br from-[#2D4B7E]/40 to-[#3DAFB9]/25 group-hover:from-[#2D4B7E]/20 group-hover:to-[#3DAFB9]/10 transition-all duration-700 mix-blend-multiply"></div>
+                                            <!-- Soft brand tint (only in dark mode) -->
+                                            <div class="absolute inset-0 hidden dark:block bg-gradient-to-br dark:from-[#2D4B7E]/40 dark:to-[#3DAFB9]/20 transition-all duration-700 mix-blend-multiply"></div>
                                         </div>
                                         <!-- Icon badge overlapping the circle -->
                                         <div class="absolute -bottom-1 -right-1 rtl:-right-auto rtl:-left-1 w-10 h-10 rounded-full bg-elevated border-2 border-[#3DAFB9]/35 shadow-card flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 z-10">
@@ -455,8 +455,8 @@
                                     <!-- Circular image node -->
                                     <div class="relative shrink-0">
                                         <div class="relative w-[6.8rem] h-[6.8rem] rounded-full overflow-hidden ring-4 ring-elevated shadow-card">
-                                            <img :src="item.image" :alt="item.title" loading="lazy" class="w-full h-full object-cover saturate-[0.6] contrast-[0.92]" />
-                                            <div class="absolute inset-0 bg-gradient-to-br from-[#2D4B7E]/40 to-[#3DAFB9]/25 mix-blend-multiply"></div>
+                                            <img :src="isDark ? item.image.replace('.svg', '-dark.svg') : item.image" :alt="item.title" loading="lazy" class="w-full h-full object-cover" />
+                                            <div class="absolute inset-0 hidden dark:block bg-gradient-to-br dark:from-[#2D4B7E]/40 dark:to-[#3DAFB9]/20 mix-blend-multiply"></div>
                                         </div>
                                         <div class="absolute -bottom-1 -left-1 w-9 h-9 rounded-full bg-elevated border-2 border-[#3DAFB9]/35 shadow-card flex items-center justify-center">
                                             <img :src="iconUrl(item.iconSlug, isDark)" class="w-4.5 h-4.5" :alt="item.title" />

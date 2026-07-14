@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="daBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F2340"/>
+      <stop offset="50%" stop-color="#152B4E"/>
+      <stop offset="100%" stop-color="#1F3A66"/>
+    </linearGradient>
+    <linearGradient id="daBar" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#3DAFB9"/>
+      <stop offset="100%" stop-color="#6BC8D2"/>
+    </linearGradient>
+    <radialGradient id="daGlow" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#3DAFB9" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#3DAFB9" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="daGrid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#6BC8D2" stroke-opacity="0.08" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="800" fill="url(#daBg)"/>
+  <rect width="800" height="800" fill="url(#daGrid)"/>
+  <rect width="800" height="800" fill="url(#daGlow)"/>
+
+  <g transform="translate(660 130)" opacity="0.22">
+    <path d="M0,-80 L23,-23 L80,0 L23,23 L0,80 L-23,23 L-80,0 L-23,-23 Z" fill="none" stroke="#6BC8D2" stroke-width="1.6"/>
+    <path d="M0,-52 L15,-15 L52,0 L15,15 L0,52 L-15,15 L-52,0 L-15,-15 Z" fill="none" stroke="#6BC8D2" stroke-width="1.3"/>
+  </g>
+
+  <g transform="translate(100 720)" opacity="0.4">
+    <path d="M0,0 C-3,-90 -3,-160 0,-220" stroke="#6BC8D2" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <g stroke="#6BC8D2" stroke-width="2.8" fill="none" stroke-linecap="round">
+      <path d="M0,-220 C-38,-235 -68,-232 -92,-215"/>
+      <path d="M0,-220 C38,-235 68,-232 92,-215"/>
+      <path d="M0,-225 C-30,-260 -55,-278 -78,-278"/>
+      <path d="M0,-225 C30,-260 55,-278 78,-278"/>
+      <path d="M0,-225 C-14,-275 -17,-305 -7,-320"/>
+      <path d="M0,-225 C14,-275 17,-305 7,-320"/>
+    </g>
+  </g>
+
+  <g transform="translate(155 220)">
+    <rect x="0" y="0" width="490" height="330" rx="26" fill="#0F2340" stroke="#3DAFB9" stroke-opacity="0.4" stroke-width="1.5"/>
+    <rect x="0" y="0" width="490" height="52" rx="26" fill="#3DAFB9" fill-opacity="0.12"/>
+    <circle cx="28" cy="26" r="6" fill="#EF4444" opacity="0.7"/>
+    <circle cx="50" cy="26" r="6" fill="#F59E0B" opacity="0.7"/>
+    <circle cx="72" cy="26" r="6" fill="#10B981" opacity="0.7"/>
+    <rect x="380" y="18" width="90" height="16" rx="8" fill="#6BC8D2" fill-opacity="0.2"/>
+
+    <g transform="translate(24 74)">
+      <rect width="132" height="72" rx="14" fill="#3DAFB9" fill-opacity="0.10" stroke="#6BC8D2" stroke-opacity="0.25"/>
+      <text x="16" y="30" font-family="Arial" font-size="11" fill="#6BC8D2" fill-opacity="0.85">النمو</text>
+      <text x="16" y="55" font-family="Arial" font-weight="800" font-size="22" fill="#F8FAFC">+38%</text>
+    </g>
+    <g transform="translate(172 74)">
+      <rect width="132" height="72" rx="14" fill="#3DAFB9" fill-opacity="0.10" stroke="#6BC8D2" stroke-opacity="0.25"/>
+      <text x="16" y="30" font-family="Arial" font-size="11" fill="#6BC8D2" fill-opacity="0.85">العائد</text>
+      <text x="16" y="55" font-family="Arial" font-weight="800" font-size="22" fill="#F8FAFC">4.2x</text>
+    </g>
+    <g transform="translate(320 74)">
+      <rect width="146" height="72" rx="14" fill="#3DAFB9" fill-opacity="0.10" stroke="#6BC8D2" stroke-opacity="0.25"/>
+      <text x="16" y="30" font-family="Arial" font-size="11" fill="#6BC8D2" fill-opacity="0.85">الدقة</text>
+      <text x="16" y="55" font-family="Arial" font-weight="800" font-size="22" fill="#F8FAFC">99.4%</text>
+    </g>
+
+    <g transform="translate(24 172)">
+      <rect x="0"   y="80" width="32" height="50"  rx="4" fill="url(#daBar)" opacity="0.7"/>
+      <rect x="52"  y="60" width="32" height="70"  rx="4" fill="url(#daBar)" opacity="0.75"/>
+      <rect x="104" y="30" width="32" height="100" rx="4" fill="url(#daBar)" opacity="0.85"/>
+      <rect x="156" y="50" width="32" height="80"  rx="4" fill="url(#daBar)" opacity="0.8"/>
+      <rect x="208" y="12" width="32" height="118" rx="4" fill="url(#daBar)" opacity="0.95"/>
+      <rect x="260" y="34" width="32" height="96"  rx="4" fill="url(#daBar)" opacity="0.9"/>
+      <path d="M16,105 L68,95 L120,80 L172,90 L224,71 L276,82 L328,60 L380,50 L432,35"
+            stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="16"  cy="105" r="4" fill="#6BC8D2"/>
+      <circle cx="120" cy="80"  r="4" fill="#6BC8D2"/>
+      <circle cx="224" cy="71"  r="4" fill="#6BC8D2"/>
+      <circle cx="328" cy="60"  r="4" fill="#6BC8D2"/>
+      <circle cx="432" cy="35"  r="5" fill="#6BC8D2"/>
+    </g>
+  </g>
+
+  <g opacity="0.6">
+    <circle cx="120" cy="140" r="3" fill="#6BC8D2"/>
+    <circle cx="700" cy="580" r="4" fill="#3DAFB9"/>
+    <circle cx="720" cy="380" r="2.5" fill="#6BC8D2"/>
+    <circle cx="90"  cy="500" r="3" fill="#3DAFB9"/>
+  </g>
+</svg>

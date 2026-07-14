@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="tsBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F2340"/>
+      <stop offset="100%" stop-color="#1F3A66"/>
+    </linearGradient>
+    <linearGradient id="tsShield" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3DAFB9"/>
+      <stop offset="100%" stop-color="#2D4B7E"/>
+    </linearGradient>
+    <radialGradient id="tsGlow" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#3DAFB9" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#3DAFB9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="800" fill="url(#tsBg)"/>
+  <rect width="800" height="800" fill="url(#tsGlow)"/>
+
+  <g transform="translate(400 400)" opacity="0.2" fill="none" stroke="#6BC8D2">
+    <circle r="320" stroke-width="1" stroke-dasharray="4 8"/>
+    <circle r="260" stroke-width="1"/>
+    <circle r="200" stroke-width="0.8" stroke-dasharray="2 6"/>
+  </g>
+
+  <g transform="translate(400 400)" opacity="0.35">
+    <path d="M0,-260 L60,-60 L260,0 L60,60 L0,260 L-60,60 L-260,0 L-60,-60 Z"
+          fill="none" stroke="#6BC8D2" stroke-width="1.7"/>
+    <path d="M0,-220 L45,-45 L220,0 L45,45 L0,220 L-45,45 L-220,0 L-45,-45 Z"
+          fill="none" stroke="#6BC8D2" stroke-width="1.2"/>
+  </g>
+
+  <g transform="translate(400 400)">
+    <path d="M0,-180 C-40,-180 -120,-165 -155,-140 L-155,20 C-155,110 -85,175 0,205 C85,175 155,110 155,20 L155,-140 C120,-165 40,-180 0,-180 Z"
+          fill="url(#tsShield)" stroke="#6BC8D2" stroke-width="2"/>
+    <path d="M0,-180 C-40,-180 -120,-165 -155,-140 L-155,20 C-155,110 -85,175 0,205 C85,175 155,110 155,20 L155,-140 C120,-165 40,-180 0,-180 Z"
+          fill="none" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="1" stroke-dasharray="6 6"/>
+    <path d="M0,-140 C-30,-140 -95,-128 -122,-108 L-122,15 C-122,90 -66,145 0,170 C66,145 122,90 122,15 L122,-108 C95,-128 30,-140 0,-140 Z"
+          fill="none" stroke="#6BC8D2" stroke-opacity="0.5" stroke-width="1"/>
+    <path d="M-45,5 L-15,35 L60,-45" stroke="#FFFFFF" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(0 120)">
+      <rect x="-42" y="-14" width="84" height="28" rx="14" fill="#0F2340" stroke="#6BC8D2" stroke-opacity="0.55"/>
+      <text x="0" y="5" text-anchor="middle" font-family="Arial" font-weight="800" font-size="14" fill="#6BC8D2">EST • 2016</text>
+    </g>
+  </g>
+
+  <g transform="translate(700 720)" opacity="0.32">
+    <path d="M0,0 C-4,-80 -4,-140 0,-200" stroke="#6BC8D2" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <g stroke="#6BC8D2" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <path d="M0,-200 C-36,-215 -63,-210 -85,-195"/>
+      <path d="M0,-200 C36,-215 63,-210 85,-195"/>
+      <path d="M0,-205 C-25,-240 -48,-255 -70,-253"/>
+      <path d="M0,-205 C25,-240 48,-255 70,-253"/>
+      <path d="M0,-205 C-12,-250 -14,-278 -6,-292"/>
+      <path d="M0,-205 C12,-250 14,-278 6,-292"/>
+    </g>
+  </g>
+
+  <g opacity="0.7">
+    <circle cx="150" cy="200" r="3" fill="#6BC8D2"/>
+    <circle cx="650" cy="180" r="3.5" fill="#6BC8D2"/>
+    <circle cx="120" cy="600" r="2.5" fill="#3DAFB9"/>
+  </g>
+</svg>

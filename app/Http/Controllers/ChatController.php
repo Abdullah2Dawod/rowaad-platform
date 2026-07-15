@@ -145,12 +145,23 @@ class ChatController extends Controller
             'messages'   => $c->messages->map(fn ($m) => [
                 'id'          => $m->id,
                 'sender_type' => $m->sender_type,
+                'sender_name' => $this->senderNameFor($m, $c),
                 'body'        => $m->body,
                 'is_mine'     => $this->isMineForCurrentUser($m),
                 'time'        => $m->created_at->format('H:i'),
                 'created_at'  => $m->created_at->toIso8601String(),
             ])->values(),
         ];
+    }
+
+    private function senderNameFor(Message $m, Conversation $c): ?string
+    {
+        return match ($m->sender_type) {
+            Message::SENDER_USER       => $c->user?->name ?? 'العميل',
+            Message::SENDER_CONSULTANT => $c->consultant?->full_name_ar ?? $c->consultant?->user?->name ?? 'المستشار',
+            Message::SENDER_SYSTEM     => 'النظام',
+            default                    => null,
+        };
     }
 
     private function isMineForCurrentUser(Message $m): bool

@@ -94,6 +94,9 @@
                                 class="rw-chat-msg"
                                 :class="msg.sender_type === 'system' ? 'rw-chat-msg--system' : (msg.is_mine ? 'rw-chat-msg--mine' : 'rw-chat-msg--theirs')"
                             >
+                                <div v-if="msg.sender_type !== 'system'" class="rw-chat-msg-name">
+                                    {{ msg.is_mine ? 'أنت' : (msg.sender_name || (msg.sender_type === 'consultant' ? 'المستشار' : 'العميل')) }}
+                                </div>
                                 <div class="rw-chat-msg-bubble">
                                     <div class="rw-chat-msg-body">{{ msg.body }}</div>
                                     <div class="rw-chat-msg-time">{{ msg.time }}</div>
@@ -504,7 +507,19 @@ watch(isOpen, (open) => {
 .rw-chat-body::-webkit-scrollbar-thumb { background: rgba(61, 175, 185, 0.3); border-radius: 3px; }
 
 /* Messages */
-.rw-chat-msg { display: flex; }
+.rw-chat-msg { display: flex; flex-direction: column; }
+.rw-chat-msg--mine  { align-items: flex-end; }
+.rw-chat-msg--theirs{ align-items: flex-start; }
+.rw-chat-msg-name {
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #64748B;
+    margin: 0 6px 4px;
+}
+.rw-chat-msg--mine .rw-chat-msg-name { color: #3DAFB9; }
+.rw-chat-msg--theirs .rw-chat-msg-name { color: #2D4B7E; }
+.dark .rw-chat-msg--theirs .rw-chat-msg-name { color: #6BC8D2; }
 .rw-chat-msg-bubble {
     max-width: 78%;
     padding: 10px 14px;
@@ -514,17 +529,16 @@ watch(isOpen, (open) => {
     box-shadow: 0 2px 6px -2px rgba(15, 23, 42, 0.06);
     word-wrap: break-word;
 }
-.rw-chat-msg--mine { justify-content: flex-end; }
 .rw-chat-msg--mine .rw-chat-msg-bubble {
-    background: linear-gradient(135deg, var(--brand-navy), var(--brand-teal));
+    background: linear-gradient(135deg, #2D4B7E, #3DAFB9);
     color: white;
     border-bottom-inline-end-radius: 4px;
+    box-shadow: 0 4px 10px -3px rgba(61, 175, 185, 0.35);
 }
-.rw-chat-msg--theirs { justify-content: flex-start; }
 .rw-chat-msg--theirs .rw-chat-msg-bubble {
-    background: white;
+    background: #F1F5F9;
     color: #1E293B;
-    border: 1px solid rgba(61, 175, 185, 0.15);
+    border: 1px solid rgba(148, 163, 184, 0.25);
     border-bottom-inline-start-radius: 4px;
 }
 .dark .rw-chat-msg--theirs .rw-chat-msg-bubble { background: #1E3A5F; color: #F1F5F9; border-color: rgba(107, 200, 210, 0.2); }

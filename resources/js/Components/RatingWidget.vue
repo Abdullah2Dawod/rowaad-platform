@@ -166,6 +166,19 @@ onMounted(() => { loadReviews(); loadMine(); });
 
 <style scoped>
 .rw-widget { padding: 24px; border-radius: 20px; background: var(--elevated, #fff); border: 1px solid var(--soft, rgba(15,23,42,0.08)); font-family: inherit; }
+:root.dark .rw-widget { background: rgba(18, 36, 64, 0.6); border-color: rgba(107,200,210,0.15); }
+:root.dark .rw-review { background: rgba(10, 23, 41, 0.5); border-color: rgba(107,200,210,0.1); }
+:root.dark .rw-review-name { color: #F1F5F9; }
+:root.dark .rw-review-comment { color: #CBD5E1; }
+:root.dark .rw-empty { color: #94A3B8; }
+:root.dark .rw-modal { background: #0F2340; border-color: rgba(107,200,210,0.2); color: #F1F5F9; }
+:root.dark .rw-modal-title { color: #F1F5F9; }
+:root.dark .rw-modal-sub { color: #94A3B8; }
+:root.dark .rw-textarea { background: rgba(10,23,41,0.5); color: #F1F5F9; border-color: rgba(107,200,210,0.15); }
+:root.dark .rw-textarea::placeholder { color: rgba(203,213,225,0.5); }
+:root.dark .rw-btn-secondary { color: #CBD5E1; }
+:root.dark .rw-btn-secondary:hover { color: #F1F5F9; }
+:root.dark .rw-modal-close:hover { background: rgba(255,255,255,0.08); }
 .rw-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid var(--soft, rgba(15,23,42,0.08)); }
 .rw-avg-block { display: flex; align-items: center; gap: 14px; }
 .rw-avg-num { font-size: 34px; font-weight: 900; color: #F59E0B; line-height: 1; }

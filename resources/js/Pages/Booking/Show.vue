@@ -125,13 +125,13 @@
                                 </li>
                                 <li class="flex items-start gap-3">
                                     <span :class="['w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0',
-                                        booking.completed_at ? 'bg-emerald-500 text-white' : 'bg-canvas border border-soft text-ink-muted']">
-                                        <template v-if="booking.completed_at">✓</template>
+                                        sessionEnded ? 'bg-emerald-500 text-white' : 'bg-canvas border border-soft text-ink-muted']">
+                                        <template v-if="sessionEnded">✓</template>
                                         <template v-else>4</template>
                                     </span>
                                     <div class="flex-1">
-                                        <div :class="['text-[12.5px] font-black', booking.completed_at ? 'text-ink' : 'text-ink-muted']">إتمام الجلسة</div>
-                                        <div class="text-[11px] text-ink-muted mt-0.5">{{ booking.completed_at ? formatDateTime(booking.completed_at) : 'ستكتمل تلقائياً بعد انتهاء الوقت' }}</div>
+                                        <div :class="['text-[12.5px] font-black', sessionEnded ? 'text-ink' : 'text-ink-muted']">إتمام الجلسة</div>
+                                        <div class="text-[11px] text-ink-muted mt-0.5">{{ booking.completed_at ? formatDateTime(booking.completed_at) : (sessionEnded ? 'اكتملت الجلسة' : 'ستكتمل تلقائياً بعد انتهاء الوقت') }}</div>
                                     </div>
                                 </li>
                             </ol>
@@ -190,6 +190,23 @@
                             </ul>
                         </div>
 
+                        <!-- Rating widget (shown after session ended, only for the client) -->
+                        <div v-if="sessionEnded && viewer === 'user'" class="rounded-[1.5rem] bg-gradient-to-br from-[#FDF6EC] to-white dark:from-[#0F2340]/40 dark:to-[#122440]/30 border border-amber-400/30 p-6 shadow-card">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                <h4 class="text-[14px] font-black text-ink">قيّم استشارتك</h4>
+                            </div>
+                            <p class="text-[12px] text-ink-body leading-relaxed mb-4">
+                                رأيك يساعد المستشارين على التحسّن ويوجّه المستخدمين للاختيار الأنسب.
+                            </p>
+                            <ConsultantRating
+                                :consultant-id="booking.consultant.id"
+                                :consultant-name="booking.consultant.name"
+                                :initial-avg="0"
+                                :initial-count="0"
+                            />
+                        </div>
+
                         <!-- Support -->
                         <div class="rounded-[1.5rem] bg-elevated border border-soft p-6">
                             <div class="text-[12.5px] font-black text-ink mb-1">تحتاج مساعدة؟</div>
@@ -209,13 +226,27 @@
 </template>
 
 <script setup>
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import BookingCountdown from '@/Components/BookingCountdown.vue';
+import ConsultantRating from '@/Components/ConsultantRating.vue';
 
-defineProps({
+const props = defineProps({
     booking: Object,
     viewer:  { type: String, default: 'user' },
+});
+
+// Live "session finished" — either explicitly completed OR past ends_at_iso
+const now = ref(Date.now());
+let tick = null;
+onMounted(() => { tick = setInterval(() => now.value = Date.now(), 1000); });
+onBeforeUnmount(() => { if (tick) clearInterval(tick); });
+
+const sessionEnded = computed(() => {
+    if (props.booking.completed_at) return true;
+    if (props.booking.status === 'cancelled') return true;
+    return now.value >= new Date(props.booking.ends_at_iso).getTime();
 });
 
 const formatDate = (v) => new Date(v).toLocaleDateString('ar-SA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });

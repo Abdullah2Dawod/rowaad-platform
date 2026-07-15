@@ -853,6 +853,40 @@ h1, h2, h3, h4 {
 }
 .fi-select-input option { padding: 6px 10px; }
 
+/* ─── Dark-mode native <select> — force readable option list ─── */
+/* Browsers render <option> using OS controls; we force them to inherit dark colors */
+.dark .fi-select-input,
+.dark select {
+    background-color: rgba(15, 23, 42, 0.6) !important;
+    color: #F1F5F9 !important;
+    color-scheme: dark; /* tells the browser to render native controls in dark */
+}
+.dark .fi-select-input option,
+.dark select option {
+    background-color: #0F2340 !important;
+    color: #F1F5F9 !important;
+}
+.dark .fi-select-input option:hover,
+.dark .fi-select-input option:checked,
+.dark select option:checked {
+    background: linear-gradient(90deg, #2D4B7E, #3DAFB9) !important;
+    color: #FFFFFF !important;
+}
+
+/* ─── Table wrapper: mobile horizontal scroll — never truncate columns ─── */
+.fi-ta-content, .fi-ta-table-ctn {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+}
+.fi-ta-table { min-width: max-content; }
+/* Subtle scrollbar for touch/small screens */
+.fi-ta-content::-webkit-scrollbar { height: 8px; }
+.fi-ta-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #3DAFB9, #2D4B7E);
+    border-radius: 999px;
+}
+.dark .fi-ta-content::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+
 /* ─── SIDEBAR — trimmer nav items ─── */
 .fi-sidebar-item-button {
     padding: 8px 12px !important;

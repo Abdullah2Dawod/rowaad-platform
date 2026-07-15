@@ -118,7 +118,18 @@
                                 $isMine = ($m->sender_type === 'consultant' && $currentUser->consultant && $m->sender_id === $currentUser->consultant?->id)
                                     || ($m->sender_type === 'system' && $currentUser->role === 'admin');
                             @endphp
+                            @php
+                                $senderName = match ($m->sender_type) {
+                                    'user'       => $selected->user?->name ?? 'العميل',
+                                    'consultant' => $selected->consultant?->full_name_ar ?? $selected->consultant?->user?->name ?? 'المستشار',
+                                    'system'     => 'النظام',
+                                    default      => '',
+                                };
+                            @endphp
                             <div class="rw-inbox-msg {{ $m->sender_type === 'system' ? 'rw-inbox-msg--system' : ($isMine ? 'rw-inbox-msg--mine' : 'rw-inbox-msg--theirs') }}">
+                                @if($m->sender_type !== 'system')
+                                    <div class="rw-inbox-msg-name">{{ $isMine ? 'أنت' : $senderName }}</div>
+                                @endif
                                 <div class="rw-inbox-msg-bubble">
                                     <div>{{ $m->body }}</div>
                                     <div class="rw-inbox-msg-time">{{ $m->created_at->format('H:i · Y-m-d') }}</div>
@@ -201,10 +212,14 @@
         /* Thread */
         .rw-inbox-thread { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:10px; background:linear-gradient(180deg,#FAFCFD,#F0F4FA); }
         .dark .rw-inbox-thread { background:linear-gradient(180deg, rgba(10,23,41,.4), rgba(18,36,64,.4)); }
-        .rw-inbox-msg { display:flex; }
-        .rw-inbox-msg--mine { justify-content:flex-end; }
-        .rw-inbox-msg--theirs { justify-content:flex-start; }
-        .rw-inbox-msg--system { justify-content:center; }
+        .rw-inbox-msg { display:flex; flex-direction: column; }
+        .rw-inbox-msg--mine   { align-items: flex-end; }
+        .rw-inbox-msg--theirs { align-items: flex-start; }
+        .rw-inbox-msg--system { align-items: center; }
+        .rw-inbox-msg-name { font-size: 10.5px; font-weight: 800; margin: 0 6px 4px; color: #64748B; }
+        .rw-inbox-msg--mine   .rw-inbox-msg-name { color: #3DAFB9; }
+        .rw-inbox-msg--theirs .rw-inbox-msg-name { color: #2D4B7E; }
+        .dark .rw-inbox-msg--theirs .rw-inbox-msg-name { color: #6BC8D2; }
         .rw-inbox-msg-bubble { max-width:70%; padding:12px 16px; border-radius:16px; font-size:13.5px; line-height:1.75; box-shadow:0 2px 6px -2px rgba(15,23,42,.05); }
         .rw-inbox-msg--mine .rw-inbox-msg-bubble { background:linear-gradient(135deg,#2D4B7E,#3DAFB9); color:white; border-bottom-inline-end-radius:4px; }
         .rw-inbox-msg--theirs .rw-inbox-msg-bubble { background:white; color:var(--ink); border:1px solid rgba(61,175,185,.15); border-bottom-inline-start-radius:4px; }

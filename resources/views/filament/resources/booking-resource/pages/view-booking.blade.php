@@ -29,7 +29,8 @@
                         <span class="rw-bv-chip rw-bv-chip-{{ $liveState }}">
                             <span class="rw-bv-dot"></span>
                             @switch($liveState)
-                                @case('upcoming') قادمة @break
+                                @case('upcoming') لم يحن دورها @break
+                                @case('soon') اقتربت @break
                                 @case('live') مباشرة الآن @break
                                 @case('ended') انتهى الوقت @break
                                 @case('completed') مكتملة @break
@@ -219,6 +220,7 @@
                        font-size: 10.5px; font-weight: 900; }
         .rw-bv-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: bv-blink 1.4s infinite; }
         .rw-bv-chip-upcoming { background: rgba(59,130,246,0.15); color: #2563EB; }
+        .rw-bv-chip-soon { background: rgba(245,158,11,0.15); color: #B45309; }
         .rw-bv-chip-live { background: rgba(16,185,129,0.15); color: #059669; }
         .rw-bv-chip-ended { background: rgba(245,158,11,0.15); color: #B45309; }
         .rw-bv-chip-completed { background: rgba(107,114,128,0.15); color: #4B5563; }

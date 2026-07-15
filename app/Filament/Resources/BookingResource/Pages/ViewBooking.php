@@ -8,26 +8,21 @@ use App\Notifications\BookingConfirmed;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Notifications\Notification;
-use Filament\Resources\Pages\Page;
+use Filament\Resources\Pages\ViewRecord;
 
-class ViewBooking extends Page
+class ViewBooking extends ViewRecord
 {
     protected static string $resource = BookingResource::class;
+
+    // Render our custom blade instead of the default infolist
     protected static string $view = 'filament.resources.booking-resource.pages.view-booking';
-
-    public Booking $record;
-
-    public function mount(int|string $record): void
-    {
-        $this->record = Booking::with(['user', 'consultant.user', 'consultant.specialization'])->findOrFail($record);
-    }
 
     public function getTitle(): string
     {
         return 'حجز ' . $this->record->reference;
     }
 
-    /** Consultant of the booking, and only when it's still upcoming/paid, can push a meeting link. */
+    /** Consultant of the booking, and only when it's still upcoming/paid/confirmed, can push a meeting link. */
     protected function canManageLink(): bool
     {
         $u = auth()->user();
@@ -87,7 +82,14 @@ class ViewBooking extends Page
         return $actions;
     }
 
-    public function getViewData(): array
+    // Ensure related models are eager-loaded for the blade view
+    protected function resolveRecord(int | string $key): \Illuminate\Database\Eloquent\Model
+    {
+        return parent::resolveRecord($key)->loadMissing(['user', 'consultant.user', 'consultant.specialization']);
+    }
+
+    // Pass extras into the blade
+    protected function getViewData(): array
     {
         $b = $this->record;
         return [

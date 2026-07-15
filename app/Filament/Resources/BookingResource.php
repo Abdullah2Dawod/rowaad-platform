@@ -84,7 +84,7 @@ class BookingResource extends Resource
                     ->label('المبلغ')->money('SAR')->sortable()->weight('bold')
                     ->description(fn ($record) => 'زكاة: '.number_format($record->zakat_amount, 0).' ر.س'),
 
-                Tables\Columns\TextColumn::make('status')->label('الحالة')->badge()
+                Tables\Columns\TextColumn::make('status')->label('حالة الدفع')->badge()
                     ->formatStateUsing(fn (string $state): string => [
                         'pending_payment' => 'بانتظار الدفع',
                         'paid' => 'مدفوع', 'confirmed' => 'مؤكّد',
@@ -93,6 +93,26 @@ class BookingResource extends Resource
                     ->color(fn (string $state): string => [
                         'pending_payment' => 'warning', 'paid' => 'info',
                         'confirmed' => 'success', 'cancelled' => 'danger', 'completed' => 'gray',
+                    ][$state] ?? 'gray'),
+
+                // Live session state — computed each render from time + status
+                Tables\Columns\TextColumn::make('live_state')->label('حالة الجلسة')->badge()
+                    ->state(fn (Booking $b) => $b->liveState())
+                    ->formatStateUsing(fn (string $state): string => [
+                        'upcoming'  => '⏳ لم يحن دورها',
+                        'soon'      => '🔔 اقتربت',
+                        'live'      => '🟢 جارية الآن',
+                        'ended'     => '⏱ انتهى الوقت',
+                        'completed' => '✅ مكتملة',
+                        'cancelled' => '✕ ملغاة',
+                    ][$state] ?? $state)
+                    ->color(fn (string $state): string => [
+                        'upcoming'  => 'info',
+                        'soon'      => 'warning',
+                        'live'      => 'success',
+                        'ended'     => 'warning',
+                        'completed' => 'gray',
+                        'cancelled' => 'danger',
                     ][$state] ?? 'gray'),
 
                 Tables\Columns\TextColumn::make('created_at')->label('التسجيل')->since()->sortable()->toggleable(),

@@ -91,10 +91,14 @@ class Booking extends Model
     {
         if ($this->status === self::STATUS_CANCELLED) return 'cancelled';
         if ($this->status === self::STATUS_COMPLETED) return 'completed';
-        $now = now();
-        if ($now->lt($this->startsAt())) return 'upcoming';   // countdown
-        if ($now->lt($this->endsAt()))   return 'live';       // in-session, join available
-        return 'ended';                                        // past end, awaiting mark complete
+        $now   = now();
+        $start = $this->startsAt();
+        if ($now->lt($start)) {
+            // "soon" = within the next 60 minutes
+            return $now->diffInMinutes($start, false) <= 60 ? 'soon' : 'upcoming';
+        }
+        if ($now->lt($this->endsAt())) return 'live';
+        return 'ended';
     }
 
     /** Seconds until session starts (negative if past). */

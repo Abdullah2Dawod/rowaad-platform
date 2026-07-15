@@ -105,7 +105,7 @@ class BookingResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('confirm')
-                    ->label('تأكيد وإرسال رابط الجلسة')
+                    ->iconButton()->tooltip('تأكيد وإرسال رابط الجلسة')
                     ->icon('heroicon-o-check-badge')->color('success')
                     ->modalHeading('تأكيد الحجز وإرسال رابط الجلسة')
                     ->modalDescription('اضغط "توليد رابط تلقائي" ليُنشئ النظام رابط اجتماع فوراً، أو ألصق رابطك الخاص. سيصل الرابط للعميل عبر البريد الإلكتروني تلقائياً.')
@@ -161,7 +161,7 @@ class BookingResource extends Resource
                     }),
 
                 Tables\Actions\Action::make('cancel')
-                    ->label('إلغاء')
+                    ->iconButton()->tooltip('إلغاء الحجز')
                     ->icon('heroicon-o-x-circle')->color('danger')
                     ->modalHeading('إلغاء الحجز')
                     ->modalDescription('سيتم إشعار العميل بالإلغاء وسبب الإلغاء عبر البريد الإلكتروني.')
@@ -189,7 +189,10 @@ class BookingResource extends Resource
                             ->body("أُبلغ العميل ({$b->user->email}) بالإلغاء وسببه")
                             ->warning()->send();
                     }),
-                Tables\Actions\ViewAction::make()->iconButton()->tooltip('عرض'),
+                Tables\Actions\Action::make('view_details')
+                    ->iconButton()->tooltip('عرض تفاصيل الحجز')
+                    ->icon('heroicon-o-eye')->color('gray')
+                    ->url(fn (Booking $b) => static::getUrl('view', ['record' => $b->id])),
             ])
             ->defaultSort('created_at', 'desc');
     }
@@ -211,6 +214,7 @@ class BookingResource extends Resource
         return [
             'index'  => Pages\ListBookings::route('/'),
             'create' => Pages\CreateBooking::route('/create'),
+            'view'   => Pages\ViewBooking::route('/{record}'),
             'edit'   => Pages\EditBooking::route('/{record}/edit'),
         ];
     }

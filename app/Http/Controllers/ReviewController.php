@@ -81,6 +81,16 @@ class ReviewController extends Controller
             ]
         );
 
+        $target = $modelClass::find($id);
+        $label  = $target->title ?? $target->name ?? '—';
+        \App\Support\AdminNotifier::ping(
+            'تقييم جديد ⭐ ' . $review->rating,
+            $request->user()->name . ' قيّم: ' . $label,
+            null,
+            'heroicon-o-star',
+            $review->rating >= 4 ? 'success' : ($review->rating <= 2 ? 'danger' : 'warning')
+        );
+
         return response()->json([
             'ok'      => true,
             'message' => 'شكراً! تم تسجيل تقييمك.',

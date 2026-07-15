@@ -273,10 +273,16 @@ class ServiceRequestController extends Controller
         ]);
 
         try {
-            ServiceRequest::create($data + [
+            $sr = ServiceRequest::create($data + [
                 'user_id' => $request->user()?->id,
                 'status'  => 'new',
             ]);
+            \App\Support\AdminNotifier::ping(
+                'طلب خدمة جديد',
+                ($data['contact_name'] ?? 'عميل') . ' — ' . $data['service_title'],
+                '/admin/service-requests/' . $sr->id . '/edit',
+                'heroicon-o-inbox-arrow-down', 'success'
+            );
         } catch (\Throwable $e) {
             Log::warning('[Service request] failed: ' . $e->getMessage());
         }

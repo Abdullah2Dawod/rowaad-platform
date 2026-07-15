@@ -197,30 +197,53 @@ class BookingController extends Controller
      */
     public function show(Booking $booking, Request $request): Response
     {
-        abort_unless($booking->user_id === $request->user()->id, 403);
+        $isOwner      = $booking->user_id === $request->user()->id;
+        $isConsultant = $booking->consultant->user_id === $request->user()->id;
+        $isAdmin      = $request->user()->role === 'admin';
+        abort_unless($isOwner || $isConsultant || $isAdmin, 403);
 
-        $booking->load(['consultant.user', 'consultant.specialization']);
+        $booking->load(['consultant.user', 'consultant.specialization', 'user']);
 
-        return Inertia::render('Booking/Success', [
-            'booking' => [
-                'id'             => $booking->id,
-                'reference'      => $booking->reference,
-                'preferred_date' => $booking->preferred_date->format('Y-m-d'),
-                'preferred_time' => $booking->preferred_time,
-                'duration_min'   => $booking->duration_min,
-                'service_title'  => $booking->service_title,
-                'amount'         => (float) $booking->amount,
-                'status'         => $booking->status,
-                'paid_at'        => $booking->paid_at?->toIso8601String(),
-                'meeting_url'    => $booking->meeting_url,
-                'consultant' => [
-                    'id'     => $booking->consultant->id,
-                    'name'   => $booking->consultant->full_name_ar ?: $booking->consultant->user->name,
-                    'title'  => $booking->consultant->professional_title,
-                    'avatar' => $booking->consultant->avatar_url,
-                ],
-            ],
+        return Inertia::render('Booking/Show', [
+            'booking' => $this->presentBooking($booking),
+            'viewer'  => $isOwner ? 'user' : ($isConsultant ? 'consultant' : 'admin'),
         ]);
+    }
+
+    /** Presentable booking with all live-state metadata. */
+    private function presentBooking(Booking $b): array
+    {
+        return [
+            'id'                 => $b->id,
+            'reference'          => $b->reference,
+            'preferred_date'     => $b->preferred_date->format('Y-m-d'),
+            'preferred_time'     => $b->preferred_time,
+            'starts_at_iso'      => $b->startsAt()->toIso8601String(),
+            'ends_at_iso'        => $b->endsAt()->toIso8601String(),
+            'duration_min'       => $b->duration_min,
+            'service_title'      => $b->service_title,
+            'notes'              => $b->notes,
+            'amount'             => (float) $b->amount,
+            'status'             => $b->status,
+            'live_state'         => $b->liveState(),
+            'seconds_until_start' => $b->secondsUntilStart(),
+            'seconds_until_end'   => $b->secondsUntilEnd(),
+            'paid_at'            => $b->paid_at?->toIso8601String(),
+            'confirmed_at'       => $b->confirmed_at?->toIso8601String(),
+            'completed_at'       => $b->completed_at?->toIso8601String(),
+            'meeting_url'        => $b->meeting_url,
+            'consultant' => [
+                'id'     => $b->consultant->id,
+                'name'   => $b->consultant->full_name_ar ?: $b->consultant->user->name,
+                'title'  => $b->consultant->professional_title,
+                'avatar' => $b->consultant->avatar_url,
+                'specialization' => $b->consultant->specialization?->only(['name_ar','icon']),
+            ],
+            'client' => [
+                'name'  => $b->user->name,
+                'email' => $b->user->email,
+            ],
+        ];
     }
 
     /**
@@ -233,17 +256,22 @@ class BookingController extends Controller
             ->latest()
             ->paginate(10)
             ->through(fn (Booking $b) => [
-                'id'             => $b->id,
-                'reference'      => $b->reference,
-                'preferred_date' => $b->preferred_date->format('Y-m-d'),
-                'preferred_time' => $b->preferred_time,
-                'duration_min'   => $b->duration_min,
-                'amount'         => (float) $b->amount,
-                'status'         => $b->status,
+                'id'                  => $b->id,
+                'reference'           => $b->reference,
+                'preferred_date'      => $b->preferred_date->format('Y-m-d'),
+                'preferred_time'      => $b->preferred_time,
+                'starts_at_iso'       => $b->startsAt()->toIso8601String(),
+                'ends_at_iso'         => $b->endsAt()->toIso8601String(),
+                'duration_min'        => $b->duration_min,
+                'amount'              => (float) $b->amount,
+                'status'              => $b->status,
+                'live_state'          => $b->liveState(),
+                'meeting_url'         => $b->meeting_url,
                 'consultant' => [
                     'id'     => $b->consultant->id,
                     'name'   => $b->consultant->full_name_ar ?: $b->consultant->user->name,
                     'avatar' => $b->consultant->avatar_url,
+                    'title'  => $b->consultant->professional_title,
                 ],
             ]);
 

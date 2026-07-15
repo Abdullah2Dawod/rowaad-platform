@@ -73,6 +73,41 @@ class Booking extends Model
     public function isPaid(): bool      { return in_array($this->status, [self::STATUS_PAID, self::STATUS_CONFIRMED, self::STATUS_COMPLETED]); }
     public function isConfirmed(): bool { return $this->status === self::STATUS_CONFIRMED; }
 
+    /** Full session start as a Carbon datetime (Asia/Riyadh implicit via app timezone). */
+    public function startsAt(): \Carbon\Carbon
+    {
+        $date = $this->preferred_date instanceof \Carbon\Carbon ? $this->preferred_date : \Carbon\Carbon::parse($this->preferred_date);
+        $time = $this->preferred_time; // e.g. "14:30:00"
+        return $date->copy()->setTimeFromTimeString($time);
+    }
+
+    public function endsAt(): \Carbon\Carbon
+    {
+        return $this->startsAt()->copy()->addMinutes((int) ($this->duration_min ?? 60));
+    }
+
+    /** Live status derived from time + booking status. */
+    public function liveState(): string
+    {
+        if ($this->status === self::STATUS_CANCELLED) return 'cancelled';
+        if ($this->status === self::STATUS_COMPLETED) return 'completed';
+        $now = now();
+        if ($now->lt($this->startsAt())) return 'upcoming';   // countdown
+        if ($now->lt($this->endsAt()))   return 'live';       // in-session, join available
+        return 'ended';                                        // past end, awaiting mark complete
+    }
+
+    /** Seconds until session starts (negative if past). */
+    public function secondsUntilStart(): int
+    {
+        return (int) now()->diffInSeconds($this->startsAt(), false);
+    }
+
+    public function secondsUntilEnd(): int
+    {
+        return (int) now()->diffInSeconds($this->endsAt(), false);
+    }
+
     /**
      * Compute total amount for a session based on consultant hourly rate + duration.
      * Falls back to linear pro-rating for non-standard durations.

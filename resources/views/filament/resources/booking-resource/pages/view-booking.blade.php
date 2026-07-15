@@ -46,8 +46,40 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
             {{-- LEFT: hourglass + details --}}
             <div class="lg:col-span-7 space-y-5">
-                {{-- Hourglass card --}}
-                <div class="rw-bv-card rw-bv-glass">
+                {{-- Session-ended lock banner --}}
+                <div x-show="state === 'ended' || state === 'completed'"
+                     class="rw-bv-card"
+                     :class="'{{ $b->status }}' === 'cancelled' ? 'rw-bv-ended-red' : 'rw-bv-ended-green'">
+                    <div class="text-center py-6">
+                        <div class="rw-bv-ended-icon" :class="'{{ $b->status }}' === 'cancelled' ? 'rw-bv-ended-icon-red' : 'rw-bv-ended-icon-green'">
+                            <template x-if="'{{ $b->status }}' !== 'cancelled'">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:32px;height:32px"><path stroke-linecap="round" d="M5 13l4 4L19 7"/></svg>
+                            </template>
+                            <template x-if="'{{ $b->status }}' === 'cancelled'">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:32px;height:32px"><path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </template>
+                        </div>
+                        <h3 class="rw-bv-ended-h">
+                            @if($b->status === 'cancelled') تم إلغاء الحجز @else اكتملت الجلسة @endif
+                        </h3>
+                        <p class="rw-bv-ended-p">
+                            @if($b->status === 'cancelled')
+                                تم إلغاء هذا الحجز. لا يمكن إجراء أي عملية عليه.
+                            @elseif($b->meeting_url)
+                                انتهى وقت الاستشارة. رابط الجلسة مغلق ولا يمكن استخدامه بعد الآن.
+                            @else
+                                انتهى وقت الاستشارة ولم يتم إرسال رابط الجلسة. الحجز مقفل نهائياً.
+                            @endif
+                        </p>
+                        <div class="rw-bv-locked-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path stroke-linecap="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            الحجز مغلق
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Hourglass card (hidden after session ends) --}}
+                <div x-show="state === 'upcoming' || state === 'live'" class="rw-bv-card rw-bv-glass">
                     <div class="flex flex-col items-center gap-4">
                         <svg viewBox="0 0 200 260" class="rw-bv-hourglass"
                              :class="{ 'rw-bv-hg-live': state === 'live', 'rw-bv-hg-ended': state === 'ended' || state === 'completed' }">
@@ -204,6 +236,23 @@
                        box-shadow: 0 20px 40px -20px rgba(45,75,126,0.4); }
         .rw-bv-hero-glow { position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%;
                             background: radial-gradient(circle, rgba(61,175,185,0.30), transparent 70%); }
+
+        .rw-bv-ended-green { background: linear-gradient(160deg, #ECFDF5, #FFFFFF); border-color: #A7F3D0; }
+        .dark .rw-bv-ended-green { background: linear-gradient(160deg, rgba(15,42,30,0.6), rgba(10,31,23,0.6)); border-color: rgba(16,185,129,0.35); }
+        .rw-bv-ended-red { background: linear-gradient(160deg, #FEF2F2, #FFFFFF); border-color: #FCA5A5; }
+        .dark .rw-bv-ended-red { background: linear-gradient(160deg, rgba(63,20,20,0.6), rgba(31,8,8,0.6)); border-color: rgba(239,68,68,0.35); }
+        .rw-bv-ended-icon { width:64px; height:64px; border-radius: 50%; display:inline-flex; align-items:center; justify-content:center; margin-bottom: 14px; }
+        .rw-bv-ended-icon-green { background: rgba(16,185,129,0.15); color: #059669; }
+        .rw-bv-ended-icon-red { background: rgba(239,68,68,0.15); color: #DC2626; }
+        .rw-bv-ended-h { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+        .rw-bv-ended-green .rw-bv-ended-h { color: #065F46; } .dark .rw-bv-ended-green .rw-bv-ended-h { color: #6EE7B7; }
+        .rw-bv-ended-red .rw-bv-ended-h { color: #7F1D1D; } .dark .rw-bv-ended-red .rw-bv-ended-h { color: #FCA5A5; }
+        .rw-bv-ended-p { font-size: 13px; line-height: 1.7; max-width: 420px; margin: 0 auto; }
+        .rw-bv-ended-green .rw-bv-ended-p { color: rgba(6,95,70,0.85); } .dark .rw-bv-ended-green .rw-bv-ended-p { color: rgba(110,231,183,0.85); }
+        .rw-bv-ended-red .rw-bv-ended-p { color: rgba(127,29,29,0.85); } .dark .rw-bv-ended-red .rw-bv-ended-p { color: rgba(252,165,165,0.85); }
+        .rw-bv-locked-btn { display:inline-flex; align-items:center; gap:8px; margin-top: 20px; padding: 10px 22px; border-radius: 999px;
+            background: rgba(100,116,139,0.18); color: #64748B; font-weight: 900; font-size: 12.5px; cursor: not-allowed; }
+        .dark .rw-bv-locked-btn { background: rgba(51,65,85,0.4); color: #94A3B8; }
 
         .rw-bv-card { padding: 22px; border-radius: 18px; background: white; border: 1px solid rgba(15,23,42,0.08);
                        box-shadow: 0 2px 8px -2px rgba(15,23,42,0.05); }

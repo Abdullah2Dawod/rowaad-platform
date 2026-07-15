@@ -44,8 +44,46 @@
                 <div class="grid grid-cols-12 gap-6">
                     <!-- LEFT: countdown + details -->
                     <div class="col-span-12 lg:col-span-7 space-y-6">
-                        <!-- Countdown hourglass -->
-                        <BookingCountdown
+                        <!-- Session-ended lock banner (replaces countdown when session finished) -->
+                        <div v-if="sessionEnded" class="rounded-[1.5rem] overflow-hidden border shadow-card"
+                             :class="booking.status === 'cancelled'
+                                        ? 'bg-gradient-to-br from-red-50 to-white dark:from-[#3F1414] dark:to-[#1F0808] border-red-200 dark:border-red-500/30'
+                                        : 'bg-gradient-to-br from-emerald-50 to-white dark:from-[#0F2A1E] dark:to-[#0A1F17] border-emerald-200 dark:border-emerald-500/30'">
+                            <div class="p-7 lg:p-9 text-center">
+                                <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4"
+                                     :class="booking.status === 'cancelled' ? 'bg-red-100 dark:bg-red-500/20' : 'bg-emerald-100 dark:bg-emerald-500/20'">
+                                    <svg v-if="booking.status !== 'cancelled'" class="w-8 h-8 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    <svg v-else class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-[18px] font-black mb-2"
+                                    :class="booking.status === 'cancelled' ? 'text-red-800 dark:text-red-300' : 'text-emerald-800 dark:text-emerald-300'">
+                                    {{ booking.status === 'cancelled' ? 'تم إلغاء الحجز' : 'اكتملت الجلسة' }}
+                                </h3>
+                                <p class="text-[13px] leading-relaxed max-w-md mx-auto"
+                                   :class="booking.status === 'cancelled' ? 'text-red-700/80 dark:text-red-300/80' : 'text-emerald-700/80 dark:text-emerald-300/80'">
+                                    {{ booking.status === 'cancelled'
+                                       ? 'تم إلغاء هذا الحجز. لا يمكن الانضمام أو التعديل.'
+                                       : (booking.meeting_url
+                                          ? 'انتهى وقت الاستشارة. رابط الجلسة مغلق ولا يمكن استخدامه بعد الآن.'
+                                          : 'انتهى وقت الاستشارة ولم يتم إرسال رابط الجلسة. الحجز مقفل نهائياً.') }}
+                                </p>
+
+                                <!-- Locked join button (visual only, disabled) -->
+                                <div class="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-slate-200/60 dark:bg-slate-700/40 text-slate-500 dark:text-slate-400 text-[13px] font-black cursor-not-allowed">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                    الحجز مغلق
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Countdown hourglass (only while active) -->
+                        <BookingCountdown v-else
                             :starts-at="booking.starts_at_iso"
                             :ends-at="booking.ends_at_iso"
                             :meeting-url="booking.meeting_url"

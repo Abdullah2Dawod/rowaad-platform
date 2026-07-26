@@ -86,14 +86,12 @@ class ConsultantResource extends Resource
                 ->description('صورة المستشار كما تظهر في بطاقة المستشار وصفحته — يُفضّل مقاس مربّع 800×800')
                 ->schema([
                     Forms\Components\FileUpload::make('avatar_path')
-                        ->hiddenLabel()->image()
-                        ->imageEditor()->imageEditorAspectRatios(['1:1', '4:5', '3:4'])
-                        ->imagePreviewHeight('220')->avatar()
+                        ->hiddenLabel()->image()->avatar()
                         ->disk('public')->directory('consultants/avatars')
                         ->maxSize(5120)
                         ->downloadable()->openable()->deletable()
                         ->columnSpanFull()
-                        ->helperText('اسحب صورة أو اضغط للاختيار · JPG/PNG/WebP · الحد الأقصى 5MB'),
+                        ->helperText('اسحب صورة أو اضغط للاختيار · JPG/PNG/WebP · الحد الأقصى 5MB · لا يوجد اقتصاص — رفع الصورة كاملة'),
                 ]),
 
             Forms\Components\Section::make('الملف الشخصي')

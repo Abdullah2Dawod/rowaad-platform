@@ -47,11 +47,9 @@ class ServiceResource extends Resource
                     ->helperText('مثال: graph-up-bold-duotone'),
                 Forms\Components\FileUpload::make('hero_image')
                     ->label('صورة الغلاف')->image()
-                    ->imageEditor()->imageEditorAspectRatios(['16:9', '4:3'])
-                    ->imagePreviewHeight('200')
                     ->disk('public')->directory('services')->maxSize(5120)
                     ->downloadable()->openable()->deletable()
-                    ->helperText('صورة الخدمة كما تظهر في بطاقتها · 1200×800 · حتى 5MB'),
+                    ->helperText('صورة الخدمة كما تظهر في بطاقتها · JPG/PNG/WebP · حتى 5MB · لا يوجد اقتصاص'),
             ])->columns(2),
 
             Forms\Components\Section::make('المحتوى الأساسي')->schema([

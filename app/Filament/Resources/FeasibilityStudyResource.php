@@ -43,19 +43,12 @@ class FeasibilityStudyResource extends Resource
                 ->description('الصورة التي تظهر في بطاقة الدراسة على الموقع — يُفضّل مقاس 1200×800')
                 ->schema([
                     Forms\Components\FileUpload::make('cover_image')
-                        ->hiddenLabel()
-                        ->image()
-                        ->imageEditor()
-                        ->imageEditorAspectRatios(['16:9', '4:3', '1:1'])
-                        ->imagePreviewHeight('220')
-                        ->disk('public')
-                        ->directory('feasibility/covers')
+                        ->hiddenLabel()->image()
+                        ->disk('public')->directory('feasibility/covers')
                         ->maxSize(5120)
-                        ->downloadable()
-                        ->openable()
-                        ->deletable()
+                        ->downloadable()->openable()->deletable()
                         ->columnSpanFull()
-                        ->helperText('اسحب صورة أو اضغط للاختيار. صيغ مقبولة: JPG, PNG, WebP · الحد الأقصى: 5MB'),
+                        ->helperText('اسحب صورة أو اضغط للاختيار. JPG, PNG, WebP · حتى 5MB · لا يوجد اقتصاص'),
                 ]),
 
             Forms\Components\Section::make('البيانات الأساسية')->columns(2)->schema([

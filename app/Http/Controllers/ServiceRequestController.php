@@ -27,7 +27,7 @@ class ServiceRequestController extends Controller
             'title'        => $s->title,
             'tagline'      => $s->tagline,
             'icon'         => $s->icon,
-            'hero_image'   => $s->hero_image,
+            'hero_image'   => \App\Support\Media::url($s->hero_image, \App\Support\Media::servicePlaceholder()),
             'summary'      => $s->summary,
             'includes'     => $s->includes ?? [],
             'deliverables' => $s->deliverables ?? [],

@@ -59,12 +59,10 @@ class InvestmentOpportunityResource extends Resource
             Forms\Components\Section::make('العناصر البصرية')->schema([
                 Forms\Components\FileUpload::make('cover_image')
                     ->label('صورة الغلاف')->image()
-                    ->imageEditor()->imageEditorAspectRatios(['16:9', '4:3', '1:1'])
-                    ->imagePreviewHeight('220')
                     ->disk('public')->directory('investments')->maxSize(5120)
                     ->downloadable()->openable()->deletable()
                     ->columnSpanFull()
-                    ->helperText('صورة الفرصة الاستثمارية · 1200×800 · حتى 5MB'),
+                    ->helperText('صورة الفرصة الاستثمارية · JPG/PNG/WebP · حتى 5MB · لا يوجد اقتصاص'),
             ]),
 
             Forms\Components\Section::make('المصدر والتوثيق')->schema([

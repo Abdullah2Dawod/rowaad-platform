@@ -527,6 +527,37 @@ h1, h2, h3, h4 {
 }
 .dark .filepond--label-action { color: var(--rowaad-teal-soft) !important; }
 
+/* ─── FileUpload preview thumbnail + Image Editor modal fixes ─── */
+/* Circular avatar preview (used on ConsultantResource.avatar_path) */
+.fi-fo-file-upload-circle .filepond--image-preview-wrapper,
+.fi-fo-file-upload-circle .filepond--item,
+.fi-fo-file-upload-circle .filepond--file {
+    border-radius: 50% !important;
+    overflow: hidden !important;
+}
+.fi-fo-file-upload-circle .filepond--image-preview {
+    object-fit: cover !important;
+}
+
+/* Image Editor modal — force full width, prevent broken cropper canvas */
+.fi-modal[wire\:key*="image-editor"] .fi-modal-window,
+.fi-modal-window:has(.cropperjs-container),
+.fi-modal-window:has(canvas.cropper-canvas) {
+    max-width: min(92vw, 900px) !important;
+    width: 92vw !important;
+}
+.cropper-container, .cropper-wrap-box, .cropper-canvas, .cropper-crop-box {
+    max-width: 100% !important;
+}
+.cropper-container img { display: block !important; max-width: none !important; }
+.cropper-view-box, .cropper-face { outline-color: var(--rowaad-teal) !important; }
+.cropper-line, .cropper-point { background-color: var(--rowaad-teal) !important; }
+/* Actions row inside cropper modal */
+.fi-modal-window:has(.cropper-container) .fi-modal-actions { gap: 8px; flex-wrap: wrap; }
+/* Dark-mode cropper background */
+.dark .cropper-modal { background: rgba(10, 23, 41, 0.85) !important; }
+.dark .cropper-bg { background-image: none !important; background: rgba(15, 35, 64, 0.5) !important; }
+
 /* ─── Print styles for invoices (from admin panel) ─── */
 @media print {
     .fi-topbar, .fi-sidebar, .fi-page-header { display: none !important; }

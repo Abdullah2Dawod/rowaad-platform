@@ -10,6 +10,35 @@
 :root { color-scheme: light; }
 :root.dark, html.dark { color-scheme: dark; }
 
+/* === Explicit dark-mode readability for native <select> options across the public site ===
+   Fixes the invisible white-on-white options bug in booking/service/filter forms. */
+:root.dark select,
+html.dark select {
+    background-color: rgba(15, 23, 42, 0.6);
+    color: #F1F5F9;
+    color-scheme: dark;
+}
+:root.dark select option,
+html.dark select option {
+    background-color: #0F2340 !important;
+    color: #F1F5F9 !important;
+}
+:root.dark select option:checked,
+html.dark select option:checked,
+:root.dark select option:hover,
+html.dark select option:hover {
+    background: linear-gradient(90deg, #2D4B7E, #3DAFB9) !important;
+    color: #FFFFFF !important;
+}
+/* Native date/time inputs — force dark palette + brand caret */
+:root.dark input[type="date"],
+:root.dark input[type="time"],
+:root.dark input[type="datetime-local"] {
+    color-scheme: dark;
+    background-color: rgba(15, 23, 42, 0.6);
+    color: #F1F5F9;
+}
+
 @theme {
     /* === Typography — professional consulting duo ===
        Alexandria: geometric, technical → headings/display

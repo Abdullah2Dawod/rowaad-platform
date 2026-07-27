@@ -853,15 +853,11 @@ h1, h2, h3, h4 {
 .fi-ta-filters-form { padding: 12px 16px !important; }
 
 /* ─── Fix duplicated ⋮ toolbar button ─── */
-/* Filament v3 shows two triggers side-by-side in the table toolbar:
-   1. "Toggle columns" (⋮) — hide/show columns
-   2. "Filters" (funnel or ⋮) — active filter set
-   The user only needs ONE settings menu. Hide the column-toggle trigger
-   (Filters trigger stays because it's more functional). */
-.fi-ta-toggle-columns-trigger,
-.fi-ta-header-toolbar > * .fi-ta-toggle-columns-form,
-button[aria-label="Toggle columns"],
-button[aria-label="تبديل الأعمدة"] {
+/* Filament v3 renders TWO triggers in the top-right of the table toolbar:
+   1. `.fi-ta-col-toggle`     — hide/show columns (⋮)
+   2. `.fi-ta-filters-dropdown` — active filters (⋮ or funnel)
+   Both look like ⋮ side-by-side. Keep filters, hide column-toggle. */
+.fi-ta-col-toggle {
     display: none !important;
 }
 

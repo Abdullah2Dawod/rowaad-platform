@@ -75,8 +75,8 @@ class WithdrawalRequestResource extends Resource
                 Tables\Columns\TextColumn::make('reference')->label('المرجع')->fontFamily('mono')->searchable(),
                 Tables\Columns\TextColumn::make('consultant.user.name')->label('المستشار')->searchable(),
                 Tables\Columns\TextColumn::make('amount')->label('المبلغ')->money('SAR')->sortable(),
-                Tables\Columns\TextColumn::make('bank_name')->label('البنك')->toggleable(),
-                Tables\Columns\TextColumn::make('iban')->label('IBAN')->fontFamily('mono')->toggleable()->copyable(),
+                Tables\Columns\TextColumn::make('bank_name')->label('البنك'),
+                Tables\Columns\TextColumn::make('iban')->label('IBAN')->fontFamily('mono')->copyable(),
                 Tables\Columns\TextColumn::make('status')->label('الحالة')->badge()
                     ->color(fn ($state) => match ($state) {
                         'pending' => 'warning', 'approved' => 'info',
@@ -86,7 +86,7 @@ class WithdrawalRequestResource extends Resource
                         'pending'=>'قيد المراجعة','approved'=>'مُعتمَد','paid'=>'تم التحويل','rejected'=>'مرفوض',
                     ][$state] ?? $state),
                 Tables\Columns\TextColumn::make('created_at')->label('التقديم')->since()->sortable(),
-                Tables\Columns\TextColumn::make('paid_at')->label('تاريخ التحويل')->dateTime()->toggleable(),
+                Tables\Columns\TextColumn::make('paid_at')->label('تاريخ التحويل')->dateTime(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')->options([

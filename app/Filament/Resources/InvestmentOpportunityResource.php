@@ -175,8 +175,8 @@ class InvestmentOpportunityResource extends Resource
                 Tables\Columns\TextColumn::make('title')->label('العنوان')->searchable()->weight('bold')
                     ->description(fn ($record) => $record->subtitle),
                 Tables\Columns\TextColumn::make('sector')->label('القطاع')->badge()->color('info'),
-                Tables\Columns\TextColumn::make('city')->label('المدينة')->toggleable()->color('gray'),
-                Tables\Columns\TextColumn::make('investment_min')->label('من')->money('SAR')->toggleable(),
+                Tables\Columns\TextColumn::make('city')->label('المدينة')->color('gray'),
+                Tables\Columns\TextColumn::make('investment_min')->label('من')->money('SAR'),
                 Tables\Columns\TextColumn::make('expected_roi')->label('العائد')
                     ->formatStateUsing(fn ($state) => $state ? "{$state}%" : '—')
                     ->color('success')->weight('bold'),

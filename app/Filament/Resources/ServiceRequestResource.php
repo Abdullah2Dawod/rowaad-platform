@@ -60,8 +60,8 @@ class ServiceRequestResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('contact_name')->label('الاسم')->searchable(),
                 Tables\Columns\TextColumn::make('service_title')->label('الطلب')->searchable(),
-                Tables\Columns\TextColumn::make('company_name')->label('الشركة')->toggleable(),
-                Tables\Columns\TextColumn::make('contact_email')->label('البريد')->toggleable()->copyable(),
+                Tables\Columns\TextColumn::make('company_name')->label('الشركة'),
+                Tables\Columns\TextColumn::make('contact_email')->label('البريد')->copyable(),
                 Tables\Columns\TextColumn::make('status')->label('الحالة')->badge()->color(fn ($state) => match($state) {
                     'new'=>'info','contacted'=>'warning','qualified'=>'primary','won'=>'success','lost'=>'danger',default=>'gray',
                 })->formatStateUsing(fn ($state) => [

@@ -285,13 +285,13 @@ class ConsultantResource extends Resource
                     ->label('تاريخ التقديم')
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
-                    ->toggleable(),
+                    ,
 
                 Tables\Columns\TextColumn::make('approved_at')
                     ->label('اُعتمد في')
                     ->dateTime('Y-m-d')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ,
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')

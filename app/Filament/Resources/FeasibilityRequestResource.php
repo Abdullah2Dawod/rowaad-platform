@@ -78,8 +78,8 @@ class FeasibilityRequestResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('reference')->label('المرجع')->fontFamily('mono')->searchable(),
                 Tables\Columns\TextColumn::make('contact_name')->label('الاسم')->searchable(),
-                Tables\Columns\TextColumn::make('project_title')->label('المشروع')->limit(40)->toggleable(),
-                Tables\Columns\TextColumn::make('sector')->label('القطاع')->badge()->toggleable(),
+                Tables\Columns\TextColumn::make('project_title')->label('المشروع')->limit(40),
+                Tables\Columns\TextColumn::make('sector')->label('القطاع')->badge(),
                 Tables\Columns\TextColumn::make('status')->label('الحالة')->badge()
                     ->color(fn ($state) => match ($state) {
                         'new'=>'info','in_review'=>'warning',
@@ -90,7 +90,7 @@ class FeasibilityRequestResource extends Resource
                         'new'=>'جديد','in_review'=>'مراجعة','quoted'=>'مُسعَّر','accepted'=>'مقبول',
                         'in_progress'=>'قيد التنفيذ','delivered'=>'مُسلَّم','closed'=>'مغلق','rejected'=>'مرفوض',
                     ][$state] ?? $state),
-                Tables\Columns\TextColumn::make('estimated_budget')->label('الميزانية')->money('SAR')->toggleable(),
+                Tables\Columns\TextColumn::make('estimated_budget')->label('الميزانية')->money('SAR'),
                 Tables\Columns\TextColumn::make('created_at')->label('التقديم')->since()->sortable(),
             ])
             ->filters([

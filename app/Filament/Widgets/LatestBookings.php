@@ -30,7 +30,7 @@ class LatestBookings extends BaseWidget
                     ->description(fn ($record) => $record->user?->email),
                 Tables\Columns\TextColumn::make('consultant.full_name_ar')
                     ->label('المستشار')
-                    ->toggleable(),
+                    ,
                 Tables\Columns\TextColumn::make('preferred_date')
                     ->label('التاريخ')->date('Y-m-d'),
                 Tables\Columns\TextColumn::make('amount')->label('المبلغ')->money('SAR'),
@@ -50,7 +50,7 @@ class LatestBookings extends BaseWidget
                         'completed'       => 'gray',
                     ][$state] ?? 'gray'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('منذ')->since()->toggleable(),
+                    ->label('منذ')->since(),
             ])
             ->actions([
                 Tables\Actions\Action::make('open')

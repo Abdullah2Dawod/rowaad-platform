@@ -155,7 +155,7 @@ class FeasibilityStudyResource extends Resource
                     ->icon(fn (string $state) => $state === 'user' ? 'heroicon-o-user' : 'heroicon-o-shield-check'),
                 Tables\Columns\TextColumn::make('uploader.name')->label('المرسِل')
                     ->formatStateUsing(fn ($state) => $state ?: 'المنصة')
-                    ->color('gray')->size('xs')->toggleable(),
+                    ->color('gray')->size('xs'),
                 Tables\Columns\TextColumn::make('price')->label('السعر')
                     ->formatStateUsing(fn ($state, $record) => $record->is_free ? 'مجاناً' : number_format((float) $state, 0) . ' ر.س')
                     ->sortable(),
@@ -169,7 +169,7 @@ class FeasibilityStudyResource extends Resource
                         'rejected' => 'danger', 'hidden' => 'gray',
                     ][$state] ?? 'gray'),
                 Tables\Columns\TextColumn::make('purchases_count')->label('المبيعات')->sortable(),
-                Tables\Columns\TextColumn::make('views_count')->label('المشاهدات')->sortable()->toggleable(),
+                Tables\Columns\TextColumn::make('views_count')->label('المشاهدات')->sortable(),
                 Tables\Columns\TextColumn::make('rating_avg')->label('التقييم')->sortable()
                     ->formatStateUsing(fn ($state, $record) => $record->rating_count > 0
                         ? '⭐ ' . number_format((float) $state, 1) . ' (' . $record->rating_count . ')'

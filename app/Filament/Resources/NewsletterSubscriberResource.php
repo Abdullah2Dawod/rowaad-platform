@@ -44,11 +44,11 @@ class NewsletterSubscriberResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('email')->label('البريد')->searchable()->copyable(),
-                Tables\Columns\TextColumn::make('name')->label('الاسم')->toggleable(),
+                Tables\Columns\TextColumn::make('name')->label('الاسم'),
                 Tables\Columns\TextColumn::make('locale')->label('اللغة')->badge(),
                 Tables\Columns\IconColumn::make('confirmed_at')->label('مؤكَّد')->boolean(),
                 Tables\Columns\IconColumn::make('unsubscribed_at')->label('ملغى')->boolean(),
-                Tables\Columns\TextColumn::make('source')->label('المصدر')->toggleable(),
+                Tables\Columns\TextColumn::make('source')->label('المصدر'),
                 Tables\Columns\TextColumn::make('created_at')->label('الاشتراك')->since()->sortable(),
             ])
             ->filters([

@@ -54,9 +54,9 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('role')->label('الدور')->badge()
                     ->formatStateUsing(fn (string $state): string => ['user'=>'مستخدم','consultant'=>'مستشار','admin'=>'مدير'][$state] ?? $state)
                     ->color(fn (string $state): string => ['admin'=>'danger','consultant'=>'info','user'=>'gray'][$state] ?? 'gray'),
-                Tables\Columns\TextColumn::make('phone')->label('الجوال')->toggleable(),
+                Tables\Columns\TextColumn::make('phone')->label('الجوال'),
                 Tables\Columns\IconColumn::make('email_verified_at')->label('مفعّل')->boolean(),
-                Tables\Columns\TextColumn::make('created_at')->label('التسجيل')->dateTime('Y-m-d')->sortable()->toggleable(),
+                Tables\Columns\TextColumn::make('created_at')->label('التسجيل')->dateTime('Y-m-d')->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('role')->label('الدور')->options([

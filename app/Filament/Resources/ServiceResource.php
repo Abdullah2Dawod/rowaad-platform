@@ -171,7 +171,7 @@ class ServiceResource extends Resource
                         : '—'
                     )->badge()->color('warning'),
                 Tables\Columns\TextColumn::make('sort_order')->label('الترتيب')->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')->label('آخر تحديث')->since()->toggleable(),
+                Tables\Columns\TextColumn::make('updated_at')->label('آخر تحديث')->since(),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')->label('الحالة'),

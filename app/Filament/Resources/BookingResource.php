@@ -117,7 +117,7 @@ class BookingResource extends Resource
                         'cancelled' => 'danger',
                     ][$state] ?? 'gray'),
 
-                Tables\Columns\TextColumn::make('created_at')->label('التسجيل')->since()->sortable()->toggleable(),
+                Tables\Columns\TextColumn::make('created_at')->label('التسجيل')->since()->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')->label('الحالة')->options([

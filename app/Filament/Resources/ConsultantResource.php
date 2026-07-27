@@ -206,13 +206,16 @@ class ConsultantResource extends Resource
     {
         return $table
             ->columns([
-                // Uses the model accessor `avatar_url` which handles both
-                // stored disk paths and legacy absolute URLs — no `disk('public')`
-                // here because the accessor already returns a full URL.
+                // IMPORTANT: use ->getStateUsing() so Filament always calls the
+                // model accessor and returns a full URL (works for both external
+                // URLs like Unsplash AND locally-stored /storage/... paths).
+                // Without this Filament tries to resolve as a disk path → falls
+                // back to placeholder, causing the list vs edit avatar mismatch.
                 Tables\Columns\ImageColumn::make('avatar_url')
                     ->label('')
                     ->circular()
                     ->size(40)
+                    ->getStateUsing(fn (Consultant $c) => $c->avatar_url)
                     ->defaultImageUrl(fn () => 'https://api.iconify.design/solar:user-bold-duotone.svg?color=%233DAFB9&width=48'),
 
                 Tables\Columns\TextColumn::make('full_name_ar')

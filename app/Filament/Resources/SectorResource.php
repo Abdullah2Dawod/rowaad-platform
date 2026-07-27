@@ -71,7 +71,7 @@ class SectorResource extends Resource
             ->defaultSort('sort_order')
             ->reorderable('sort_order')
             ->columns([
-                Tables\Columns\ImageColumn::make('hero_image')->label('الصورة')->size(48)->disk('public'),
+                Tables\Columns\ImageColumn::make('hero_image')->label('الصورة')->size(48)->disk('public')->checkFileExistence(false),
                 Tables\Columns\ColorColumn::make('color')->label('اللون'),
                 Tables\Columns\TextColumn::make('name_ar')->label('القطاع')->searchable()->weight('bold'),
                 Tables\Columns\TextColumn::make('slug')->label('المعرّف')->fontFamily('mono')->color('gray')->size('sm'),

@@ -160,7 +160,7 @@ class ServiceResource extends Resource
             ->defaultSort('sort_order')
             ->reorderable('sort_order')
             ->columns([
-                Tables\Columns\ImageColumn::make('hero_image')->label('الصورة')->circular(),
+                Tables\Columns\ImageColumn::make('hero_image')->label('الصورة')->circular()->checkFileExistence(false),
                 Tables\Columns\TextColumn::make('title')->label('العنوان')->searchable()->weight('bold'),
                 Tables\Columns\TextColumn::make('slug')->label('المعرّف')->fontFamily('mono')->color('gray')->size('sm'),
                 Tables\Columns\IconColumn::make('featured')->label('مميّزة')->boolean(),

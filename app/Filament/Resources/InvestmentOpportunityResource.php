@@ -171,7 +171,7 @@ class InvestmentOpportunityResource extends Resource
         return $table
             ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\ImageColumn::make('cover_image')->label('')->size(40)->disk('public')->circular(),
+                Tables\Columns\ImageColumn::make('cover_image')->label('')->size(40)->disk('public')->circular()->checkFileExistence(false),
                 Tables\Columns\TextColumn::make('title')->label('العنوان')->searchable()->weight('bold')
                     ->description(fn ($record) => $record->subtitle),
                 Tables\Columns\TextColumn::make('sector')->label('القطاع')->badge()->color('info'),

@@ -206,16 +206,19 @@ class ConsultantResource extends Resource
     {
         return $table
             ->columns([
-                // IMPORTANT: use ->getStateUsing() so Filament always calls the
-                // model accessor and returns a full URL (works for both external
-                // URLs like Unsplash AND locally-stored /storage/... paths).
-                // Without this Filament tries to resolve as a disk path → falls
-                // back to placeholder, causing the list vs edit avatar mismatch.
+                // Read the avatar via the model accessor (works for both
+                // /storage/... local paths and external URLs like Unsplash).
+                // checkFileExistence(false) is CRITICAL: without it Filament
+                // pings the storage disk to verify the file, which fails for
+                // external URLs and silently falls back to the placeholder —
+                // this is why some rows showed the icon while the edit form
+                // rendered the real image.
                 Tables\Columns\ImageColumn::make('avatar_url')
                     ->label('')
                     ->circular()
                     ->size(40)
                     ->getStateUsing(fn (Consultant $c) => $c->avatar_url)
+                    ->checkFileExistence(false)
                     ->defaultImageUrl(fn () => 'https://api.iconify.design/solar:user-bold-duotone.svg?color=%233DAFB9&width=48'),
 
                 Tables\Columns\TextColumn::make('full_name_ar')

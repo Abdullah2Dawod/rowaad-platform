@@ -143,7 +143,7 @@ class FeasibilityStudyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('cover_image')->label('')->size(50)->square()
+                Tables\Columns\ImageColumn::make('cover_image')->label('')->size(50)->square()->checkFileExistence(false)
                     ->disk('public')->defaultImageUrl(asset('images/rowaad-logo-symbol.png')),
                 Tables\Columns\TextColumn::make('title')->label('العنوان')->searchable()->weight('bold')
                     ->description(fn ($record) => $record->sector)->wrap(),

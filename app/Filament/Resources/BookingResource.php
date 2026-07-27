@@ -69,6 +69,8 @@ class BookingResource extends Resource
 
                 Tables\Columns\ImageColumn::make('consultant.avatar_url')
                     ->label('')->circular()->size(28)
+                    ->getStateUsing(fn ($record) => $record->consultant?->avatar_url)
+                    ->checkFileExistence(false)
                     ->defaultImageUrl(fn () => 'https://api.iconify.design/solar:user-bold-duotone.svg?color=%233DAFB9&width=32'),
 
                 Tables\Columns\TextColumn::make('consultant.full_name_ar')

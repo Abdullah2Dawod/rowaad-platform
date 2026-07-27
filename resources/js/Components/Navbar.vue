@@ -45,12 +45,23 @@
                     v-for="link in navLinks"
                     :key="link.href"
                     :href="link.href"
+                    :data-nav-href="link.href"
                     @mouseenter="showIndicator($event)"
-                    class="relative z-10 px-2.5 xl:px-3.5 h-10 flex items-center text-[12.5px] xl:text-[13px] text-ink hover:text-[#2D4B7E] dark:hover:text-[#6BC8D2] transition-colors duration-300 font-semibold tracking-tight group/link whitespace-nowrap"
+                    :class="[
+                        'relative z-10 px-2.5 xl:px-3.5 h-10 flex items-center text-[12.5px] xl:text-[13px] transition-colors duration-300 font-semibold tracking-tight group/link whitespace-nowrap',
+                        isActive(link.href)
+                            ? 'text-[#2D4B7E] dark:text-[#6BC8D2] font-black'
+                            : 'text-ink hover:text-[#2D4B7E] dark:hover:text-[#6BC8D2]',
+                    ]"
                 >
                     <span class="relative inline-block">
                         {{ link.label }}
-                        <span class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gradient-to-br from-[#3DAFB9] to-[#2D4B7E] scale-0 group-hover/link:scale-100 transition-transform duration-300"></span>
+                        <span
+                            :class="[
+                                'absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gradient-to-br from-[#3DAFB9] to-[#2D4B7E] transition-transform duration-300',
+                                isActive(link.href) ? 'scale-100' : 'scale-0 group-hover/link:scale-100',
+                            ]"
+                        ></span>
                     </span>
                 </a>
             </div>
@@ -237,15 +248,29 @@
                         v-for="link in navLinks"
                         :key="link.href"
                         :href="link.href"
-                        class="group relative flex items-center gap-3 px-3 py-2.5 text-ink rounded-2xl transition-all text-[13.5px] font-bold overflow-hidden"
+                        :class="[
+                            'group relative flex items-center gap-3 px-3 py-2.5 rounded-2xl transition-all text-[13.5px] font-bold overflow-hidden',
+                            isActive(link.href) ? 'text-[#2D4B7E] dark:text-[#6BC8D2]' : 'text-ink',
+                        ]"
                         @click="mobileOpen = false"
                     >
-                        <span class="absolute inset-0 bg-gradient-to-l rtl:bg-gradient-to-r from-[#3DAFB9]/0 to-[#2D4B7E]/0 group-hover:from-[#3DAFB9]/8 group-hover:to-[#2D4B7E]/6 transition-all rounded-2xl"></span>
-                        <span class="relative w-8 h-8 rounded-xl bg-[#3DAFB9]/10 border border-[#3DAFB9]/20 flex items-center justify-center shrink-0 group-hover:bg-[#3DAFB9]/15 transition-colors" style="color:#3DAFB9;">
+                        <span :class="[
+                            'absolute inset-0 rounded-2xl transition-all',
+                            isActive(link.href)
+                                ? 'bg-gradient-to-l rtl:bg-gradient-to-r from-[#3DAFB9]/12 to-[#2D4B7E]/8 border border-[#3DAFB9]/25'
+                                : 'bg-gradient-to-l rtl:bg-gradient-to-r from-[#3DAFB9]/0 to-[#2D4B7E]/0 group-hover:from-[#3DAFB9]/8 group-hover:to-[#2D4B7E]/6',
+                        ]"></span>
+                        <span :class="[
+                            'relative w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 transition-colors',
+                            isActive(link.href)
+                                ? 'bg-[#3DAFB9]/20 border-[#3DAFB9]/40'
+                                : 'bg-[#3DAFB9]/10 border-[#3DAFB9]/20 group-hover:bg-[#3DAFB9]/15',
+                        ]" style="color:#3DAFB9;">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" v-html="link.iconPath"></svg>
                         </span>
                         <span class="relative flex-1">{{ link.label }}</span>
-                        <svg class="relative w-3.5 h-3.5 text-[#3DAFB9] rtl:rotate-180 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        <span v-if="isActive(link.href)" class="relative w-1.5 h-1.5 rounded-full bg-gradient-to-br from-[#3DAFB9] to-[#2D4B7E]"></span>
+                        <svg v-else class="relative w-3.5 h-3.5 text-[#3DAFB9] rtl:rotate-180 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </a>
                 </div>
 
@@ -290,7 +315,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue';
 import { usePage, router } from '@inertiajs/vue3';
 import { useTheme } from '@/composables/useTheme';
 import { useI18n } from '@/composables/useI18n';
@@ -384,6 +409,23 @@ const navLinks = computed(() => [
     { label: t('nav.contact'),     href: '/contact',              iconPath: '<path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>' },
 ]);
 
+// ─── Active-route detection ───────────────────────────────
+// Reactive current path — updated on nav and via Inertia's page prop
+const currentPath = ref(typeof window !== 'undefined' ? window.location.pathname : '/');
+// Reuse the `page` const already declared above (line ~326) — don't redeclare
+watch(() => page.url, (url) => {
+    // page.url is like "/services?foo=bar" — strip query
+    currentPath.value = (url || '/').split('?')[0];
+});
+
+const isActive = (href) => {
+    const path = currentPath.value.replace(/\/+$/, '') || '/';
+    const target = href.replace(/\/+$/, '') || '/';
+    if (target === '/') return path === '/';
+    // Match exact OR a nested route (e.g. /services matches /services/economic-consulting)
+    return path === target || path.startsWith(target + '/');
+};
+
 const showIndicator = (event) => {
     const el = event.currentTarget;
     const container = navLinksContainer.value;
@@ -396,11 +438,41 @@ const showIndicator = (event) => {
         transition: 'transform 500ms cubic-bezier(0.16, 1, 0.3, 1), width 500ms cubic-bezier(0.16, 1, 0.3, 1), opacity 250ms ease-out',
     };
 };
-const hideIndicator = () => {
-    indicatorStyle.value = { ...indicatorStyle.value, opacity: 0, transition: 'opacity 300ms ease-out' };
+
+// Move indicator to the currently-active link (used on mount and on mouse leave)
+const parkIndicatorOnActive = async () => {
+    await nextTick();
+    const container = navLinksContainer.value;
+    if (!container) return;
+    const activeHref = navLinks.value.find(l => isActive(l.href))?.href;
+    if (!activeHref) { indicatorStyle.value = { ...indicatorStyle.value, opacity: 0, transition: 'opacity 300ms ease-out' }; return; }
+    const el = container.querySelector(`[data-nav-href="${activeHref}"]`);
+    if (!el) return;
+    const elRect = el.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    indicatorStyle.value = {
+        opacity: 1, width: elRect.width + 'px', height: '36px', top: '50%', left: '0px',
+        transform: `translateY(-50%) translateX(${elRect.left - containerRect.left}px)`,
+        transition: 'transform 500ms cubic-bezier(0.16, 1, 0.3, 1), width 500ms cubic-bezier(0.16, 1, 0.3, 1), opacity 250ms ease-out',
+    };
 };
 
+// Called on mouseleave — instead of hiding, return the pill to the active link
+const hideIndicator = () => { parkIndicatorOnActive(); };
+
+// Whenever the route or window size changes, re-park on the active link
+watch(currentPath, () => parkIndicatorOnActive());
+
 const handleScroll = () => { scrolled.value = window.scrollY > 60; };
-onMounted(() => { window.addEventListener('scroll', handleScroll, { passive: true }); });
-onUnmounted(() => { window.removeEventListener('scroll', handleScroll); });
+const handleResize = () => parkIndicatorOnActive();
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
+    // Park the indicator on the active link once the DOM is ready
+    parkIndicatorOnActive();
+});
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('resize', handleResize);
+});
 </script>

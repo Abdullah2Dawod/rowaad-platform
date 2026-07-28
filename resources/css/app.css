@@ -10,6 +10,12 @@
 :root { color-scheme: light; }
 :root.dark, html.dark { color-scheme: dark; }
 
+/* === Alpine.js x-cloak — hide elements marked x-cloak until Alpine initialises ===
+   Without this, buttons wrapped in x-show flash visible during page load
+   (FOUC). Filament's toolbar bulk-actions trigger uses x-cloak+x-show="selectedRecords.length"
+   so it briefly appears as a ⋮ button even when no rows are selected. */
+[x-cloak] { display: none !important; }
+
 /* === Explicit dark-mode readability for native <select> options across the public site ===
    Fixes the invisible white-on-white options bug in booking/service/filter forms. */
 :root.dark select,

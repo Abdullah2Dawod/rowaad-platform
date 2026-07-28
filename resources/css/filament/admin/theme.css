@@ -852,22 +852,10 @@ h1, h2, h3, h4 {
 /* ─── FILTERS bar — compact ─── */
 .fi-ta-filters-form { padding: 12px 16px !important; }
 
-/* ─── Fix duplicated ⋮ toolbar button (aggressive, multi-selector) ─── */
-/* Filament v3 renders the toggle-columns dropdown as .fi-dropdown.fi-ta-col-toggle
-   The trigger is an <Action name="toggleColumns"> so we can also target by name.
-   Belt & braces: hide by wrapper class AND by trigger action name AND by icon. */
-html body .fi-ta-col-toggle,
-html body .fi-dropdown.fi-ta-col-toggle,
-html body [wire\:key*="toggleColumns"],
-html body [wire\:key*="table.column-toggle"],
-html body button[name="toggleColumns"] {
-    display: none !important;
-    visibility: hidden !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    pointer-events: none !important;
-}
+/* Alpine.js x-cloak — hide elements marked with x-cloak until Alpine hydrates.
+   Filament's toolbar bulk-actions trigger uses x-cloak + x-show="selectedRecords.length"
+   and appears briefly as a ⋮ button during page load until Alpine runs. */
+[x-cloak] { display: none !important; }
 
 /* Row-actions dropdown polish — remove awkward padding on the popover */
 .fi-ta-actions .fi-dropdown-panel {

@@ -61,14 +61,21 @@ class Consultant extends Model
     {
         $p = $this->avatar_path;
         if (empty($p)) return null;
-        // Absolute URL — return as-is
+
+        // Absolute URL (http/https/protocol-relative) — return as-is.
         if (\Illuminate\Support\Str::startsWith($p, ['http://', 'https://', '//'])) return $p;
-        // Root-relative path (starts with '/') — return as-is, e.g. '/images/consultants/avatars/consultant-7.png'
-        if (\Illuminate\Support\Str::startsWith($p, '/')) return $p;
-        // 'images/...' → committed public asset (guaranteed to deploy with the repo)
-        if (\Illuminate\Support\Str::startsWith($p, 'images/')) return '/' . $p;
-        // Anything else → assume it's on the storage disk
-        return '/storage/' . ltrim($p, '/');
+
+        // Root-relative or images/… → committed public asset in /public/images.
+        // IMPORTANT: return the full URL (asset() gives scheme://host/…) so that
+        // Filament\Tables\Columns\ImageColumn::getImageUrl() passes it through
+        // via filter_var(FILTER_VALIDATE_URL) instead of prefixing '/storage/'.
+        if (\Illuminate\Support\Str::startsWith($p, ['/', 'images/'])) {
+            return asset(ltrim($p, '/'));
+        }
+
+        // Anything else → uploaded via Filament FileUpload with disk('public').
+        // Give a full URL so ImageColumn doesn't re-prefix it.
+        return asset('storage/' . ltrim($p, '/'));
     }
 
     /**

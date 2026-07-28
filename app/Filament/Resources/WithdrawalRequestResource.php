@@ -150,6 +150,11 @@ class WithdrawalRequestResource extends Resource
                 Tables\Actions\ViewAction::make()->iconButton()->tooltip('عرض'),
                 Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
             ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()->label('حذف المحدد'),
+                ])->label('إجراءات جماعية'),
+            ])
             ;
     }
 

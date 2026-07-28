@@ -61,6 +61,11 @@ class NewsletterSubscriberResource extends Resource
                 Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
                 Tables\Actions\DeleteAction::make()->iconButton()->tooltip('حذف'),
             ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()->label('حذف المحدد'),
+                ])->label('إجراءات جماعية'),
+            ])
             ;
     }
 

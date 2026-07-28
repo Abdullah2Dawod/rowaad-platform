@@ -186,15 +186,7 @@ class ServiceResource extends Resource
                 Tables\Actions\EditAction::make()->iconButton()->tooltip('تعديل'),
                 Tables\Actions\DeleteAction::make()->iconButton()->tooltip('حذف'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('activate')->label('تفعيل')->icon('heroicon-o-play')
-                        ->action(fn ($records) => $records->each->update(['is_active' => true])),
-                    Tables\Actions\BulkAction::make('deactivate')->label('إيقاف')->icon('heroicon-o-pause')
-                        ->action(fn ($records) => $records->each->update(['is_active' => false])),
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ;
     }
 
     public static function getPages(): array

@@ -871,19 +871,51 @@ h1, h2, h3, h4 {
     justify-content: center !important;
 }
 
-/* Row-actions dropdown polish — remove awkward padding on the popover */
-.fi-ta-actions .fi-dropdown-panel {
-    min-width: 180px;
+/* ─── DROPDOWN PANEL polish — bulk-actions & row-actions ───
+   Filament's actual dropdown-item class is .fi-dropdown-list-item (NOT
+   .fi-dropdown-list-item-button). The item uses `truncate` on its label,
+   so if the panel is too narrow the Arabic label "حذف المحدد" gets
+   truncated to just "د". Force a comfortable minimum width. */
+.fi-dropdown-panel {
+    min-width: 220px !important;
     padding: 6px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12) !important;
 }
-.fi-ta-actions .fi-dropdown-panel .fi-dropdown-list { padding: 0 !important; }
-.fi-ta-actions .fi-dropdown-list-item-button {
+.fi-dropdown-panel .fi-dropdown-list {
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+}
+.fi-dropdown-list-item {
     padding: 8px 12px !important;
     border-radius: 8px !important;
-    font-size: 12.5px !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    min-height: 36px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    white-space: nowrap !important;
 }
-.fi-ta-actions .fi-dropdown-list-item-button:hover {
-    background: rgba(61,175,185,0.10) !important;
+.fi-dropdown-list-item:hover {
+    background: rgba(61, 175, 185, 0.10) !important;
+}
+.fi-dropdown-list-item .fi-dropdown-list-item-label {
+    flex: 1 1 auto !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    text-align: start !important;
+}
+.fi-dropdown-list-item .fi-dropdown-list-item-icon {
+    flex: 0 0 auto !important;
+    width: 18px !important;
+    height: 18px !important;
 }
 .fi-ta-search-field {
     max-width: 320px;

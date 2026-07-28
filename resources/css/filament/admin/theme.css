@@ -872,13 +872,17 @@ h1, h2, h3, h4 {
 }
 
 /* ─── DROPDOWN PANEL polish — bulk-actions & row-actions ───
-   Filament's actual dropdown-item class is .fi-dropdown-list-item (NOT
-   .fi-dropdown-list-item-button). The item uses `truncate` on its label,
-   so if the panel is too narrow the Arabic label "حذف المحدد" gets
-   truncated to just "د". Force a comfortable minimum width. */
+   Filament renders the panel with `w-screen !max-w-[14rem]` which caps it
+   at 224px. Combined with `truncate` on the label, Arabic strings like
+   "حذف المحدد" get chopped to "د". We override:
+   1. max-width → none (let the content decide the width)
+   2. width → auto (content-based sizing)
+   3. label truncate → visible/clip (never chop the label) */
 .fi-dropdown-panel {
-    min-width: 220px !important;
-    padding: 6px !important;
+    min-width: 240px !important;
+    max-width: none !important;
+    width: auto !important;
+    padding: 8px !important;
     background: #ffffff !important;
     border: 1px solid rgba(226, 232, 240, 0.9) !important;
     border-radius: 12px !important;
@@ -888,32 +892,37 @@ h1, h2, h3, h4 {
     padding: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 2px !important;
+    gap: 4px !important;
+    width: 100% !important;
 }
 .fi-dropdown-list-item {
-    padding: 8px 12px !important;
+    padding: 10px 14px !important;
     border-radius: 8px !important;
-    font-size: 13px !important;
-    line-height: 1.4 !important;
-    min-height: 36px !important;
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
+    min-height: 40px !important;
     width: 100% !important;
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
+    gap: 12px !important;
     white-space: nowrap !important;
+    color: #2D4B7E !important;
 }
 .fi-dropdown-list-item:hover {
     background: rgba(61, 175, 185, 0.10) !important;
 }
 .fi-dropdown-list-item .fi-dropdown-list-item-label {
+    display: inline-block !important;
     flex: 1 1 auto !important;
     white-space: nowrap !important;
     overflow: visible !important;
     text-overflow: clip !important;
     text-align: start !important;
+    line-height: 1.5 !important;
+    font-weight: 500 !important;
 }
 .fi-dropdown-list-item .fi-dropdown-list-item-icon {
-    flex: 0 0 auto !important;
+    flex: 0 0 18px !important;
     width: 18px !important;
     height: 18px !important;
 }

@@ -857,6 +857,20 @@ h1, h2, h3, h4 {
    and appears briefly as a ⋮ button during page load until Alpine runs. */
 [x-cloak] { display: none !important; }
 
+/* ─── BULK-ACTIONS trigger — single ⋮ button (icon-only), no duplicate ───
+   Filament emits BOTH a mobile icon-⋮ variant AND a wide desktop labeled variant
+   inside the same fi-dropdown-trigger, controlled by sm:hidden / sm:inline-grid.
+   Tailwind's sm: breakpoint is unreliable on this build → both surface at once.
+   Force ONE variant everywhere: the compact ⋮ icon button. Hide the wide one. */
+.fi-ta-header-toolbar .fi-dropdown-trigger .fi-btn.fi-ac-btn-group {
+    display: none !important;
+}
+.fi-ta-header-toolbar .fi-dropdown-trigger .fi-icon-btn.fi-ac-btn-group {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
 /* Row-actions dropdown polish — remove awkward padding on the popover */
 .fi-ta-actions .fi-dropdown-panel {
     min-width: 180px;

@@ -61,7 +61,13 @@ class Consultant extends Model
     {
         $p = $this->avatar_path;
         if (empty($p)) return null;
+        // Absolute URL — return as-is
         if (\Illuminate\Support\Str::startsWith($p, ['http://', 'https://', '//'])) return $p;
+        // Root-relative path (starts with '/') — return as-is, e.g. '/images/consultants/avatars/consultant-7.png'
+        if (\Illuminate\Support\Str::startsWith($p, '/')) return $p;
+        // 'images/...' → committed public asset (guaranteed to deploy with the repo)
+        if (\Illuminate\Support\Str::startsWith($p, 'images/')) return '/' . $p;
+        // Anything else → assume it's on the storage disk
         return '/storage/' . ltrim($p, '/');
     }
 

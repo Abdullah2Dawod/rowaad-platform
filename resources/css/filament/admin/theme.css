@@ -878,11 +878,31 @@ h1, h2, h3, h4 {
     width: 260px !important;
     padding: 6px !important;
     background: #ffffff !important;
+    color: #1F2937 !important;
     border: 1px solid rgba(226, 232, 240, 0.9) !important;
     border-radius: 12px !important;
     box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14),
                 0 2px 6px rgba(15, 23, 42, 0.04) !important;
     overflow: hidden !important;
+}
+/* DARK mode for Filament's own dropdown-panel (bulk-actions, user-menu, etc) */
+.dark .fi-dropdown-panel,
+[data-theme="dark"] .fi-dropdown-panel {
+    background: #0F1E38 !important;
+    color: #E5EDF9 !important;
+    border-color: rgba(107, 200, 210, 0.20) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55) !important;
+}
+.dark .fi-dropdown-list-item,
+[data-theme="dark"] .fi-dropdown-list-item {
+    color: #C2EBEF !important;
+}
+.dark .fi-dropdown-list-item:hover,
+.dark .fi-dropdown-list-item:focus-visible,
+[data-theme="dark"] .fi-dropdown-list-item:hover,
+[data-theme="dark"] .fi-dropdown-list-item:focus-visible {
+    background: rgba(107, 200, 210, 0.12) !important;
+    color: #E5EDF9 !important;
 }
 .fi-dropdown-panel .fi-dropdown-list {
     padding: 0 !important;
@@ -962,12 +982,10 @@ h1, h2, h3, h4 {
     height: 18px !important;
     color: inherit !important;
 }
-/* ─── SELECT & DATEPICKER popovers — force above every subsequent section ───
-   Filament forms use ChoicesJS. Its .choices container has position:relative
-   with no stacking context, so its dropdown loses to any later section that
-   creates its own context. Force the whole select container into a high
-   stacking layer WHEN it's active — the dropdown then floats above all
-   siblings in the form. */
+/* ─── SELECT & DATEPICKER popovers — z-index lift (theme-aware) ───
+   Filament forms use ChoicesJS. Force high stacking layer when open so the
+   dropdown floats above all siblings in the form. Colors must respect
+   dark mode — Filament toggles the `.dark` class on <html>. */
 .choices.is-open,
 .choices.is-focused,
 .fi-fo-select:has(.choices.is-open),
@@ -975,16 +993,63 @@ h1, h2, h3, h4 {
     position: relative !important;
     z-index: 9999 !important;
 }
+/* LIGHT mode dropdown styling (default) */
 .choices__list.choices__list--dropdown,
 .choices__list[aria-expanded="true"] {
     z-index: 9999 !important;
     position: absolute !important;
     background: #ffffff !important;
+    color: #1F2937 !important;
     border: 1px solid rgba(226, 232, 240, 0.9) !important;
     border-radius: 12px !important;
     box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14) !important;
     margin-top: 4px !important;
 }
+.choices__list--dropdown .choices__item,
+.choices__list[aria-expanded="true"] .choices__item {
+    color: #1F2937 !important;
+    background: transparent !important;
+    padding: 10px 14px !important;
+    font-size: 13.5px !important;
+}
+.choices__list--dropdown .choices__item--selectable.is-highlighted,
+.choices__list[aria-expanded="true"] .choices__item--selectable.is-highlighted,
+.choices__list--dropdown .choices__item:hover,
+.choices__list[aria-expanded="true"] .choices__item:hover {
+    background: rgba(61, 175, 185, 0.12) !important;
+    color: #2D4B7E !important;
+}
+.choices__input {
+    background: transparent !important;
+    color: inherit !important;
+}
+
+/* DARK mode overrides — Filament sets `.dark` on <html> */
+.dark .choices__list.choices__list--dropdown,
+.dark .choices__list[aria-expanded="true"],
+[data-theme="dark"] .choices__list.choices__list--dropdown,
+[data-theme="dark"] .choices__list[aria-expanded="true"] {
+    background: #0F1E38 !important;
+    color: #E5EDF9 !important;
+    border-color: rgba(107, 200, 210, 0.20) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55) !important;
+}
+.dark .choices__list--dropdown .choices__item,
+.dark .choices__list[aria-expanded="true"] .choices__item,
+[data-theme="dark"] .choices__list--dropdown .choices__item,
+[data-theme="dark"] .choices__list[aria-expanded="true"] .choices__item {
+    color: #E5EDF9 !important;
+}
+.dark .choices__list--dropdown .choices__item--selectable.is-highlighted,
+.dark .choices__list[aria-expanded="true"] .choices__item--selectable.is-highlighted,
+.dark .choices__list--dropdown .choices__item:hover,
+.dark .choices__list[aria-expanded="true"] .choices__item:hover,
+[data-theme="dark"] .choices__list--dropdown .choices__item--selectable.is-highlighted,
+[data-theme="dark"] .choices__list[aria-expanded="true"] .choices__item--selectable.is-highlighted {
+    background: rgba(107, 200, 210, 0.14) !important;
+    color: #C2EBEF !important;
+}
+
 /* Filament's own dropdown-panel (row-actions, header-actions, bulk-actions) */
 .fi-dropdown-panel[x-ref="panel"],
 .fi-fo-select .fi-dropdown-panel {

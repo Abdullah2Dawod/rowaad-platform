@@ -56,6 +56,9 @@ class HandleInertiaRequests extends Middleware
                 'error'   => fn () => $request->session()->get('error'),
             ],
 
+            // === Cart count (session-based) — used by header cart icon ===
+            'cartCount' => fn () => app(\App\Services\CartService::class)->count(),
+
             // === Site-wide settings (from admin Settings page) ===
             'site' => fn () => [
                 'name_ar'         => SiteSetting::get('site.name_ar', 'رواد بلا حدود'),

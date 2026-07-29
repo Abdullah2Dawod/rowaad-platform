@@ -77,9 +77,13 @@
                                     <span class="text-[13px] text-ink-muted mr-1">ر.س</span>
                                 </template>
                             </div>
-                            <button @click="handlePurchase" :disabled="busy"
+                            <button @click="handlePrimary" :disabled="busy"
                                     class="w-full py-3 rounded-full bg-gradient-to-l from-[#2D4B7E] to-[#3DAFB9] text-white text-[13px] font-black shadow-md hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed">
-                                {{ busy ? 'جاري المعالجة…' : (study.is_free ? 'حمّل الآن مجاناً' : 'شراء وتحميل') }}
+                                {{ busy ? 'جاري المعالجة…' : (study.is_free ? 'حمّل الآن مجاناً' : 'شراء سريع') }}
+                            </button>
+                            <button v-if="!study.is_free" @click="addToCart" :disabled="busy"
+                                    class="w-full mt-2 py-3 rounded-full border-2 border-[#3DAFB9] bg-transparent text-[#3DAFB9] text-[13px] font-black hover:bg-[#3DAFB9]/8 transition-colors disabled:opacity-60">
+                                إضافة إلى السلة
                             </button>
                             <p class="text-[10.5px] text-ink-muted text-center mt-2">دفع آمن · Mada · Apple Pay · STC Pay</p>
 
@@ -271,58 +275,36 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import Swal from 'sweetalert2';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import RatingWidget from '@/Components/RatingWidget.vue';
 
 const props = defineProps({ study: Object });
 const busy = ref(false);
 
-async function handlePurchase() {
+function handlePrimary() {
     if (busy.value) return;
+    busy.value = true;
 
     // Free → direct download
     if (props.study.is_free) {
-        busy.value = true;
         window.location.href = `/feasibility-studies/${props.study.id}/download`;
         setTimeout(() => (busy.value = false), 2000);
         return;
     }
 
-    // Paid → SweetAlert form → POST purchase request
-    const { value: form } = await Swal.fire({
-        title: 'إتمام طلب الشراء',
-        html: `
-            <div style="text-align:right;direction:rtl">
-                <input id="p-name"  class="swal2-input" placeholder="الاسم الكامل" style="direction:rtl">
-                <input id="p-email" class="swal2-input" placeholder="البريد الإلكتروني" type="email" style="direction:rtl">
-                <input id="p-phone" class="swal2-input" placeholder="رقم الجوال (اختياري)" style="direction:rtl">
-                <div style="margin-top:12px;padding:12px;border-radius:10px;background:rgba(61,175,185,0.08);color:#2D4B7E;font-size:12px;line-height:1.7">
-                    سعر الدراسة: <b>${props.study.price} ر.س</b><br>
-                    سيتواصل معك فريقنا خلال ساعات لإتمام الدفع وإرسال رابط التحميل عبر البريد.
-                </div>
-            </div>`,
-        showCancelButton: true,
-        confirmButtonText: 'إرسال طلب الشراء',
-        cancelButtonText: 'إلغاء',
-        confirmButtonColor: '#3DAFB9',
-        cancelButtonColor: '#9CA3AF',
-        reverseButtons: true,
-        preConfirm: () => {
-            const name  = document.getElementById('p-name').value.trim();
-            const email = document.getElementById('p-email').value.trim();
-            const phone = document.getElementById('p-phone').value.trim();
-            if (!name || !email) {
-                Swal.showValidationMessage('الاسم والبريد مطلوبان');
-                return false;
-            }
-            return { contact_name: name, contact_email: email, contact_phone: phone };
-        },
+    // Paid → add to cart + go straight to checkout (express)
+    router.post(`/cart/studies/${props.study.id}`, {}, {
+        preserveScroll: true,
+        onSuccess: () => router.visit('/checkout'),
+        onFinish:  () => (busy.value = false),
     });
+}
 
-    if (!form) return;
+function addToCart() {
+    if (busy.value) return;
     busy.value = true;
-    router.post(`/feasibility-studies/${props.study.id}/purchase`, form, {
+    router.post(`/cart/studies/${props.study.id}`, {}, {
+        preserveScroll: true,
         onFinish: () => (busy.value = false),
     });
 }

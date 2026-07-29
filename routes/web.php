@@ -15,11 +15,14 @@ use Inertia\Inertia;
 
 // ============= PUBLIC =============
 Route::get('/',            fn () => Inertia::render('Home'))->name('home');
-Route::get('/about',       fn () => Inertia::render('About'))->name('about');
+Route::get('/about',       fn () => Inertia::render('About', [
+    'heroImage'        => \App\Support\Media::url(\App\Models\SiteSetting::get('about.hero_image'), null),
+    'partnershipImage' => \App\Support\Media::url(\App\Models\SiteSetting::get('about.partnership_image'), null),
+]))->name('about');
 Route::get('/services',    fn () => Inertia::render('Services', [
     'catalog' => App\Http\Controllers\ServiceRequestController::catalog(),
 ]))->name('services');
-Route::get('/sectors',     fn () => Inertia::render('Sectors'))->name('sectors');
+Route::get('/sectors',     [App\Http\Controllers\SectorController::class, 'index'])->name('sectors');
 Route::get('/blog',        fn () => Inertia::render('Blog'))->name('blog');
 Route::get ('/contact', fn () => Inertia::render('Contact'))->name('contact');
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');

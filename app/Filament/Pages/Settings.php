@@ -86,6 +86,10 @@ class Settings extends Page implements HasForms
                 'seo_description' => SiteSetting::get('marketing.seo_description'),
                 'seo_keywords'    => SiteSetting::get('marketing.seo_keywords'),
             ],
+            'about' => [
+                'hero_image_upload'        => null,
+                'partnership_image_upload' => null,
+            ],
         ]);
     }
 
@@ -313,6 +317,55 @@ class Settings extends Page implements HasForms
                             Forms\Components\TextInput::make('marketing.seo_keywords')->label('الكلمات المفتاحية')->columnSpanFull(),
                         ]),
                     ]),
+            Tab::make('صفحة من نحن')
+                ->icon('heroicon-o-photo')
+                ->schema([
+                    Forms\Components\Section::make('صور صفحة "من نحن"')
+                        ->description('استبدل الصور التوضيحية في صفحة "من نحن" الخارجية. إذا لم ترفع صورة، تظهر الصورة الافتراضية.')
+                        ->schema([
+                            Forms\Components\Group::make([
+                                Forms\Components\Placeholder::make('about_hero_current')
+                                    ->label('')
+                                    ->content(fn () => new HtmlString(view('filament.components.setting-image-preview', [
+                                        'label' => 'صورة "قصتنا" الحالية',
+                                        'url'   => SiteSetting::get('about.hero_image') ? '/storage/'.ltrim(SiteSetting::get('about.hero_image'),'/') : '/images/about/team-consultation.svg',
+                                        'bg'    => '#F8FAFC',
+                                    ])->render())),
+                                Forms\Components\FileUpload::make('about.hero_image_upload')
+                                    ->label('اختر صورة جديدة لقسم "قصتنا"')
+                                    ->helperText('JPG/PNG/SVG · حد أقصى 4MB · تظهر بجوار عنوان "نسعى لأن نكون آيقونة رائدة"')
+                                    ->image()->disk('public')->directory('about')->maxSize(4096),
+                                Forms\Components\Actions::make([
+                                    Forms\Components\Actions\Action::make('removeAboutHero')
+                                        ->label('حذف الصورة (استخدم الافتراضية)')->icon('heroicon-o-trash')->color('danger')->size('sm')
+                                        ->visible(fn () => (bool) SiteSetting::get('about.hero_image'))
+                                        ->requiresConfirmation()
+                                        ->action(fn () => $this->clearImageSetting('about.hero_image')),
+                                ]),
+                            ])->columnSpan(1),
+
+                            Forms\Components\Group::make([
+                                Forms\Components\Placeholder::make('about_partnership_current')
+                                    ->label('')
+                                    ->content(fn () => new HtmlString(view('filament.components.setting-image-preview', [
+                                        'label' => 'صورة "الشراكة" الحالية',
+                                        'url'   => SiteSetting::get('about.partnership_image') ? '/storage/'.ltrim(SiteSetting::get('about.partnership_image'),'/') : '/images/about/partnership.svg',
+                                        'bg'    => '#F8FAFC',
+                                    ])->render())),
+                                Forms\Components\FileUpload::make('about.partnership_image_upload')
+                                    ->label('اختر صورة جديدة لقسم "الشراكة"')
+                                    ->helperText('JPG/PNG/SVG · حد أقصى 4MB · تظهر بجوار قسم "الشراكة/رؤيتنا"')
+                                    ->image()->disk('public')->directory('about')->maxSize(4096),
+                                Forms\Components\Actions::make([
+                                    Forms\Components\Actions\Action::make('removeAboutPartnership')
+                                        ->label('حذف الصورة (استخدم الافتراضية)')->icon('heroicon-o-trash')->color('danger')->size('sm')
+                                        ->visible(fn () => (bool) SiteSetting::get('about.partnership_image'))
+                                        ->requiresConfirmation()
+                                        ->action(fn () => $this->clearImageSetting('about.partnership_image')),
+                                ]),
+                            ])->columnSpan(1),
+                        ])->columns(2),
+                ]),
             ])->persistTabInQueryString('tab')->columnSpanFull(),
         ])->statePath('data');
     }
@@ -375,6 +428,23 @@ class Settings extends Page implements HasForms
         // Save marketing
         foreach ($data['marketing'] ?? [] as $k => $v) {
             SiteSetting::set("marketing.{$k}", $v, 'marketing', 'string');
+        }
+        // Save about-page images (only when new file picked; deletion via Remove action)
+        $aboutMap = [
+            'hero_image_upload'        => 'hero_image',
+            'partnership_image_upload' => 'partnership_image',
+        ];
+        foreach ($data['about'] ?? [] as $k => $v) {
+            if (! array_key_exists($k, $aboutMap)) continue;
+            $newImg = is_array($v) ? (array_values($v)[0] ?? null) : $v;
+            if (! empty($newImg)) {
+                $targetKey = $aboutMap[$k];
+                $old = SiteSetting::get("about.{$targetKey}");
+                if ($old && ! str_starts_with($old, 'http') && Storage::disk('public')->exists(ltrim($old, '/'))) {
+                    try { Storage::disk('public')->delete(ltrim($old, '/')); } catch (\Throwable $e) {}
+                }
+                SiteSetting::set("about.{$targetKey}", $newImg, 'about', 'file');
+            }
         }
 
         Notification::make()

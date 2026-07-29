@@ -72,22 +72,21 @@ import { useI18n } from '@/composables/useI18n';
 import { useTheme } from '@/composables/useTheme';
 import { computed } from 'vue';
 
+const props = defineProps({
+    sectors: { type: Array, default: () => [] },
+});
+
 const { t } = useI18n();
 const { isDark } = useTheme();
 
 const iconUrl = (slug, dark = false) => {
     const color = dark ? '6BC8D2' : '2D4B7E';
-    return `https://api.iconify.design/solar:${slug}.svg?color=%23${color}&width=64`;
+    return `https://api.iconify.design/solar:${slug || 'buildings-2-bold-duotone'}.svg?color=%23${color}&width=64`;
 };
 
-const sectors = computed(() => [
-    { icon: 'buildings-2-bold-duotone',         name: t('sectors.real_estate'), desc: 'التطوير العقاري والاستثمار طويل الأمد وفق رؤية 2030.' },
-    { icon: 'city-bold-duotone',                name: t('sectors.industry'),    desc: 'الصناعات التحويلية والصناعات المتقدمة والتصنيع الذكي.' },
-    { icon: 'cart-large-2-bold-duotone',        name: t('sectors.retail'),      desc: 'التجزئة الحديثة والتجارة الإلكترونية والعلامات المحلية.' },
-    { icon: 'health-bold-duotone',              name: t('sectors.healthcare'),  desc: 'الخدمات الصحية والتقنيات الطبية والعناية المتخصصة.' },
-    { icon: 'square-academic-cap-bold-duotone', name: t('sectors.education'),   desc: 'التعليم النوعي والتدريب المهني والمهارات الرقمية.' },
-    { icon: 'server-square-cloud-bold-duotone', name: t('sectors.technology'),  desc: 'الذكاء الاصطناعي والحوسبة السحابية والتحوّل الرقمي.' },
-    { icon: 'leaf-bold-duotone',                name: t('sectors.agriculture'), desc: 'الأمن الغذائي والزراعة العضوية والاستدامة.' },
-    { icon: 'suitcase-tag-bold-duotone',        name: t('sectors.tourism'),     desc: 'السياحة والضيافة والفعاليات الترفيهية والثقافية.' },
-]);
+const sectors = computed(() => (props.sectors ?? []).map(s => ({
+    icon: s.icon,
+    name: s.name,
+    desc: s.description,
+})));
 </script>

@@ -76,7 +76,16 @@ class FeasibilityRequestController extends Controller
             'status'      => FeasibilityRequest::STATUS_NEW,
         ]);
 
-        // Notify admins
+        // In-app Filament bell notification
+        \App\Support\AdminNotifier::ping(
+            'طلب دراسة جدوى مخصّصة 📋',
+            $data['contact_name'] . ' — ' . $data['project_title'],
+            route('filament.admin.resources.feasibility-requests.edit', ['record' => $req->id]),
+            'heroicon-o-clipboard-document-list',
+            $data['urgency'] === 'urgent' ? 'danger' : 'warning'
+        );
+
+        // Notify admins via email
         foreach (User::where('role', 'admin')->get() as $admin) {
             try { $admin->notify(new NewFeasibilityRequest($req)); }
             catch (\Throwable $e) { \Log::warning('[Feasibility request mail] ' . $e->getMessage()); }

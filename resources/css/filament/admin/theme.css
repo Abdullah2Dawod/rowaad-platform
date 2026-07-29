@@ -962,6 +962,22 @@ h1, h2, h3, h4 {
     height: 18px !important;
     color: inherit !important;
 }
+/* ─── SELECT & DATEPICKER popovers — bump z-index so they overlay sections ───
+   Filament's select uses .fi-dropdown-panel too (or .fi-fo-select). Sections
+   below in the form use their own stacking context; without a lift, the
+   status select's option list rendered UNDER the next section. */
+.fi-fo-select .fi-dropdown-panel,
+.fi-dropdown-panel[x-ref="panel"] {
+    z-index: 40 !important;
+}
+.choices__list.choices__list--dropdown,
+.choices__list[aria-expanded="true"] {
+    z-index: 40 !important;
+}
+.fi-fo-date-time-picker .fi-fo-date-time-picker-panel {
+    z-index: 40 !important;
+}
+
 /* Selection-indicator bar under the search on selected rows */
 .fi-ta-selection-indicator {
     padding: 10px 16px !important;

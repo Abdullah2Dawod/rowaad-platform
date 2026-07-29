@@ -75,7 +75,7 @@
 
                             <!-- Main image -->
                             <div class="absolute top-0 right-0 w-[72%] rounded-[1.75rem] overflow-hidden shadow-card-hover border-4 border-elevated">
-                                <img :src="isDark ? '/images/about/team-consultation-dark.svg' : '/images/about/team-consultation.svg'"
+                                <img :src="heroImage || (isDark ? '/images/about/team-consultation-dark.svg' : '/images/about/team-consultation.svg')"
                                      alt="فريق رواد الاستشاري" loading="lazy"
                                      class="w-full aspect-[4/4.4] object-cover" />
                                 <div class="absolute inset-0 hidden dark:block bg-gradient-to-br dark:from-[#2D4B7E]/35 dark:to-[#3DAFB9]/20 mix-blend-multiply"></div>
@@ -83,7 +83,7 @@
 
                             <!-- Secondary overlapping image -->
                             <div class="absolute bottom-0 left-0 w-[52%] rounded-[1.5rem] overflow-hidden shadow-card-hover border-4 border-elevated animate-[float_7s_ease-in-out_infinite]">
-                                <img :src="isDark ? '/images/about/partnership-dark.svg' : '/images/about/partnership.svg'"
+                                <img :src="partnershipImage || (isDark ? '/images/about/partnership-dark.svg' : '/images/about/partnership.svg')"
                                      alt="شراكة موثوقة" loading="lazy"
                                      class="w-full aspect-[4/3.2] object-cover" />
                                 <div class="absolute inset-0 hidden dark:block bg-gradient-to-br dark:from-[#2D4B7E]/40 dark:to-[#3DAFB9]/25 mix-blend-multiply"></div>
@@ -290,6 +290,11 @@ import { onMounted } from 'vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import SectionBridge from '@/Components/SectionBridge.vue';
 import { useTheme } from '@/composables/useTheme';
+
+defineProps({
+    heroImage:        { type: String, default: null },
+    partnershipImage: { type: String, default: null },
+});
 
 const { isDark } = useTheme();
 

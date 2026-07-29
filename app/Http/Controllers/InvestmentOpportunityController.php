@@ -14,7 +14,7 @@ class InvestmentOpportunityController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = InvestmentOpportunity::open();
+        $query = InvestmentOpportunity::visible()->orderByRaw("FIELD(status,'published','closed')");
 
         if ($sector = $request->query('sector')) {
             $query->where('sector', $sector);
@@ -63,6 +63,8 @@ class InvestmentOpportunityController extends Controller
                 'views_count'     => $o->views_count,
                 'applications_count' => $o->applications_count,
                 'deadline_at'     => $o->deadline_at?->format('Y-m-d'),
+                'status'          => $o->status,
+                'is_closed'       => $o->status === InvestmentOpportunity::STATUS_CLOSED,
             ]),
             'filters' => [
                 'q'      => $request->query('q'),
@@ -70,19 +72,19 @@ class InvestmentOpportunityController extends Controller
                 'risk'   => $request->query('risk'),
                 'sort'   => $sort,
             ],
-            'sectors' => InvestmentOpportunity::open()
+            'sectors' => InvestmentOpportunity::visible()
                 ->select('sector')->distinct()->orderBy('sector')->pluck('sector'),
             'stats'   => [
-                'total_open'   => InvestmentOpportunity::open()->count(),
-                'total_value'  => (float) InvestmentOpportunity::open()->sum('investment_min'),
-                'sectors'      => InvestmentOpportunity::open()->distinct('sector')->count('sector'),
+                'total_open'   => InvestmentOpportunity::visible()->count(),
+                'total_value'  => (float) InvestmentOpportunity::visible()->sum('investment_min'),
+                'sectors'      => InvestmentOpportunity::visible()->distinct('sector')->count('sector'),
             ],
         ]);
     }
 
     public function show(InvestmentOpportunity $investment): Response
     {
-        abort_unless($investment->status === InvestmentOpportunity::STATUS_OPEN, 404);
+        abort_unless(in_array($investment->status, [InvestmentOpportunity::STATUS_PUBLISHED, InvestmentOpportunity::STATUS_CLOSED]), 404);
         $investment->increment('views_count');
 
         return Inertia::render('Investment/Show', [
@@ -117,8 +119,10 @@ class InvestmentOpportunityController extends Controller
                 'rich_content'    => $investment->rich_content,
                 'rating_avg'      => (float) ($investment->rating_avg ?? 0),
                 'rating_count'    => (int)   ($investment->rating_count ?? 0),
+                'status'          => $investment->status,
+                'is_closed'       => $investment->status === InvestmentOpportunity::STATUS_CLOSED,
             ],
-            'related' => InvestmentOpportunity::open()
+            'related' => InvestmentOpportunity::visible()
                 ->where('id', '!=', $investment->id)
                 ->where('sector', $investment->sector)
                 ->limit(3)
@@ -136,7 +140,7 @@ class InvestmentOpportunityController extends Controller
 
     public function apply(Request $request, InvestmentOpportunity $investment): RedirectResponse
     {
-        abort_unless($investment->status === InvestmentOpportunity::STATUS_OPEN, 404);
+        abort_unless($investment->status === InvestmentOpportunity::STATUS_PUBLISHED, 404);
 
         $data = $request->validate([
             'company_name'      => ['required', 'string', 'max:150'],
@@ -147,7 +151,7 @@ class InvestmentOpportunityController extends Controller
             'message'           => ['nullable', 'string', 'max:2000'],
         ]);
 
-        InvestmentApplication::create([
+        $application = InvestmentApplication::create([
             'opportunity_id'    => $investment->id,
             'user_id'           => $request->user()?->id,
             'company_name'      => $data['company_name'],
@@ -160,6 +164,14 @@ class InvestmentOpportunityController extends Controller
         ]);
 
         $investment->increment('applications_count');
+
+        \App\Support\AdminNotifier::ping(
+            'طلب استثمار جديد 💼',
+            $data['contact_name'] . ' — ' . $investment->title,
+            route('filament.admin.resources.investment-applications.edit', ['record' => $application->id]),
+            'heroicon-o-banknotes',
+            'success'
+        );
 
         return back()->with('success', 'تم استلام طلبك بنجاح. سيتواصل معك فريق رواد خلال 48 ساعة.');
     }

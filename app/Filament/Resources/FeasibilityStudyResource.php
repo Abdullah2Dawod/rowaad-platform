@@ -59,6 +59,31 @@ class FeasibilityStudyResource extends Resource
                 Forms\Components\Textarea::make('excerpt')->label('الملخّص')->rows(3)->columnSpanFull(),
                 Forms\Components\Textarea::make('description')->label('الوصف الكامل')->rows(8)->columnSpanFull(),
             ]),
+            Forms\Components\Section::make('ملف الدراسة (PDF)')
+                ->description('الملف الذي يحصل عليه المشتري بعد الشراء أو التنزيل المجاني.')
+                ->schema([
+                    Forms\Components\FileUpload::make('file_path')
+                        ->hiddenLabel()
+                        ->disk('public')
+                        ->directory('feasibility/files')
+                        ->acceptedFileTypes(['application/pdf'])
+                        ->maxSize(30720)
+                        ->downloadable()->openable()->deletable()
+                        ->columnSpanFull()
+                        ->helperText('PDF فقط · حتى 30MB · يُخزَّن على القرص العام ويكون متاحاً للتحميل.'),
+                    Forms\Components\Repeater::make('extra_files')
+                        ->label('ملفات إضافية (Excel, نماذج، مرفقات)')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')->label('اسم الملف')->required(),
+                            Forms\Components\FileUpload::make('path')->hiddenLabel()
+                                ->disk('public')->directory('feasibility/files/extra')
+                                ->maxSize(30720)->downloadable()->openable()->deletable()
+                                ->columnSpanFull(),
+                        ])->collapsed()->reorderable()->addActionLabel('إضافة ملف')
+                        ->itemLabel(fn (?array $s = []) => data_get($s, 'title') ?: 'ملف')
+                        ->columnSpanFull(),
+                ])->collapsible(),
+
             Forms\Components\Section::make('التسعير والحالة')->columns(3)->schema([
                 Forms\Components\TextInput::make('price')->label('السعر (ر.س)')->numeric()->prefix('ر.س'),
                 Forms\Components\Toggle::make('is_free')->label('مجانية'),

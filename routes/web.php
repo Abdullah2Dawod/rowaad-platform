@@ -56,6 +56,8 @@ Route::get('/consultants/{consultant}', [ConsultantController::class, 'show'])->
 // Feasibility studies marketplace + custom request
 Route::get('/feasibility-studies',               [FeasibilityStudyController::class, 'index'])->name('feasibility.index');
 Route::get('/feasibility-studies/{feasibility}', [FeasibilityStudyController::class, 'show'])->name('feasibility.show');
+Route::get ('/feasibility-studies/{feasibility}/download', [FeasibilityStudyController::class, 'download'])->name('feasibility.download');
+Route::post('/feasibility-studies/{feasibility}/purchase', [FeasibilityStudyController::class, 'purchase'])->name('feasibility.purchase');
 Route::get ('/feasibility-request', [App\Http\Controllers\FeasibilityRequestController::class, 'create'])->name('feasibility.request.create');
 Route::post('/feasibility-request', [App\Http\Controllers\FeasibilityRequestController::class, 'store'])->name('feasibility.request.store');
 

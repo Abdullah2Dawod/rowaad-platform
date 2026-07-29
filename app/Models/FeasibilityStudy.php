@@ -18,6 +18,7 @@ class FeasibilityStudy extends Model
         'price'        => 'decimal:2',
         'reviewed_at'  => 'datetime',
         'rich_content' => 'array',
+        'extra_files'  => 'array',
     ];
 
     public const STATUS_PENDING  = 'pending';

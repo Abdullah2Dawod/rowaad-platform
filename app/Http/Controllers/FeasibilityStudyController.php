@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FeasibilityPurchaseRequest;
 use App\Models\FeasibilityStudy;
 use App\Models\Specialization;
 use App\Models\User;
 use Filament\Notifications\Notification as FilamentNotification;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FeasibilityStudyController extends Controller
 {
@@ -157,5 +159,92 @@ class FeasibilityStudyController extends Controller
 
         return redirect()->route('feasibility.index')
             ->with('success', 'تم استلام دراستك وستُراجَع خلال 24 ساعة.');
+    }
+
+    /**
+     * Download / purchase entrypoint used by the "شراء وتحميل" button.
+     * — Free studies: streams the file immediately (increments purchases_count once per session).
+     * — Paid studies: rejects with 402 if no paid purchase found for the current user/email.
+     */
+    public function download(FeasibilityStudy $feasibility, Request $request)
+    {
+        abort_unless($feasibility->status === FeasibilityStudy::STATUS_APPROVED, 404);
+        abort_unless($feasibility->file_path, 404, 'ملف الدراسة غير مرفوع بعد.');
+        abort_unless(Storage::disk('public')->exists($feasibility->file_path), 404, 'الملف مفقود من التخزين.');
+
+        // Free download: always allowed
+        if ($feasibility->is_free) {
+            $this->markDownloaded($feasibility, $request);
+            return $this->streamStudyFile($feasibility);
+        }
+
+        // Paid: must have an approved purchase record for this study + user
+        $userId = $request->user()?->id;
+        $email  = $request->user()?->email;
+
+        $hasPaid = FeasibilityPurchaseRequest::query()
+            ->where('study_id', $feasibility->id)
+            ->where('status', FeasibilityPurchaseRequest::STATUS_PAID)
+            ->when($userId, fn ($q) => $q->where('user_id', $userId))
+            ->when(! $userId && $email, fn ($q) => $q->where('contact_email', $email))
+            ->exists();
+
+        if (! $hasPaid) {
+            return back()->with('error', 'لم يتم العثور على عملية دفع مكتملة لهذه الدراسة. يرجى إتمام الشراء أولاً.');
+        }
+
+        $this->markDownloaded($feasibility, $request);
+        return $this->streamStudyFile($feasibility);
+    }
+
+    /**
+     * Purchase request — user submits contact info; admin approves via Filament.
+     * On approval the user receives a bell notification + email with the download link.
+     */
+    public function purchase(Request $request, FeasibilityStudy $feasibility): RedirectResponse
+    {
+        abort_unless($feasibility->status === FeasibilityStudy::STATUS_APPROVED, 404);
+        abort_if($feasibility->is_free, 403, 'الدراسة مجانية — استخدم زر التحميل المباشر.');
+
+        $data = $request->validate([
+            'contact_name'  => ['required', 'string', 'max:120'],
+            'contact_email' => ['required', 'email', 'max:150'],
+            'contact_phone' => ['nullable', 'string', 'max:30'],
+        ]);
+
+        $purchase = FeasibilityPurchaseRequest::create([
+            'study_id'      => $feasibility->id,
+            'user_id'       => $request->user()?->id,
+            'contact_name'  => $data['contact_name'],
+            'contact_email' => $data['contact_email'],
+            'contact_phone' => $data['contact_phone'] ?? null,
+            'amount'        => $feasibility->price,
+            'status'        => FeasibilityPurchaseRequest::STATUS_NEW,
+        ]);
+
+        \App\Support\AdminNotifier::ping(
+            'طلب شراء دراسة جدوى 💳',
+            $data['contact_name'] . ' — ' . $feasibility->title . ' (' . number_format((float) $feasibility->price, 0) . ' ر.س)',
+            null,
+            'heroicon-o-shopping-cart',
+            'success'
+        );
+
+        return back()->with('success', "تم استلام طلب الشراء (المرجع: {$purchase->reference}). سيتواصل معك فريقنا خلال ساعات لإتمام الدفع وإرسال رابط التحميل.");
+    }
+
+    protected function streamStudyFile(FeasibilityStudy $s): StreamedResponse
+    {
+        $filename = Str::slug($s->title, '-', null) . '.pdf';
+        return Storage::disk('public')->download($s->file_path, $filename);
+    }
+
+    protected function markDownloaded(FeasibilityStudy $s, Request $request): void
+    {
+        $key = 'study_dl_' . $s->id;
+        if (! $request->session()->get($key)) {
+            $s->increment('purchases_count');
+            $request->session()->put($key, now()->timestamp);
+        }
     }
 }

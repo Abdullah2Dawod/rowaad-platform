@@ -89,6 +89,22 @@ class Settings extends Page implements HasForms
             'about' => [
                 'hero_image_upload'        => null,
                 'partnership_image_upload' => null,
+                'hero_eyebrow'             => SiteSetting::get('about.hero_eyebrow', 'من نحن · قصتنا'),
+                'hero_title_line1'         => SiteSetting::get('about.hero_title_line1', 'نسعى لأن نكون'),
+                'hero_title_highlight'     => SiteSetting::get('about.hero_title_highlight', 'أيقونة رائدة'),
+                'hero_title_line2'         => SiteSetting::get('about.hero_title_line2', 'في قطاع الاستشارات الاقتصادية'),
+                'hero_description'         => SiteSetting::get('about.hero_description', 'منذ تأسيسنا عام 2016 بترخيص رسمي من وزارة التجارة السعودية، ونحن نقدّم الاستشارات الاقتصادية والإدارية ودراسات الجدوى لرواد الأعمال والمؤسسات، بخبرة محلية عميقة ومعايير عالمية.'),
+                'license_number'           => SiteSetting::get('about.license_number', '#12047'),
+                'locations'                => SiteSetting::get('about.locations', 'الرياض · لندن'),
+                'years_experience'         => SiteSetting::get('about.years_experience', '+9 سنوات خبرة'),
+                'vision_title'             => SiteSetting::get('about.vision_title', "خدمات مبتكرة ومميزة\nتصنع تطوراً ونمواً مستداماً"),
+                'vision_body'              => SiteSetting::get('about.vision_body', 'نطمح أن نكون الخيار الأول لرواد الأعمال والمؤسسات في المنطقة، عبر تقديم خدمات استشارية تُحدث فرقاً حقيقياً وتقود نحو نموٍّ مستدام.'),
+                'mission_title'            => SiteSetting::get('about.mission_title', "أفضل الأساليب الإدارية\nوالتدريبية المساندة للأعمال"),
+                'mission_body'             => SiteSetting::get('about.mission_body', 'إيجاد وتطوير أفضل الطرق والمنهجيات التي تدعم أعمال عملائنا وتُمكّنهم من اتخاذ قرارات واثقة.'),
+                'values_title'             => SiteSetting::get('about.values_title', 'مبادئ لا نساوم عليها'),
+                'values'                   => SiteSetting::get('about.values', []),
+                'advantages_title'         => SiteSetting::get('about.advantages_title', 'مزايا تجعلنا شريكك الأمثل'),
+                'advantages'               => SiteSetting::get('about.advantages', []),
             ],
         ]);
     }
@@ -320,6 +336,60 @@ class Settings extends Page implements HasForms
             Tab::make('صفحة من نحن')
                 ->icon('heroicon-o-photo')
                 ->schema([
+                    Forms\Components\Section::make('قسم الهيرو (أعلى الصفحة)')
+                        ->description('العنوان الرئيسي والنص التعريفي في قمة صفحة "من نحن".')
+                        ->schema([
+                            Forms\Components\TextInput::make('about.hero_eyebrow')->label('العنوان الفوقي (الشريط الصغير)')->maxLength(80),
+                            Forms\Components\TextInput::make('about.hero_title_line1')->label('السطر الأول من العنوان')->maxLength(120),
+                            Forms\Components\TextInput::make('about.hero_title_highlight')->label('الكلمة المميّزة (بلون العلامة)')->maxLength(80),
+                            Forms\Components\TextInput::make('about.hero_title_line2')->label('السطر الثاني من العنوان')->maxLength(120),
+                            Forms\Components\Textarea::make('about.hero_description')->label('النص التعريفي')->rows(4)->columnSpanFull(),
+                            Forms\Components\TextInput::make('about.license_number')->label('رقم الترخيص'),
+                            Forms\Components\TextInput::make('about.locations')->label('المواقع')->placeholder('الرياض · لندن'),
+                            Forms\Components\TextInput::make('about.years_experience')->label('سنوات الخبرة')->placeholder('+9 سنوات خبرة'),
+                        ])->columns(2)->collapsible(),
+
+                    Forms\Components\Section::make('الرؤية والرسالة')
+                        ->description('البطاقتان الكبيرتان بعد الهيرو مباشرة.')
+                        ->schema([
+                            Forms\Components\Textarea::make('about.vision_title')->label('عنوان الرؤية')->rows(2)->helperText('اضغط Enter لسطر جديد.'),
+                            Forms\Components\Textarea::make('about.vision_body')->label('نص الرؤية')->rows(3),
+                            Forms\Components\Textarea::make('about.mission_title')->label('عنوان الرسالة')->rows(2)->helperText('اضغط Enter لسطر جديد.'),
+                            Forms\Components\Textarea::make('about.mission_body')->label('نص الرسالة')->rows(3),
+                        ])->columns(2)->collapsible()->collapsed(),
+
+                    Forms\Components\Section::make('القيم (مبادئ لا نساوم عليها)')
+                        ->schema([
+                            Forms\Components\TextInput::make('about.values_title')->label('عنوان القسم'),
+                            Forms\Components\Repeater::make('about.values')
+                                ->label('قائمة القيم')
+                                ->schema([
+                                    Forms\Components\TextInput::make('icon')->label('أيقونة Solar')->placeholder('shield-check-bold-duotone'),
+                                    Forms\Components\TextInput::make('title')->label('العنوان')->required(),
+                                    Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->required()->columnSpanFull(),
+                                ])
+                                ->columns(2)->collapsed()->reorderable()
+                                ->itemLabel(fn (?array $s = []) => data_get($s, 'title') ?: 'قيمة')
+                                ->addActionLabel('إضافة قيمة')
+                                ->columnSpanFull(),
+                        ])->collapsible()->collapsed(),
+
+                    Forms\Components\Section::make('المزايا (لماذا رواد؟)')
+                        ->schema([
+                            Forms\Components\TextInput::make('about.advantages_title')->label('عنوان القسم'),
+                            Forms\Components\Repeater::make('about.advantages')
+                                ->label('قائمة المزايا')
+                                ->schema([
+                                    Forms\Components\TextInput::make('icon')->label('أيقونة Solar')->placeholder('star-bold-duotone'),
+                                    Forms\Components\TextInput::make('title')->label('العنوان')->required(),
+                                    Forms\Components\Textarea::make('desc')->label('الوصف')->rows(2)->required()->columnSpanFull(),
+                                ])
+                                ->columns(2)->collapsed()->reorderable()
+                                ->itemLabel(fn (?array $s = []) => data_get($s, 'title') ?: 'ميزة')
+                                ->addActionLabel('إضافة ميزة')
+                                ->columnSpanFull(),
+                        ])->collapsible()->collapsed(),
+
                     Forms\Components\Section::make('صور صفحة "من نحن"')
                         ->description('استبدل الصور التوضيحية في صفحة "من نحن" الخارجية. إذا لم ترفع صورة، تظهر الصورة الافتراضية.')
                         ->schema([
@@ -429,22 +499,28 @@ class Settings extends Page implements HasForms
         foreach ($data['marketing'] ?? [] as $k => $v) {
             SiteSetting::set("marketing.{$k}", $v, 'marketing', 'string');
         }
-        // Save about-page images (only when new file picked; deletion via Remove action)
-        $aboutMap = [
+        // Save about-page content + images (only replace image when new file picked)
+        $aboutImageMap = [
             'hero_image_upload'        => 'hero_image',
             'partnership_image_upload' => 'partnership_image',
         ];
+        $arrayKeys = ['values', 'advantages'];
         foreach ($data['about'] ?? [] as $k => $v) {
-            if (! array_key_exists($k, $aboutMap)) continue;
-            $newImg = is_array($v) ? (array_values($v)[0] ?? null) : $v;
-            if (! empty($newImg)) {
-                $targetKey = $aboutMap[$k];
-                $old = SiteSetting::get("about.{$targetKey}");
-                if ($old && ! str_starts_with($old, 'http') && Storage::disk('public')->exists(ltrim($old, '/'))) {
-                    try { Storage::disk('public')->delete(ltrim($old, '/')); } catch (\Throwable $e) {}
+            // Image upload fields — skip when empty (no new file)
+            if (array_key_exists($k, $aboutImageMap)) {
+                $newImg = is_array($v) ? (array_values($v)[0] ?? null) : $v;
+                if (! empty($newImg)) {
+                    $targetKey = $aboutImageMap[$k];
+                    $old = SiteSetting::get("about.{$targetKey}");
+                    if ($old && ! str_starts_with($old, 'http') && Storage::disk('public')->exists(ltrim($old, '/'))) {
+                        try { Storage::disk('public')->delete(ltrim($old, '/')); } catch (\Throwable $e) {}
+                    }
+                    SiteSetting::set("about.{$targetKey}", $newImg, 'about', 'file');
                 }
-                SiteSetting::set("about.{$targetKey}", $newImg, 'about', 'file');
+                continue;
             }
+            $type = in_array($k, $arrayKeys, true) ? 'json' : 'string';
+            SiteSetting::set("about.{$k}", $v, 'about', $type);
         }
 
         Notification::make()

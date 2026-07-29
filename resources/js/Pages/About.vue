@@ -27,39 +27,35 @@
                                 <span class="block w-[3px] h-5 bg-gradient-to-t from-[#2D4B7E] to-[#3DAFB9] rounded-full bar-pulse" style="animation-delay: .2s;"></span>
                                 <span class="block w-[3px] h-3.5 bg-gradient-to-t from-[#2D4B7E] to-[#3DAFB9] rounded-full bar-pulse" style="animation-delay: .4s;"></span>
                             </div>
-                            <span class="text-[11px] tracking-[0.25em] uppercase font-bold text-[#3DAFB9]">من نحن · قصتنا</span>
+                            <span class="text-[11px] tracking-[0.25em] uppercase font-bold text-[#3DAFB9]">{{ a('hero_eyebrow', 'من نحن · قصتنا') }}</span>
                         </div>
 
                         <h1 class="text-[2.2rem] md:text-[2.8rem] lg:text-[3.2rem] font-black text-[#2D4B7E] dark:text-[#C2EBEF] leading-[1.18] tracking-tight mb-6">
-                            نسعى لأن نكون
+                            {{ a('hero_title_line1', 'نسعى لأن نكون') }}
                             <span class="relative inline-block">
-                                <span class="text-gradient-brand">أيقونة رائدة</span>
+                                <span class="text-gradient-brand">{{ a('hero_title_highlight', 'أيقونة رائدة') }}</span>
                                 <svg class="absolute -bottom-2 left-0 right-0 w-full pointer-events-none" viewBox="0 0 240 14" preserveAspectRatio="none">
                                     <path d="M3 9 Q 60 2, 120 7 T 237 7" stroke="#3DAFB9" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.55"/>
                                 </svg>
                             </span>
-                            <br>في قطاع الاستشارات الاقتصادية
+                            <br>{{ a('hero_title_line2', 'في قطاع الاستشارات الاقتصادية') }}
                         </h1>
 
-                        <p class="text-[15px] lg:text-base text-ink-body leading-[1.9] mb-8 max-w-xl">
-                            منذ تأسيسنا عام <span class="font-bold text-ink">2016</span> بترخيص رسمي من وزارة التجارة السعودية،
-                            ونحن نقدّم الاستشارات الاقتصادية والإدارية ودراسات الجدوى لرواد الأعمال والمؤسسات،
-                            بخبرة محلية عميقة ومعايير عالمية.
-                        </p>
+                        <p class="text-[15px] lg:text-base text-ink-body leading-[1.9] mb-8 max-w-xl whitespace-pre-line">{{ a('hero_description', 'منذ تأسيسنا عام 2016 بترخيص رسمي من وزارة التجارة السعودية، ونحن نقدّم الاستشارات الاقتصادية والإدارية ودراسات الجدوى لرواد الأعمال والمؤسسات، بخبرة محلية عميقة ومعايير عالمية.') }}</p>
 
                         <!-- Credential chips -->
                         <div class="flex flex-wrap items-center gap-3">
                             <div class="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-elevated border border-[#3DAFB9]/25 shadow-sm">
                                 <img :src="iconUrl('diploma-verified-bold-duotone', isDark)" class="w-5 h-5" alt="" />
-                                <span class="text-[12px] font-bold text-ink">ترخيص وزارة التجارة <span class="text-[#3DAFB9]" dir="ltr">#12047</span></span>
+                                <span class="text-[12px] font-bold text-ink">ترخيص وزارة التجارة <span class="text-[#3DAFB9]" dir="ltr">{{ a('license_number', '#12047') }}</span></span>
                             </div>
                             <div class="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-elevated border border-soft shadow-sm">
                                 <img :src="iconUrl('map-point-bold-duotone', isDark)" class="w-5 h-5" alt="" />
-                                <span class="text-[12px] font-bold text-ink">الرياض · لندن</span>
+                                <span class="text-[12px] font-bold text-ink">{{ a('locations', 'الرياض · لندن') }}</span>
                             </div>
                             <div class="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-elevated border border-soft shadow-sm">
                                 <img :src="iconUrl('calendar-mark-bold-duotone', isDark)" class="w-5 h-5" alt="" />
-                                <span class="text-[12px] font-bold text-ink">+9 سنوات خبرة</span>
+                                <span class="text-[12px] font-bold text-ink">{{ a('years_experience', '+9 سنوات خبرة') }}</span>
                             </div>
                         </div>
                     </div>
@@ -140,13 +136,8 @@
                                     </div>
                                     <span class="text-[10px] tracking-[0.3em] uppercase font-bold text-[#6BC8D2]">رؤيتنا</span>
                                 </div>
-                                <h2 class="text-2xl lg:text-3xl font-black text-white leading-snug mb-4">
-                                    خدمات مبتكرة ومميزة<br>تصنع تطوراً ونمواً مستداماً
-                                </h2>
-                                <p class="text-white/65 leading-relaxed max-w-lg text-[14.5px]">
-                                    نطمح أن نكون الخيار الأول لرواد الأعمال والمؤسسات في المنطقة، عبر تقديم خدمات استشارية
-                                    تُحدث فرقاً حقيقياً وتقود نحو نموٍّ مستدام.
-                                </p>
+                                <h2 class="text-2xl lg:text-3xl font-black text-white leading-snug mb-4 whitespace-pre-line">{{ a('vision_title', 'خدمات مبتكرة ومميزة\nتصنع تطوراً ونمواً مستداماً') }}</h2>
+                                <p class="text-white/65 leading-relaxed max-w-lg text-[14.5px] whitespace-pre-line">{{ a('vision_body', 'نطمح أن نكون الخيار الأول لرواد الأعمال والمؤسسات في المنطقة، عبر تقديم خدمات استشارية تُحدث فرقاً حقيقياً وتقود نحو نموٍّ مستدام.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -165,12 +156,8 @@
                                     </div>
                                     <span class="text-[10px] tracking-[0.3em] uppercase font-bold text-[#3DAFB9]">رسالتنا</span>
                                 </div>
-                                <h2 class="text-2xl lg:text-[1.65rem] font-black text-[#2D4B7E] dark:text-[#C2EBEF] leading-snug mb-4">
-                                    أفضل الأساليب الإدارية<br>والتدريبية المساندة للأعمال
-                                </h2>
-                                <p class="text-ink-body leading-relaxed text-[14.5px]">
-                                    إيجاد وتطوير أفضل الطرق والمنهجيات التي تدعم أعمال عملائنا وتُمكّنهم من اتخاذ قرارات واثقة.
-                                </p>
+                                <h2 class="text-2xl lg:text-[1.65rem] font-black text-[#2D4B7E] dark:text-[#C2EBEF] leading-snug mb-4 whitespace-pre-line">{{ a('mission_title', 'أفضل الأساليب الإدارية\nوالتدريبية المساندة للأعمال') }}</h2>
+                                <p class="text-ink-body leading-relaxed text-[14.5px] whitespace-pre-line">{{ a('mission_body', 'إيجاد وتطوير أفضل الطرق والمنهجيات التي تدعم أعمال عملائنا وتُمكّنهم من اتخاذ قرارات واثقة.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -189,7 +176,7 @@
                         <span class="text-[10px] text-[#3DAFB9] tracking-[0.3em] uppercase font-bold">قيمنا</span>
                         <div class="h-px w-10 bg-gradient-to-l from-transparent to-[#3DAFB9]"></div>
                     </div>
-                    <h2 class="text-[1.6rem] sm:text-3xl lg:text-4xl font-black text-[#2D4B7E] dark:text-[#C2EBEF]">مبادئ لا نساوم عليها</h2>
+                    <h2 class="text-[1.6rem] sm:text-3xl lg:text-4xl font-black text-[#2D4B7E] dark:text-[#C2EBEF]">{{ a('values_title', 'مبادئ لا نساوم عليها') }}</h2>
                 </div>
 
                 <div class="divide-y divide-[var(--border-soft)]">
@@ -230,7 +217,7 @@
             <div class="relative max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-10">
                 <div class="text-center mb-12" data-reveal>
                     <span class="text-[10px] text-[#3DAFB9] tracking-[0.3em] uppercase font-bold">لماذا رواد؟</span>
-                    <h2 class="mt-3 text-3xl lg:text-4xl font-black text-[#2D4B7E] dark:text-[#C2EBEF]">مزايا تجعلنا شريكك الأمثل</h2>
+                    <h2 class="mt-3 text-3xl lg:text-4xl font-black text-[#2D4B7E] dark:text-[#C2EBEF]">{{ a('advantages_title', 'مزايا تجعلنا شريكك الأمثل') }}</h2>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div v-for="(a, i) in advantages" :key="i"
@@ -291,10 +278,14 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 import SectionBridge from '@/Components/SectionBridge.vue';
 import { useTheme } from '@/composables/useTheme';
 
-defineProps({
+const props = defineProps({
     heroImage:        { type: String, default: null },
     partnershipImage: { type: String, default: null },
+    aboutContent:     { type: Object, default: () => ({}) },
 });
+
+// Fallback-friendly getter — returns admin-configured value or default hardcoded text
+const a = (key, fallback = '') => (props.aboutContent && props.aboutContent[key]) ? props.aboutContent[key] : fallback;
 
 const { isDark } = useTheme();
 
@@ -305,21 +296,25 @@ const iconUrl = (slug, dark = false) => {
 const iconUrlColor = (slug, hex) =>
     `https://api.iconify.design/solar:${slug}.svg?color=%23${hex}&width=64`;
 
-// === Values (from the legacy rowaad.org about page) ===
-const values = [
+import { computed } from 'vue';
+
+// === Values (admin-editable via Settings → "صفحة من نحن" → القيم) ===
+const defaultValues = [
     { icon: 'shield-check-bold-duotone',   title: 'المصداقية',        desc: 'الصدق والشفافية أساس تعاملنا مع كل عميل.' },
     { icon: 'hand-money-bold-duotone',     title: 'الأمانة',          desc: 'وضوح كامل في عروض الأسعار دون تكاليف خفية.' },
     { icon: 'medal-ribbons-star-bold-duotone', title: 'رضا العملاء', desc: 'نبذل الجهد الكافي المُنتج لنصل إلى رضاكم الكامل.' },
     { icon: 'refresh-square-bold-duotone', title: 'المرونة',          desc: 'نتكيّف مع احتياجاتك ونعدّل مسارنا لخدمة أهدافك.' },
 ];
+const values = computed(() => (Array.isArray(props.aboutContent?.values) && props.aboutContent.values.length) ? props.aboutContent.values : defaultValues);
 
-// === Competitive advantages (legacy content, modernized) ===
-const advantages = [
+// === Competitive advantages (admin-editable) ===
+const defaultAdvantages = [
     { icon: 'clipboard-list-bold-duotone', title: 'تخطيط مرن',     desc: 'خطط أعمال مخصصة قابلة للتكيّف مع تغيّرات السوق.' },
     { icon: 'users-group-two-rounded-bold-duotone', title: 'شراكة موثوقة', desc: 'التزام حقيقي بنجاح عملائنا كشركاء لا كمزوّدين.' },
     { icon: 'lightbulb-bolt-bold-duotone', title: 'حلول مبتكرة',   desc: 'أفكار وتقنيات متقدمة تواكب تحوّلات الاقتصاد.' },
     { icon: 'scale-bold-duotone',          title: 'التزام مهني',   desc: 'معايير أخلاقية ومهنية صارمة في كل مشروع.' },
 ];
+const advantages = computed(() => (Array.isArray(props.aboutContent?.advantages) && props.aboutContent.advantages.length) ? props.aboutContent.advantages : defaultAdvantages);
 
 const milestones = [
     { year: '2016', title: 'التأسيس',        desc: 'انطلاق رواد بترخيص وزارة التجارة رقم 12047.' },

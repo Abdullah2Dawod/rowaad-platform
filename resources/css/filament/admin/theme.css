@@ -962,20 +962,45 @@ h1, h2, h3, h4 {
     height: 18px !important;
     color: inherit !important;
 }
-/* ─── SELECT & DATEPICKER popovers — bump z-index so they overlay sections ───
-   Filament's select uses .fi-dropdown-panel too (or .fi-fo-select). Sections
-   below in the form use their own stacking context; without a lift, the
-   status select's option list rendered UNDER the next section. */
-.fi-fo-select .fi-dropdown-panel,
-.fi-dropdown-panel[x-ref="panel"] {
-    z-index: 40 !important;
+/* ─── SELECT & DATEPICKER popovers — force above every subsequent section ───
+   Filament forms use ChoicesJS. Its .choices container has position:relative
+   with no stacking context, so its dropdown loses to any later section that
+   creates its own context. Force the whole select container into a high
+   stacking layer WHEN it's active — the dropdown then floats above all
+   siblings in the form. */
+.choices.is-open,
+.choices.is-focused,
+.fi-fo-select:has(.choices.is-open),
+.fi-fo-select:has(.choices.is-focused) {
+    position: relative !important;
+    z-index: 9999 !important;
 }
 .choices__list.choices__list--dropdown,
 .choices__list[aria-expanded="true"] {
-    z-index: 40 !important;
+    z-index: 9999 !important;
+    position: absolute !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14) !important;
+    margin-top: 4px !important;
 }
-.fi-fo-date-time-picker .fi-fo-date-time-picker-panel {
-    z-index: 40 !important;
+/* Filament's own dropdown-panel (row-actions, header-actions, bulk-actions) */
+.fi-dropdown-panel[x-ref="panel"],
+.fi-fo-select .fi-dropdown-panel {
+    z-index: 9999 !important;
+}
+/* Date-time picker popover */
+.fi-fo-date-time-picker .fi-fo-date-time-picker-panel,
+.fi-fo-date-time-picker-panel {
+    z-index: 9999 !important;
+}
+/* Any Filament form section that hosts an active select should not clip it */
+.fi-section:has(.choices.is-open),
+.fi-section:has(.choices.is-focused) {
+    z-index: 100 !important;
+    position: relative !important;
+    overflow: visible !important;
 }
 
 /* Selection-indicator bar under the search on selected rows */

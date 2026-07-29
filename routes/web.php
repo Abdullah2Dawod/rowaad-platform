@@ -18,6 +18,24 @@ Route::get('/',            fn () => Inertia::render('Home'))->name('home');
 Route::get('/about',       fn () => Inertia::render('About', [
     'heroImage'        => \App\Support\Media::url(\App\Models\SiteSetting::get('about.hero_image'), null),
     'partnershipImage' => \App\Support\Media::url(\App\Models\SiteSetting::get('about.partnership_image'), null),
+    'aboutContent'     => [
+        'hero_eyebrow'         => \App\Models\SiteSetting::get('about.hero_eyebrow'),
+        'hero_title_line1'     => \App\Models\SiteSetting::get('about.hero_title_line1'),
+        'hero_title_highlight' => \App\Models\SiteSetting::get('about.hero_title_highlight'),
+        'hero_title_line2'     => \App\Models\SiteSetting::get('about.hero_title_line2'),
+        'hero_description'     => \App\Models\SiteSetting::get('about.hero_description'),
+        'license_number'       => \App\Models\SiteSetting::get('about.license_number'),
+        'locations'            => \App\Models\SiteSetting::get('about.locations'),
+        'years_experience'     => \App\Models\SiteSetting::get('about.years_experience'),
+        'vision_title'         => \App\Models\SiteSetting::get('about.vision_title'),
+        'vision_body'          => \App\Models\SiteSetting::get('about.vision_body'),
+        'mission_title'        => \App\Models\SiteSetting::get('about.mission_title'),
+        'mission_body'         => \App\Models\SiteSetting::get('about.mission_body'),
+        'values_title'         => \App\Models\SiteSetting::get('about.values_title'),
+        'values'               => \App\Models\SiteSetting::get('about.values', []),
+        'advantages_title'     => \App\Models\SiteSetting::get('about.advantages_title'),
+        'advantages'           => \App\Models\SiteSetting::get('about.advantages', []),
+    ],
 ]))->name('about');
 Route::get('/services',    fn () => Inertia::render('Services', [
     'catalog' => App\Http\Controllers\ServiceRequestController::catalog(),

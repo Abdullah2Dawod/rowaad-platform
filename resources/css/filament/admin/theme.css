@@ -871,60 +871,96 @@ h1, h2, h3, h4 {
     justify-content: center !important;
 }
 
-/* ─── DROPDOWN PANEL polish — bulk-actions & row-actions ───
-   Filament renders the panel with `w-screen !max-w-[14rem]` which caps it
-   at 224px. Combined with `truncate` on the label, Arabic strings like
-   "حذف المحدد" get chopped to "د". We override:
-   1. max-width → none (let the content decide the width)
-   2. width → auto (content-based sizing)
-   3. label truncate → visible/clip (never chop the label) */
+/* ─── DROPDOWN PANEL polish — professional, full-width hover, no truncation ─── */
 .fi-dropdown-panel {
     min-width: 240px !important;
     max-width: none !important;
-    width: auto !important;
-    padding: 8px !important;
+    width: max-content !important;
+    padding: 6px !important;
     background: #ffffff !important;
     border: 1px solid rgba(226, 232, 240, 0.9) !important;
     border-radius: 12px !important;
-    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14),
+                0 2px 6px rgba(15, 23, 42, 0.04) !important;
+    overflow: hidden !important;
 }
 .fi-dropdown-panel .fi-dropdown-list {
     padding: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 4px !important;
+    gap: 2px !important;
     width: 100% !important;
 }
+/* Every item is a full-bleed row inside the panel padding */
 .fi-dropdown-list-item {
+    box-sizing: border-box !important;
+    width: 100% !important;
     padding: 10px 14px !important;
     border-radius: 8px !important;
     font-size: 13.5px !important;
+    font-weight: 500 !important;
     line-height: 1.5 !important;
-    min-height: 40px !important;
-    width: 100% !important;
+    min-height: 42px !important;
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 10px !important;
     white-space: nowrap !important;
     color: #2D4B7E !important;
+    background: transparent !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+    text-align: start !important;
+    justify-content: flex-start !important;
 }
-.fi-dropdown-list-item:hover {
-    background: rgba(61, 175, 185, 0.10) !important;
+/* Default hover — brand teal tint on the FULL row */
+.fi-dropdown-list-item:hover,
+.fi-dropdown-list-item:focus-visible {
+    background: rgba(61, 175, 185, 0.12) !important;
+    color: #2D4B7E !important;
+    outline: none !important;
 }
+/* Danger-colored items (delete) — red tint on full row + red text */
+.fi-dropdown-list-item.fi-color-danger:hover,
+.fi-dropdown-list-item.fi-color-danger:focus-visible,
+.fi-dropdown-list-item[style*="--danger"]:hover,
+.fi-dropdown-list-item[style*="--danger"]:focus-visible {
+    background: rgba(239, 68, 68, 0.10) !important;
+    color: rgb(220, 38, 38) !important;
+}
+.fi-dropdown-list-item.fi-color-danger .fi-dropdown-list-item-label,
+.fi-dropdown-list-item[style*="--danger"] .fi-dropdown-list-item-label {
+    color: rgb(220, 38, 38) !important;
+}
+/* Label — full flex space, never truncated */
 .fi-dropdown-list-item .fi-dropdown-list-item-label {
-    display: inline-block !important;
     flex: 1 1 auto !important;
+    min-width: 0 !important;
     white-space: nowrap !important;
     overflow: visible !important;
     text-overflow: clip !important;
     text-align: start !important;
     line-height: 1.5 !important;
     font-weight: 500 !important;
+    color: inherit !important;
 }
+/* Icon — fixed size, inherits color */
 .fi-dropdown-list-item .fi-dropdown-list-item-icon {
     flex: 0 0 18px !important;
     width: 18px !important;
     height: 18px !important;
+    color: inherit !important;
+}
+/* Selection-indicator bar under the search on selected rows */
+.fi-ta-selection-indicator {
+    padding: 10px 16px !important;
+    background: rgba(61, 175, 185, 0.06) !important;
+    border-top: 1px solid rgba(226, 232, 240, 0.9) !important;
+    font-size: 13px !important;
+    color: #2D4B7E !important;
+}
+.fi-ta-selection-indicator button {
+    color: rgb(220, 38, 38) !important;
+    font-weight: 600 !important;
 }
 .fi-ta-search-field {
     max-width: 320px;

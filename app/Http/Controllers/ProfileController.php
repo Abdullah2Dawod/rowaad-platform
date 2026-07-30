@@ -48,6 +48,32 @@ class ProfileController extends Controller
                 ],
             ]);
 
+        // Cart items — session-based; also mirrored to a status=cart Order for admin visibility
+        $cartService = app(\App\Services\CartService::class);
+        $cartItems   = array_values($cartService->all());
+        $cartSubtotal = $cartService->subtotal();
+
+        // Purchase history — paid orders by this user (independent of session cart)
+        $orders = \App\Models\Order::where('user_id', $user->id)
+            ->whereIn('status', [\App\Models\Order::STATUS_PAID, \App\Models\Order::STATUS_PENDING])
+            ->with('items')
+            ->latest()
+            ->limit(10)
+            ->get()
+            ->map(fn (\App\Models\Order $o) => [
+                'id'         => $o->id,
+                'reference'  => $o->reference,
+                'total'      => (float) $o->total,
+                'status'     => $o->status,
+                'paid_at'    => $o->paid_at?->format('Y-m-d H:i'),
+                'created_at' => $o->created_at?->format('Y-m-d'),
+                'items'      => $o->items->map(fn ($i) => [
+                    'title'    => $i->title,
+                    'subtotal' => (float) $i->subtotal,
+                    'quantity' => $i->quantity,
+                ]),
+            ]);
+
         return Inertia::render('Profile/Edit', [
             'status'        => session('status'),
             'verifiedFlash' => (bool) $request->query('verified'),
@@ -68,6 +94,14 @@ class ProfileController extends Controller
                 'completed'      => Booking::where('user_id', $user->id)->where('status', Booking::STATUS_COMPLETED)->count(),
                 'upcoming'       => Booking::where('user_id', $user->id)->upcoming()->count(),
             ],
+            'cart' => [
+                'items'    => $cartItems,
+                'subtotal' => $cartSubtotal,
+                'vat'      => round($cartSubtotal * 0.15, 2),
+                'total'    => round($cartSubtotal * 1.15, 2),
+                'count'    => $cartService->count(),
+            ],
+            'orders' => $orders,
         ]);
     }
 

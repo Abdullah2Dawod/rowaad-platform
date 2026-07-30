@@ -298,6 +298,96 @@
                     </div>
                 </div>
 
+                <!-- ========== TAB: CART & PURCHASES ========== -->
+                <div v-if="tab === 'cart'" class="space-y-5">
+                    <!-- Current cart -->
+                    <div class="rounded-[1.5rem] bg-elevated border border-soft p-7 shadow-card">
+                        <div class="flex items-baseline justify-between mb-5">
+                            <h2 class="text-lg font-black text-ink">سلتي الحالية</h2>
+                            <span class="text-[12px] text-ink-muted">{{ cart.count }} عنصر</span>
+                        </div>
+
+                        <div v-if="!cart.items.length" class="py-10 text-center">
+                            <div class="w-14 h-14 rounded-full bg-[#3DAFB9]/10 mx-auto flex items-center justify-center mb-3">
+                                <svg class="w-6 h-6 text-[#3DAFB9]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+                                </svg>
+                            </div>
+                            <p class="text-[13px] text-ink-body mb-4">سلتك فارغة.</p>
+                            <Link href="/feasibility-studies" class="inline-flex px-5 py-2 rounded-full bg-gradient-to-l rtl:bg-gradient-to-r from-[#2D4B7E] to-[#3DAFB9] text-white text-[12.5px] font-bold shadow-md hover:scale-105 transition-transform">
+                                تصفّح دراسات الجدوى
+                            </Link>
+                        </div>
+
+                        <div v-else>
+                            <div class="space-y-2.5 mb-5">
+                                <div v-for="item in cart.items" :key="item.purchasable_type + '#' + item.purchasable_id"
+                                     class="flex items-center gap-3 p-3 rounded-2xl border border-soft hover:border-[#3DAFB9]/40 transition-all">
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#3DAFB9]/12 to-[#2D4B7E]/10 flex items-center justify-center flex-shrink-0">
+                                        <svg class="w-5 h-5 text-[#3DAFB9]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="font-bold text-ink text-[13px] truncate">{{ item.title }}</p>
+                                        <p class="text-[10.5px] text-ink-muted">دراسة جدوى</p>
+                                    </div>
+                                    <div class="text-[13px] font-black text-gradient-brand shrink-0">
+                                        {{ formatPrice(item.unit_price * item.quantity) }} <span class="text-[9px] text-ink-muted">ر.س</span>
+                                    </div>
+                                    <button @click="removeCartItem(item)" class="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 text-red-500" title="إزالة">
+                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="rounded-xl bg-paper border border-soft p-4 mb-4">
+                                <div class="flex justify-between text-[12px] text-ink-body mb-1"><span>المجموع الفرعي</span><span class="font-bold text-ink">{{ formatPrice(cart.subtotal) }} ر.س</span></div>
+                                <div class="flex justify-between text-[12px] text-ink-body mb-1"><span>ضريبة القيمة المضافة (15%)</span><span class="font-bold text-ink">{{ formatPrice(cart.vat) }} ر.س</span></div>
+                                <div class="flex justify-between pt-2 border-t border-soft"><span class="font-bold text-ink">الإجمالي</span><span class="text-[16px] font-black text-gradient-brand">{{ formatPrice(cart.total) }} ر.س</span></div>
+                            </div>
+
+                            <div class="flex gap-3">
+                                <Link href="/checkout" class="flex-1 py-2.5 rounded-full bg-gradient-to-l rtl:bg-gradient-to-r from-[#2D4B7E] to-[#3DAFB9] text-white text-[12.5px] font-black shadow-md hover:scale-[1.02] transition-transform text-center">متابعة إلى الدفع</Link>
+                                <Link href="/cart" class="px-5 py-2.5 rounded-full border border-[#3DAFB9] text-[#3DAFB9] text-[12.5px] font-bold hover:bg-[#3DAFB9]/8 transition-colors text-center">فتح صفحة السلة</Link>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order history -->
+                    <div class="rounded-[1.5rem] bg-elevated border border-soft p-7 shadow-card">
+                        <div class="flex items-baseline justify-between mb-5">
+                            <h2 class="text-lg font-black text-ink">سجل مشترياتي</h2>
+                            <span class="text-[12px] text-ink-muted">{{ orders.length }} طلب</span>
+                        </div>
+
+                        <div v-if="!orders.length" class="py-8 text-center">
+                            <p class="text-[13px] text-ink-body">لم تُكمل أي عملية شراء بعد.</p>
+                        </div>
+
+                        <div v-else class="space-y-2.5">
+                            <div v-for="o in orders" :key="o.id"
+                                 class="flex items-center gap-3 p-3 rounded-2xl border border-soft hover:border-[#3DAFB9]/40 transition-all">
+                                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-[#2D4B7E]/12 to-[#3DAFB9]/12 flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-5 h-5 text-[#2D4B7E] dark:text-[#6BC8D2]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M20 7l-8-4-8 4m16 0v10l-8 4m8-14L12 11M4 7l8 4M4 7v10l8 4m0-14v14"/></svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[12px] font-black text-ink" dir="ltr">{{ o.reference }}</span>
+                                        <span :class="['text-[9.5px] font-bold px-2 py-0.5 rounded-full', orderStatusColor(o.status)]">{{ orderStatusLabel(o.status) }}</span>
+                                    </div>
+                                    <div class="text-[11px] text-ink-muted mt-0.5">
+                                        {{ o.paid_at || o.created_at }} · {{ o.items.length }} عنصر
+                                    </div>
+                                </div>
+                                <div class="text-[13px] font-black text-ink shrink-0">
+                                    {{ formatPrice(o.total) }} <span class="text-[9px] text-ink-muted">ر.س</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ========== TAB: BOOKINGS ========== -->
                 <div v-if="tab === 'bookings'">
                     <div class="rounded-[1.5rem] bg-elevated border border-soft p-7 shadow-card">
@@ -353,10 +443,18 @@ const props = defineProps({
     profile:       { type: Object, required: true },
     bookings:      { type: Array, default: () => [] },
     stats:         { type: Object, default: () => ({ total_bookings: 0, completed: 0, upcoming: 0 }) },
+    cart:          { type: Object, default: () => ({ items: [], subtotal: 0, vat: 0, total: 0, count: 0 }) },
+    orders:        { type: Array, default: () => [] },
     status:        String,
     verifiedFlash: Boolean,
     canEdit:       { type: Boolean, default: true }, // false for admin/consultant
 });
+
+function removeCartItem(item) {
+    router.delete('/cart/item', { data: { type: item.purchasable_type, id: item.purchasable_id }, preserveScroll: true });
+}
+const orderStatusLabel = (s) => ({ paid: 'مدفوع', pending: 'قيد الدفع', cart: 'في السلة', failed: 'فشل', cancelled: 'ملغى', refunded: 'مسترد' }[s] || s);
+const orderStatusColor = (s) => ({ paid: 'bg-green-100 text-green-800', pending: 'bg-amber-100 text-amber-800', cart: 'bg-gray-100 text-gray-700', failed: 'bg-red-100 text-red-700', cancelled: 'bg-gray-100 text-gray-700', refunded: 'bg-blue-100 text-blue-700' }[s] || 'bg-gray-100 text-gray-700');
 
 const initials = computed(() => (props.profile.name || '?').charAt(0));
 const avatarPreview = ref(props.profile.avatar_url);
@@ -367,9 +465,11 @@ const tabs = props.canEdit
         { id: 'profile',  label: 'البيانات الشخصية' },
         { id: 'security', label: 'الأمان وكلمة المرور' },
         { id: 'bookings', label: 'حجوزاتي' },
+        { id: 'cart',     label: 'سلتي ومشترياتي' },
       ]
     : [
         { id: 'bookings', label: 'حجوزاتي التجريبية' },
+        { id: 'cart',     label: 'سلتي ومشترياتي' },
         { id: 'info',     label: 'بيانات حسابي' },
       ];
 

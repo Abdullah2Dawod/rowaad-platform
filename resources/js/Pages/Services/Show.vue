@@ -58,8 +58,8 @@
                                 <span class="w-1 h-7 rounded-full bg-gradient-to-b from-[#3DAFB9] to-[#2D4B7E]"></span>
                                 <h2 class="text-xl font-black text-ink">تشمل الخدمة</h2>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div v-for="(item, i) in service.includes" :key="i"
+                            <div v-if="includes.length" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div v-for="(item, i) in includes" :key="i"
                                      class="flex items-start gap-3 p-3 rounded-xl bg-canvas border border-soft">
                                     <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#3DAFB9]/12 to-[#2D4B7E]/10 border border-[#3DAFB9]/20 flex items-center justify-center shrink-0 mt-0.5">
                                         <svg class="w-3.5 h-3.5 text-[#3DAFB9]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M5 13l4 4L19 7"/></svg>
@@ -76,8 +76,8 @@
                             <div class="relative">
                                 <div class="text-[10.5px] text-[#6BC8D2] tracking-widest font-black uppercase mb-2">المخرجات</div>
                                 <h2 class="text-2xl font-black text-white mb-5">ما ستحصل عليه</h2>
-                                <ul class="space-y-3">
-                                    <li v-for="(d, i) in service.deliverables" :key="i" class="flex items-start gap-3 text-white/85 text-[14px]">
+                                <ul v-if="deliverables.length" class="space-y-3">
+                                    <li v-for="(d, i) in deliverables" :key="i" class="flex items-start gap-3 text-white/85 text-[14px]">
                                         <svg class="w-4 h-4 text-[#6BC8D2] shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M9 12l2 2 4-4M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
                                         <span>{{ d }}</span>
                                     </li>
@@ -366,13 +366,18 @@ import { useTheme } from '@/composables/useTheme';
 const props = defineProps({ service: Object, related: Array });
 const { isDark } = useTheme();
 
-// Rich content (all optional — sections hide when empty)
+// Normalize array-of-strings OR array-of-{item:string} into plain strings —
+// legacy services store as string[], newer ones as {item:string}[]; this makes both render cleanly.
 const normalize = (arr) => Array.isArray(arr)
     ? arr.map(x => (typeof x === 'string' ? x : (x?.item ?? ''))).filter(Boolean)
     : [];
 const rich = computed(() => props.service.rich_content || {});
 const targetAudience = computed(() => normalize(rich.value.target_audience));
 const outcomes = computed(() => normalize(rich.value.outcomes));
+
+// Normalize service-level includes + deliverables the same way
+const includes     = computed(() => normalize(props.service.includes));
+const deliverables = computed(() => normalize(props.service.deliverables));
 
 // Brand-colored Solar icon for privacy notice
 const iconLocked = computed(() => {

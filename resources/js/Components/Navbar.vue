@@ -118,8 +118,21 @@
                     </a>
                 </template>
 
+                <!-- Cart icon — always render, but link only fires for logged-in users -->
+                <a v-if="authUser" href="/cart"
+                   class="relative inline-flex items-center justify-center w-9 h-9 rounded-full border border-[#3DAFB9]/30 hover:border-[#3DAFB9] hover:bg-[#3DAFB9]/8 transition-colors shrink-0"
+                   title="سلة المشتريات">
+                    <svg class="w-4 h-4 text-[#2D4B7E] dark:text-[#6BC8D2]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+                    </svg>
+                    <span v-if="cartCount > 0"
+                          class="absolute -top-1 -left-1 rtl:-left-auto rtl:-right-1 min-w-[16px] h-4 px-1 rounded-full bg-gradient-to-br from-[#EF4444] to-[#DC2626] text-white text-[9px] font-black flex items-center justify-center shadow-md">
+                        {{ cartCount > 9 ? '9+' : cartCount }}
+                    </span>
+                </a>
+
                 <!-- Logged in — profile dropdown -->
-                <div v-else class="relative">
+                <div v-else-if="authUser" class="relative">
                     <button @click="userMenuOpen = !userMenuOpen"
                             class="group inline-flex items-center gap-2 pr-3 pl-1.5 rtl:pr-1.5 rtl:pl-3 py-1 rounded-full border border-[#3DAFB9]/30 hover:border-[#3DAFB9] transition-colors">
                         <span class="w-7 h-7 rounded-full overflow-hidden bg-gradient-to-br from-[#2D4B7E] to-[#3DAFB9] text-white text-[11px] font-black flex items-center justify-center shrink-0">
@@ -324,7 +337,8 @@ const { isDark, toggleTheme } = useTheme();
 const { t, locale, switchLocale } = useI18n();
 
 const page = usePage();
-const authUser = computed(() => page.props.auth?.user ?? null);
+const authUser  = computed(() => page.props.auth?.user ?? null);
+const cartCount = computed(() => Number(page.props.cartCount ?? 0));
 
 // ─── Site settings from admin panel ───
 const site = computed(() => page.props.site || {});

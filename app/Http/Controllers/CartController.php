@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\FeasibilityStudy;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Services\CartService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -41,6 +44,8 @@ class CartController extends Controller
             meta: ['type' => 'feasibility', 'slug' => $feasibility->slug],
         );
 
+        $this->syncCartOrder($request);
+
         return back()->with('success', 'تمت إضافة الدراسة إلى السلة.');
     }
 
@@ -52,12 +57,74 @@ class CartController extends Controller
             'id'   => ['required', 'integer'],
         ]);
         $this->cart->remove($data['type'], (int) $data['id']);
+        $this->syncCartOrder($request);
         return back()->with('success', 'تم إزالة العنصر من السلة.');
     }
 
-    public function clear(): RedirectResponse
+    public function clear(Request $request): RedirectResponse
     {
         $this->cart->clear();
+        // Delete any open cart-status order for this user so admin sees it gone.
+        Order::where('user_id', $request->user()?->id)
+             ->where('status', Order::STATUS_CART)
+             ->delete();
         return back()->with('success', 'تم إفراغ السلة.');
+    }
+
+    /**
+     * Mirror the session cart to a DB Order (status=cart) so admins can see
+     * abandoned carts in Filament. One order per authenticated user; upserts
+     * on every change. Guests keep session-only carts (not visible to admin).
+     */
+    protected function syncCartOrder(Request $request): void
+    {
+        $user = $request->user();
+        if (! $user) return;
+
+        DB::transaction(function () use ($user) {
+            $items = $this->cart->all();
+
+            // Empty cart → delete any lingering cart order
+            if (empty($items)) {
+                Order::where('user_id', $user->id)
+                     ->where('status', Order::STATUS_CART)
+                     ->delete();
+                return;
+            }
+
+            $subtotal = $this->cart->subtotal();
+            $vat      = round($subtotal * 0.15, 2);
+            $total    = round($subtotal + $vat, 2);
+
+            $order = Order::firstOrNew([
+                'user_id' => $user->id,
+                'status'  => Order::STATUS_CART,
+            ]);
+
+            $order->fill([
+                'contact_name'   => $user->name,
+                'contact_email'  => $user->email,
+                'contact_phone'  => $user->phone ?? '—',
+                'subtotal'       => $subtotal,
+                'vat_amount'     => $vat,
+                'total'          => $total,
+                'currency'       => 'SAR',
+            ])->save();
+
+            // Rebuild items — simplest, avoids stale rows if a cart item was removed
+            $order->items()->delete();
+            foreach ($items as $item) {
+                OrderItem::create([
+                    'order_id'         => $order->id,
+                    'purchasable_type' => $item['purchasable_type'],
+                    'purchasable_id'   => $item['purchasable_id'],
+                    'title'            => $item['title'],
+                    'unit_price'       => $item['unit_price'],
+                    'quantity'         => $item['quantity'],
+                    'subtotal'         => round(((float) $item['unit_price']) * ((int) $item['quantity']), 2),
+                    'meta'             => $item['meta'] ?? null,
+                ]);
+            }
+        });
     }
 }

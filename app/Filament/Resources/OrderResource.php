@@ -91,12 +91,22 @@ class OrderResource extends Resource
                     ->color('info'),
                 Tables\Columns\TextColumn::make('status')->label('الحالة')->badge()
                     ->color(fn ($state) => match ($state) {
-                        Order::STATUS_PENDING   => 'warning',
-                        Order::STATUS_PAID      => 'success',
+                        Order::STATUS_CART      => 'gray',      // in cart, not paid
+                        Order::STATUS_PENDING   => 'warning',   // awaiting payment
+                        Order::STATUS_PAID      => 'success',   // done ✓
                         Order::STATUS_FAILED    => 'danger',
                         Order::STATUS_CANCELLED => 'gray',
                         Order::STATUS_REFUNDED  => 'primary',
                         default => 'gray',
+                    })
+                    ->icon(fn ($state) => match ($state) {
+                        Order::STATUS_CART      => 'heroicon-o-shopping-cart',
+                        Order::STATUS_PENDING   => 'heroicon-o-clock',
+                        Order::STATUS_PAID      => 'heroicon-o-check-badge',
+                        Order::STATUS_FAILED    => 'heroicon-o-x-circle',
+                        Order::STATUS_CANCELLED => 'heroicon-o-no-symbol',
+                        Order::STATUS_REFUNDED  => 'heroicon-o-arrow-uturn-left',
+                        default => null,
                     })
                     ->formatStateUsing(fn ($state) => Order::$STATUS_LABELS[$state] ?? $state),
                 Tables\Columns\TextColumn::make('paid_at')->label('وقت الدفع')->dateTime('Y-m-d H:i')->sortable()->toggleable(),

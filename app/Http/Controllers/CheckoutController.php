@@ -67,7 +67,13 @@ class CheckoutController extends Controller
         $total    = round($subtotal + $vat, 2);
 
         $order = DB::transaction(function () use ($request, $data, $subtotal, $vat, $total) {
-            $order = Order::create([
+            // Prefer reusing the user's existing cart-status order so admins don't
+            // see a duplicate abandoned-cart entry hanging around after checkout.
+            $order = Order::where('user_id', $request->user()?->id)
+                          ->where('status', Order::STATUS_CART)
+                          ->first();
+
+            $payload = [
                 'user_id'         => $request->user()?->id,
                 'contact_name'    => $data['contact_name'],
                 'contact_email'   => $data['contact_email'],
@@ -84,7 +90,14 @@ class CheckoutController extends Controller
                 'notes'           => $data['notes'] ?? null,
                 'ip_address'      => $request->ip(),
                 'user_agent'      => substr((string) $request->userAgent(), 0, 255),
-            ]);
+            ];
+
+            if ($order) {
+                $order->update($payload);
+                $order->items()->delete();
+            } else {
+                $order = Order::create($payload);
+            }
 
             foreach ($this->cart->all() as $item) {
                 OrderItem::create([

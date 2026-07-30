@@ -56,19 +56,22 @@ Route::get('/consultants/{consultant}', [ConsultantController::class, 'show'])->
 // Feasibility studies marketplace + custom request
 Route::get('/feasibility-studies',               [FeasibilityStudyController::class, 'index'])->name('feasibility.index');
 Route::get('/feasibility-studies/{feasibility}', [FeasibilityStudyController::class, 'show'])->name('feasibility.show');
-Route::get ('/feasibility-studies/{feasibility}/download', [FeasibilityStudyController::class, 'download'])->name('feasibility.download');
-Route::post('/feasibility-studies/{feasibility}/purchase', [FeasibilityStudyController::class, 'purchase'])->name('feasibility.purchase');
+// ─── LOGIN REQUIRED — cart, checkout, downloads (like bookings) ───
+Route::middleware(['auth'])->group(function () {
+    Route::get ('/feasibility-studies/{feasibility}/download', [FeasibilityStudyController::class, 'download'])->name('feasibility.download');
+    Route::post('/feasibility-studies/{feasibility}/purchase', [FeasibilityStudyController::class, 'purchase'])->name('feasibility.purchase');
 
-// Cart + Checkout ─────────────────────────────
-Route::get ('/cart',                                    [App\Http\Controllers\CartController::class,     'index'])->name('cart.index');
-Route::post('/cart/studies/{feasibility}',              [App\Http\Controllers\CartController::class,     'addStudy'])->name('cart.add.study');
-Route::delete('/cart/item',                             [App\Http\Controllers\CartController::class,     'remove'])->name('cart.remove');
-Route::delete('/cart',                                  [App\Http\Controllers\CartController::class,     'clear'])->name('cart.clear');
-Route::get ('/checkout',                                [App\Http\Controllers\CheckoutController::class, 'show'])->name('checkout.show');
-Route::post('/checkout',                                [App\Http\Controllers\CheckoutController::class, 'place'])->name('checkout.place');
-Route::get ('/checkout/{order}/pay',                    [App\Http\Controllers\CheckoutController::class, 'pay'])->name('checkout.pay');
-Route::post('/checkout/{order}/confirm',                [App\Http\Controllers\CheckoutController::class, 'confirm'])->name('checkout.confirm');
-Route::get ('/checkout/{order}/success',                [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get   ('/cart',                       [App\Http\Controllers\CartController::class,     'index'])->name('cart.index');
+    Route::post  ('/cart/studies/{feasibility}', [App\Http\Controllers\CartController::class,     'addStudy'])->name('cart.add.study');
+    Route::delete('/cart/item',                  [App\Http\Controllers\CartController::class,     'remove'])->name('cart.remove');
+    Route::delete('/cart',                       [App\Http\Controllers\CartController::class,     'clear'])->name('cart.clear');
+
+    Route::get ('/checkout',                     [App\Http\Controllers\CheckoutController::class, 'show'])->name('checkout.show');
+    Route::post('/checkout',                     [App\Http\Controllers\CheckoutController::class, 'place'])->name('checkout.place');
+    Route::get ('/checkout/{order}/pay',         [App\Http\Controllers\CheckoutController::class, 'pay'])->name('checkout.pay');
+    Route::post('/checkout/{order}/confirm',     [App\Http\Controllers\CheckoutController::class, 'confirm'])->name('checkout.confirm');
+    Route::get ('/checkout/{order}/success',     [App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
+});
 Route::get ('/feasibility-request', [App\Http\Controllers\FeasibilityRequestController::class, 'create'])->name('feasibility.request.create');
 Route::post('/feasibility-request', [App\Http\Controllers\FeasibilityRequestController::class, 'store'])->name('feasibility.request.store');
 

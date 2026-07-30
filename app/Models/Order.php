@@ -20,13 +20,15 @@ class Order extends Model
         'cancelled_at'=> 'datetime',
     ];
 
-    public const STATUS_PENDING   = 'pending';
+    public const STATUS_CART      = 'cart';       // authenticated user added items but hasn't checked out yet
+    public const STATUS_PENDING   = 'pending';    // checkout submitted, awaiting payment
     public const STATUS_PAID      = 'paid';
     public const STATUS_FAILED    = 'failed';
     public const STATUS_CANCELLED = 'cancelled';
     public const STATUS_REFUNDED  = 'refunded';
 
     public static array $STATUS_LABELS = [
+        self::STATUS_CART      => 'في السلة (لم يُكمل الشراء)',
         self::STATUS_PENDING   => 'قيد الدفع',
         self::STATUS_PAID      => 'مدفوع',
         self::STATUS_FAILED    => 'فشل الدفع',

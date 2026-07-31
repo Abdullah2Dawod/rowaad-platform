@@ -190,6 +190,7 @@ class CheckoutController extends Controller
     public function success(Order $order): Response
     {
         abort_unless($order->status === Order::STATUS_PAID, 404);
+        abort_unless($order->user_id === auth()->id() || auth()->user()?->role === 'admin', 403);
 
         return Inertia::render('Checkout/Success', [
             'order' => [
@@ -199,8 +200,14 @@ class CheckoutController extends Controller
                 'items'        => $order->items->map(fn ($i) => [
                     'title'    => $i->title,
                     'subtotal' => (float) $i->subtotal,
+                    // Signed URL — expires in 24h. Anyone sharing it after that
+                    // will get a 403; buyer can always regenerate from their profile.
                     'download_url' => $i->purchasable_type === FeasibilityStudy::class
-                        ? route('feasibility.download', $i->purchasable_id)
+                        ? \Illuminate\Support\Facades\URL::temporarySignedRoute(
+                            'feasibility.download',
+                            now()->addHours(24),
+                            ['feasibility' => $i->purchasable_id],
+                          )
                         : null,
                 ]),
             ],

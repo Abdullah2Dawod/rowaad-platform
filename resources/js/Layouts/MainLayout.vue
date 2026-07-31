@@ -7,6 +7,8 @@
         <Footer />
         <!-- Live chat with support / consultant (all pages, always visible) -->
         <LiveChat />
+        <!-- PDPL consent banner — dismissible, persisted in localStorage -->
+        <ConsentBanner />
     </div>
 </template>
 
@@ -14,6 +16,7 @@
 import Navbar from '@/Components/Navbar.vue';
 import Footer from '@/Components/Footer.vue';
 import LiveChat from '@/Components/LiveChat.vue';
+import ConsentBanner from '@/Components/ConsentBanner.vue';
 import { useTheme } from '@/composables/useTheme';
 
 useTheme();

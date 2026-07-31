@@ -71,6 +71,16 @@ class ProfileController extends Controller
                     'title'    => $i->title,
                     'subtotal' => (float) $i->subtotal,
                     'quantity' => $i->quantity,
+                    // Fresh 24h signed URL per profile visit — buyer can always
+                    // re-download from here even if the checkout success page URL expired.
+                    'download_url' => ($o->status === \App\Models\Order::STATUS_PAID
+                        && $i->purchasable_type === \App\Models\FeasibilityStudy::class)
+                        ? \Illuminate\Support\Facades\URL::temporarySignedRoute(
+                            'feasibility.download',
+                            now()->addHours(24),
+                            ['feasibility' => $i->purchasable_id],
+                          )
+                        : null,
                 ]),
             ]);
 

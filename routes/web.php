@@ -113,6 +113,8 @@ Route::prefix('become-a-consultant')->name('consultant.apply.')->group(function 
     Route::post('/step-3',          [ConsultantApplicationController::class, 'saveStep3'])->name('save3');
     Route::get ('/pending',         [ConsultantApplicationController::class, 'pending'])->name('pending');
     Route::get ('/rejected',        [ConsultantApplicationController::class, 'rejected'])->name('rejected');
+    // Explicit "edit my submitted application" — sets a one-shot session flag
+    Route::get ('/edit',            [ConsultantApplicationController::class, 'edit'])->name('edit');
 });
 
 // Locale switcher

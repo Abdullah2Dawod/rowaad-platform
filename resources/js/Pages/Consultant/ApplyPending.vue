@@ -49,13 +49,23 @@
 
                 <!-- CTA -->
                 <div class="mt-10 flex items-center justify-center gap-3 flex-wrap">
-                    <Link href="/consultants" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-l rtl:bg-gradient-to-r from-[#2D4B7E] to-[#3DAFB9] text-white text-[13px] font-bold shadow-md hover:scale-105 transition-transform">
+                    <Link href="/become-a-consultant/edit"
+                          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-l rtl:bg-gradient-to-r from-[#2D4B7E] to-[#3DAFB9] text-white text-[13px] font-bold shadow-md hover:scale-105 transition-transform">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        تعديل بيانات طلبي
+                    </Link>
+                    <Link href="/consultants" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-elevated border border-soft text-ink text-[13px] font-bold hover:border-[#3DAFB9]/40 transition-colors">
                         تصفّح المستشارين
                     </Link>
-                    <Link href="/" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-elevated border border-soft text-ink text-[13px] font-bold hover:border-[#3DAFB9]/40 transition-colors">
+                    <Link href="/" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-ink-body text-[12px] hover:text-ink transition-colors">
                         العودة للرئيسية
                     </Link>
                 </div>
+                <p class="mt-3 text-[11px] text-ink-muted max-w-md mx-auto leading-relaxed">
+                    التعديل يُحدّث نفس الطلب — لن يُنشئ طلباً جديداً، ولن يستقبل المدير إشعاراً مكرراً.
+                </p>
 
                 <p v-if="submitted_at" class="mt-8 text-[11px] text-ink-muted">
                     تم الإرسال: {{ new Date(submitted_at).toLocaleString('ar-SA') }}

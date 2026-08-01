@@ -56,6 +56,24 @@ class ConsultantApplicationController extends Controller
 
         $c = $this->trackedApplication($request);
 
+        // ─── Status guard ───
+        // Once an application is SUBMITTED / APPROVED / REJECTED, direct URL
+        // access to any wizard step must NOT let the user re-submit or bypass
+        // the pending screen. This is the source of "duplicate applications":
+        // user hits step-3 URL after submitting → saveStep3 fires again →
+        // status flips to SUBMITTED (still same record) but a fresh admin
+        // notification is dispatched, so admin sees the same request twice.
+        // To edit an already-submitted app the user must opt-in via the
+        // pending page's "تعديل" button (session flag `apply_edit=1`).
+        if ($c && $c->status !== Consultant::STATUS_DRAFT && ! $request->session()->pull('apply_edit', false)) {
+            return match ($c->status) {
+                Consultant::STATUS_SUBMITTED => redirect()->route('consultant.apply.pending'),
+                Consultant::STATUS_APPROVED  => redirect()->route('consultants.show', $c),
+                Consultant::STATUS_REJECTED  => redirect()->route('consultant.apply.rejected'),
+                default                      => redirect()->route('consultant.apply.pending'),
+            };
+        }
+
         // Steps 2 & 3 require step-1 to be done first
         if ($step > 1 && ! $c) {
             return redirect()->route('consultant.apply.step', ['step' => 1]);
@@ -230,7 +248,15 @@ class ConsultantApplicationController extends Controller
     public function saveStep3(Request $request): RedirectResponse
     {
         $c = $this->trackedApplication($request);
-        abort_unless($c, 302, ['Location' => route('consultant.apply.step', ['step' => 1])]);
+        if (! $c) {
+            return redirect()->route('consultant.apply.step', ['step' => 1])
+                ->with('error', 'انتهت الجلسة — يرجى إعادة تعبئة الخطوة الأولى.');
+        }
+
+        // Was this an edit of an already-submitted application? Detect BEFORE
+        // we flip status so we can suppress the "new application" notification
+        // to admins and instead send a lighter "application updated" one.
+        $wasSubmittedBefore = $c->status !== Consultant::STATUS_DRAFT;
 
         $data = $request->validate([
             'specialization_id'          => ['required', 'exists:specializations,id'],
@@ -251,19 +277,56 @@ class ConsultantApplicationController extends Controller
         $c->fill($data);
         $c->completed_step = 3;
         $c->status         = Consultant::STATUS_SUBMITTED;
-        $c->submitted_at   = now();
+        // Keep the original submitted_at on edits — only set it on the first submission
+        $c->submitted_at ??= now();
         $c->save();
 
-        // Notify all admins — never let a mail failure break submission
-        foreach (User::where('role', 'admin')->get() as $admin) {
-            try {
-                $admin->notify(new NewConsultantApplication($c));
-            } catch (\Throwable $e) {
-                \Log::warning('[Consultant application notification] failed: ' . $e->getMessage());
+        // Notification policy:
+        //  - First submission → full "new application" notification
+        //  - Edit of an existing pending application → lightweight in-app bell only,
+        //    NO duplicate email/DB notification. Prevents the "duplicate request"
+        //    pattern where admin sees the same consultant show up 3× in the bell.
+        if (! $wasSubmittedBefore) {
+            foreach (User::where('role', 'admin')->get() as $admin) {
+                try {
+                    $admin->notify(new NewConsultantApplication($c));
+                } catch (\Throwable $e) {
+                    \Log::warning('[Consultant application notification] failed: ' . $e->getMessage());
+                }
             }
+        } else {
+            // Silent Filament bell for admin awareness — no email spam
+            \App\Support\AdminNotifier::ping(
+                'تعديل طلب مستشار',
+                ($c->full_name_ar ?? '—') . ' — حدّث بيانات طلبه المقدم مسبقاً',
+                route('filament.admin.resources.consultants.edit', ['record' => $c->id]),
+                'heroicon-o-pencil-square',
+                'warning'
+            );
         }
 
-        return redirect()->route('consultant.apply.pending');
+        return redirect()->route('consultant.apply.pending')
+            ->with('success', $wasSubmittedBefore
+                ? 'تم تحديث طلبك بنجاح. سيراجع فريقنا التعديلات.'
+                : 'تم استلام طلبك بنجاح. سنراجعه خلال 48 ساعة عمل.');
+    }
+
+    /**
+     * Open the wizard in edit mode for an already-submitted application.
+     * Sets a one-shot session flag consumed by step() to bypass the status
+     * guard. The consultant record + status remain the same — save routes
+     * update in place; only the timestamps + submitted_at are preserved.
+     */
+    public function edit(Request $request): RedirectResponse
+    {
+        $c = $this->trackedApplication($request);
+        if (! $c) return redirect()->route('consultant.apply.start');
+        if ($c->status === Consultant::STATUS_APPROVED) {
+            // Approved consultants edit via /profile inside the admin panel, not here.
+            return redirect()->route('consultants.show', $c);
+        }
+        $request->session()->put('apply_edit', true);
+        return redirect()->route('consultant.apply.step', ['step' => 1]);
     }
 
     /* ─────────────── Terminal views ─────────────── */

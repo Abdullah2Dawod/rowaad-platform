@@ -57,7 +57,8 @@
 
                 <div class="space-y-3">
                     <div v-for="(cert, i) in form.certificates" :key="i"
-                         class="p-4 rounded-2xl border border-soft bg-canvas">
+                         class="p-4 rounded-2xl border border-soft bg-canvas"
+                         :class="{ 'border-red-300 bg-red-50/40 dark:bg-red-500/5': certHasError(i) }">
                         <div class="flex items-baseline justify-between mb-2">
                             <span class="text-[11.5px] font-black text-[#3DAFB9]">شهادة {{ i + 1 }}</span>
                             <button type="button" @click="removeCert(i)"
@@ -65,7 +66,12 @@
                         </div>
                         <input v-model="cert.title" type="text"
                                class="fld mb-2"
+                               :class="{ 'border-red-400 ring-red-400': form.errors[`certificates.${i}.title`] }"
                                placeholder="عنوان الشهادة — مثال: CFA Level II" />
+                        <p v-if="form.errors[`certificates.${i}.title`]"
+                           class="text-[11px] text-red-600 font-bold mb-2">
+                            {{ form.errors[`certificates.${i}.title`] }}
+                        </p>
                         <FileDrop
                             accept=".pdf,.jpg,.jpeg,.png"
                             :current-name="cert.name"
@@ -73,8 +79,16 @@
                             compact
                             @change="f => cert.file = f"
                         />
+                        <p v-if="form.errors[`certificates.${i}.file`]"
+                           class="text-[11px] text-red-600 font-bold mt-2">
+                            {{ form.errors[`certificates.${i}.file`] }}
+                        </p>
                     </div>
                 </div>
+
+                <p v-if="form.errors.certificates" class="mt-2 text-[11px] text-red-600 font-bold">
+                    {{ form.errors.certificates }}
+                </p>
 
                 <button type="button" @click="addCert"
                         v-if="form.certificates.length < 10"
@@ -82,6 +96,15 @@
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" d="M12 4v16m8-8H4"/></svg>
                     إضافة شهادة
                 </button>
+                <p class="mt-2 text-[10.5px] text-ink-muted">اترك القسم فارغاً إن لم يكن لديك شهادات — أو أضف شهادات مع تعبئة العنوان لكل واحدة.</p>
+            </div>
+
+            <!-- Global error banner — shows validation errors that aren't tied to a specific field -->
+            <div v-if="hasAnyError" class="p-4 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30">
+                <p class="text-[12.5px] font-black text-red-700 dark:text-red-400 mb-1">⚠ يوجد بعض الأخطاء في النموذج:</p>
+                <ul class="text-[11.5px] text-red-600 dark:text-red-300 space-y-0.5 mr-4 rtl:mr-0 rtl:ml-4 list-disc list-inside">
+                    <li v-for="(msg, key) in form.errors" :key="key">{{ msg }}</li>
+                </ul>
             </div>
 
             <!-- Actions -->
@@ -110,15 +133,18 @@ import WizardShell from '@/Components/Apply/WizardShell.vue';
 import FormField from '@/Components/Apply/FormField.vue';
 import FileDrop from '@/Components/Apply/FileDrop.vue';
 
+import { computed } from 'vue';
+
 const props = defineProps({ application: Object, existing: Object });
 
-// Certificates need `file` field per row for reactive binding
+// Certificates need `file` field per row for reactive binding.
+// Start with 0 rows — user explicitly clicks "إضافة شهادة" when they have one.
+// (Old behavior added a blank row that silently failed the required_with rule.)
 const initialCerts = (props.existing.certificates ?? []).map(c => ({
     title: c.title || '',
     name:  c.name || null,
     file:  null,
 }));
-if (initialCerts.length === 0) initialCerts.push({ title: '', name: null, file: null });
 
 const form = useForm({
     avatar: null,
@@ -139,7 +165,15 @@ const onAvatar = (e) => {
 const addCert    = () => form.certificates.push({ title: '', name: null, file: null });
 const removeCert = (i) => form.certificates.splice(i, 1);
 
-const submit = () => form.post('/become-a-consultant/step-2', { forceFormData: true });
+const certHasError = (i) => !! (form.errors[`certificates.${i}.title`] || form.errors[`certificates.${i}.file`]);
+const hasAnyError  = computed(() => Object.keys(form.errors || {}).length > 0);
+
+const submit = () => {
+    // Strip empty rows client-side too — mirrors the server-side filter so the
+    // request payload is clean and validation always passes when data is sane.
+    form.certificates = form.certificates.filter(c => (c.title && c.title.trim()) || c.file || c.name);
+    form.post('/become-a-consultant/step-2', { forceFormData: true });
+};
 </script>
 
 <style scoped>

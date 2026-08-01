@@ -144,15 +144,46 @@ class ConsultantApplicationController extends Controller
     public function saveStep2(Request $request): RedirectResponse
     {
         $c = $this->trackedApplication($request);
-        abort_unless($c, 302, ['Location' => route('consultant.apply.step', ['step' => 1])]);
+        // Proper redirect if session lost the application id (was: broken abort_unless
+        // with array-as-message that threw a TypeError silently on some PHP builds).
+        if (! $c) {
+            return redirect()->route('consultant.apply.step', ['step' => 1])
+                ->with('error', 'انتهت الجلسة — يرجى إعادة تعبئة بيانات الخطوة الأولى.');
+        }
+
+        // Strip fully-empty certificate rows BEFORE validation. The Vue form always
+        // pushes at least one blank {title:'', file:null} row for UX, and the frontend
+        // has no per-row remove hint — so users hit "Next" thinking the row is optional
+        // but our required_with rule fired silently. Silent-fail bug #1.
+        $rawCerts = $request->input('certificates', []);
+        $filtered = [];
+        foreach ($rawCerts as $i => $cert) {
+            $hasTitle = ! empty($cert['title'] ?? null);
+            $hasFile  = $request->hasFile("certificates.$i.file");
+            $hasName  = ! empty($cert['name'] ?? null); // existing stored cert
+            if ($hasTitle || $hasFile || $hasName) {
+                $filtered[$i] = $cert;
+            }
+        }
+        // Rebuild files array on the request so validator sees only filled rows
+        $request->merge(['certificates' => array_values($filtered)]);
 
         $request->validate([
             'avatar'                       => ['nullable', 'image', 'max:4096'],
             'cv'                           => ['nullable', 'file', 'mimes:pdf', 'max:8192'],
             'national_id_file'             => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'],
             'certificates'                 => ['nullable', 'array', 'max:10'],
-            'certificates.*.title'         => ['required_with:certificates.*.file', 'string', 'max:150'],
+            'certificates.*.title'         => ['required', 'string', 'max:150'],
             'certificates.*.file'          => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:6144'],
+        ], [
+            'certificates.*.title.required' => 'عنوان الشهادة رقم :position مطلوب.',
+            'certificates.*.file.mimes'     => 'صيغة ملف الشهادة رقم :position غير مدعومة (PDF/JPG/PNG فقط).',
+            'certificates.*.file.max'       => 'ملف الشهادة رقم :position يجب ألا يتجاوز 6 ميجا.',
+            'avatar.max'                    => 'الصورة الشخصية يجب ألا تتجاوز 4 ميجا.',
+            'cv.max'                        => 'ملف السيرة الذاتية يجب ألا يتجاوز 8 ميجا.',
+            'national_id_file.max'          => 'صورة الهوية يجب ألا تتجاوز 4 ميجا.',
+        ], [
+            // attribute-name overrides so :position works nicely
         ]);
 
         $dir = "consultants/{$c->id}";
